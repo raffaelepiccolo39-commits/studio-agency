@@ -147,3 +147,4 @@ Crea `src/app/blog/page.tsx` e `src/app/blog/[slug]/page.tsx`
 
 ## Licenza
 Progetto privato — tutti i diritti riservati.
+# studio-agency
