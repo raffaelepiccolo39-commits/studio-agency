@@ -37,7 +37,6 @@ export default function HeroSection() {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
         padding: 'clamp(120px, 15vw, 160px) clamp(24px, 5vw, 40px) 60px',
         justifyContent: 'center',
         position: 'relative',

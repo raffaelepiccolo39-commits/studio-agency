@@ -24,10 +24,14 @@ const syne = Syne({
 })
 
 export const metadata: Metadata = {
-  title: 'Studio — Digital Agency',
+  title: 'Pira Web Creative Agency',
   description: 'Unifichiamo brand direction, tecnologia e performance marketing in un\'unica visione operativa per brand visionari.',
+  icons: {
+    icon: '/favicon.png',
+    apple: '/favicon.png',
+  },
   openGraph: {
-    title: 'Studio — Digital Agency',
+    title: 'Pira Web Creative Agency',
     description: 'Brand direction, advanced tech, performance marketing.',
     type: 'website',
   },
