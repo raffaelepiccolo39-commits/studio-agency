@@ -1,16 +1,18 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
 
-export async function POST(req: Request) {
+const resend = new Resend(process.env.RESEND_API_KEY)
+
+export async function POST(req: NextRequest) {
   try {
     const { name, email, message } = await req.json()
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    return NextResponse.json({ error: 'Errore' }, { status: 500 })
-  }
-}
+
+    if (!name || !email || !message) {
+      return NextResponse.json({ error: 'Campi mancanti' }, { status: 400 })
+    }
 
     const { data, error } = await resend.emails.send({
-      from: 'Studio <info@piraweb.it>',
+      from: 'Studio <onboarding@resend.dev>',
       to: ['info@piraweb.it'],
       subject: `Nuovo contatto da ${name}`,
       html: `
@@ -20,17 +22,14 @@ export async function POST(req: Request) {
         <p><strong>Messaggio:</strong></p>
         <p>${message.replace(/\n/g, '<br>')}</p>
       `,
-      replyTo: email,
     })
 
     if (error) {
-      console.error('Resend error:', error)
       return NextResponse.json({ error: 'Errore invio email' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true, id: data?.id })
   } catch (err) {
-    console.error('Contact API error:', err)
     return NextResponse.json({ error: 'Errore server' }, { status: 500 })
   }
 }
