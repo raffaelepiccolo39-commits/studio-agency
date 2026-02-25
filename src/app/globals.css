@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── FONTS ─── */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;700;800&display=swap');
+
+/* ─── CSS VARIABLES ─── */
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: #1e1e1e;
+  --text: #f0ede6;
+  --muted: #555;
+  --accent: #c8f55a;
+  --accent-red: #ff4d1c;
+}
+
+/* ─── BASE ─── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-syne), sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── CURSOR ─── */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, background 0.3s;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(200, 245, 90, 0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.cursor-hover .cursor { width: 40px; height: 40px; background: var(--accent-red); }
+.cursor-hover .cursor-ring { width: 60px; height: 60px; opacity: 0.5; }
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(110%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes bgDrift {
+  from { transform: translate(-50%, -50%) rotate(-2deg); }
+  to { transform: translate(-48%, -52%) rotate(1deg); }
+}
+
+/* ─── UTILITIES ─── */
+.line-overflow { overflow: hidden; }
+.display-font { font-family: var(--font-bebas), sans-serif; }
+.serif-font { font-family: var(--font-dm-serif), serif; }
+
+/* ─── HOVER UTILITIES (CSS puro — no JS needed) ─── */
+.hover-accent:hover { color: var(--accent) !important; }
+.hover-text:hover { color: var(--text) !important; }
+.hover-bg-dark:hover { background: #161616 !important; }
+.hover-btn:hover { background: var(--text) !important; }
+.hover-opacity:hover { opacity: 1 !important; }
+.hover-scale:hover { transform: scale(1.02) !important; }
+.hover-pl:hover { padding-left: 12px !important; }
+
+/* Links */
+.link-muted { color: var(--muted); text-decoration: none; transition: color 0.3s; }
+.link-muted:hover { color: var(--text); }
+.link-accent { color: var(--muted); text-decoration: none; transition: color 0.3s; }
+.link-accent:hover { color: var(--accent); }
+
+/* Buttons */
+.btn-accent {
+  background: var(--accent); color: #0a0a0a;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 18px 48px; text-decoration: none;
+  display: inline-block; border: none; cursor: none;
+  transition: background 0.3s, transform 0.3s;
+}
+.btn-accent:hover { background: var(--text); transform: scale(1.02); }
+
+.btn-outline-accent {
+  padding: 12px 24px; background: transparent;
+  border: 1px solid var(--accent); color: var(--accent);
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; transition: background 0.3s, color 0.3s;
+  display: inline-block;
+}
+.btn-outline-accent:hover { background: var(--accent); color: #0a0a0a; }
+
+/* Cards */
+.card-hover { transition: background 0.3s; }
+.card-hover:hover { background: #161616 !important; }
+
+/* Service items */
+.service-row { transition: padding 0.4s ease; position: relative; overflow: hidden; }
+.service-row:hover { padding-left: 16px !important; }
+.service-row::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 0; background: var(--accent);
+  transition: width 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.service-row:hover::before { width: 4px; }
+.service-row:hover .service-name { color: var(--accent) !important; }
+.service-row:hover .service-arrow { transform: rotate(-45deg); color: var(--accent) !important; }
+
+/* Project cards */
+.project-card:hover .project-img { transform: scale(1.06); filter: grayscale(0%); }
+.project-card:hover .project-info { transform: translateY(0) !important; }
+
+/* Nav links */
+.nav-link { opacity: 0.55; transition: opacity 0.3s; }
+.nav-link:hover, .nav-link.active { opacity: 1; }
+
+/* Team rows */
+.team-row { transition: padding 0.3s; }
+.team-row:hover { padding-left: 12px !important; }
+
+/* Value cards */
+.value-card { transition: background 0.3s; }
+.value-card:hover { background: #161616 !important; }
