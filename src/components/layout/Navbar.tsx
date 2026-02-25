@@ -58,7 +58,7 @@ export default function Navbar() {
           position: 'relative', zIndex: 210,
           textDecoration: 'none', display: 'flex', alignItems: 'center',
         }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '128pxpx', width: 'auto' }} />
+          <img src="/logo.png" alt="Pira Web" style={{ height: '40pxpx', width: 'auto' }} />
         </Link>
 
         {/* Desktop links — nascosti su mobile */}
