@@ -58,7 +58,7 @@ export default function Navbar() {
           position: 'relative', zIndex: 210,
           textDecoration: 'none', display: 'flex', alignItems: 'center',
         }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '36px', width: 'auto' }} />
+          <img src="/logo.png" alt="Pira Web" style={{ height: '128pxpx', width: 'auto' }} />
         </Link>
 
         {/* Desktop links — nascosti su mobile */}
@@ -69,7 +69,7 @@ export default function Navbar() {
               return (
                 <li key={l.href}>
                   <Link href={l.href} style={{
-                    fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em',
+                    fontSize: '140px', fontWeight: 500, letterSpacing: '0.1em',
                     textTransform: 'uppercase',
                     color: active ? 'var(--accent)' : 'var(--text)',
                     textDecoration: 'none',
