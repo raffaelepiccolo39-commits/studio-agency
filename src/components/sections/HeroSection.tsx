@@ -38,7 +38,8 @@ export default function HeroSection() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        padding: 'clamp(0px, 0px, 0px) clamp(24px, 5vw, 40px) 60px',
+        padding: 'clamp(120px, 15vw, 160px) clamp(24px, 5vw, 40px) 60px',
+        justifyContent: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}

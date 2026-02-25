@@ -69,7 +69,7 @@ export default function Navbar() {
               return (
                 <li key={l.href}>
                   <Link href={l.href} style={{
-                    fontSize: '140px', fontWeight: 500, letterSpacing: '0.1em',
+                    fontSize: '30px', fontWeight: 500, letterSpacing: '0.1em',
                     textTransform: 'uppercase',
                     color: active ? 'var(--accent)' : 'var(--text)',
                     textDecoration: 'none',
