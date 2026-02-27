@@ -46,7 +46,7 @@ export default function Navbar() {
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: `${scrolled ? '14px' : '22px'} clamp(20px,5vw,40px)`,
+        padding: `${scrolled ? '12px' : '20px'} clamp(20px,5vw,40px)`,
         background: menuOpen ? 'transparent' : scrolled ? 'rgba(10,10,10,0.95)' : 'transparent',
         backdropFilter: scrolled && !menuOpen ? 'blur(12px)' : 'none',
         borderBottom: scrolled && !menuOpen ? '1px solid var(--border)' : 'none',
@@ -57,19 +57,23 @@ export default function Navbar() {
         <Link href="/" style={{
           position: 'relative', zIndex: 210,
           textDecoration: 'none', display: 'flex', alignItems: 'center',
+          flexShrink: 0,
         }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '40pxpx', width: 'auto' }} />
+          <img src="/logo.png" alt="Pira Web" style={{ height: '28px', width: 'auto' }} />
         </Link>
 
-        {/* Desktop links — nascosti su mobile */}
+        {/* Desktop links */}
         {!isMobile && (
-          <ul style={{ display: 'flex', gap: '28px', listStyle: 'none', margin: 0, padding: 0 }}>
+          <ul style={{
+            display: 'flex', gap: '20px', listStyle: 'none',
+            margin: 0, padding: 0, flexWrap: 'nowrap', alignItems: 'center',
+          }}>
             {links.map(l => {
               const active = pathname === l.href
               return (
-                <li key={l.href}>
+                <li key={l.href} style={{ whiteSpace: 'nowrap' }}>
                   <Link href={l.href} style={{
-                    fontSize: '30px', fontWeight: 500, letterSpacing: '0.1em',
+                    fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em',
                     textTransform: 'uppercase',
                     color: active ? 'var(--accent)' : 'var(--text)',
                     textDecoration: 'none',
@@ -77,6 +81,7 @@ export default function Navbar() {
                     transition: 'opacity 0.3s, color 0.3s',
                     borderBottom: active ? '1px solid var(--accent)' : '1px solid transparent',
                     paddingBottom: '2px',
+                    display: 'block',
                   }}>
                     {l.label}
                   </Link>
@@ -86,7 +91,7 @@ export default function Navbar() {
           </ul>
         )}
 
-        {/* Hamburger — visibile solo su mobile */}
+        {/* Hamburger mobile */}
         {isMobile && (
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -154,7 +159,6 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-
           <p style={{
             fontSize: '12px', color: 'var(--muted)',
             marginTop: '32px', letterSpacing: '0.1em',
