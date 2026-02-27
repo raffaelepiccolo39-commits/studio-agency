@@ -59,7 +59,7 @@ export default function Navbar() {
           textDecoration: 'none', display: 'flex', alignItems: 'center',
           flexShrink: 0,
         }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '28px', width: 'auto' }} />
+          <img src="/logo.png" alt="Pira Web" style={{ height: '124px', width: 'auto' }} />
         </Link>
 
         {/* Desktop links */}
