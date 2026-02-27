@@ -35,7 +35,6 @@ export default function Navbar() {
   const [formOpen, setFormOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
-  // Form state
   const [nome, setNome] = useState('')
   const [cognome, setCognome] = useState('')
   const [email, setEmail] = useState('')
@@ -112,13 +111,13 @@ export default function Navbar() {
           position: 'relative', zIndex: 210,
           textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0,
         }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '44px', width: 'auto' }} />
+          <img src="/logo.png" alt="Pira Web" style={{ height: '128px', width: 'auto' }} />
         </Link>
 
         {/* Desktop links */}
         {!isMobile && (
           <ul style={{
-            display: 'flex', gap: '20px', listStyle: 'none',
+            display: 'flex', gap: '24px', listStyle: 'none',
             margin: 0, padding: 0, flexWrap: 'nowrap', alignItems: 'center',
           }}>
             {links.map(l => {
@@ -126,7 +125,7 @@ export default function Navbar() {
               return (
                 <li key={l.href} style={{ whiteSpace: 'nowrap' }}>
                   <Link href={l.href} style={{
-                    fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em',
+                    fontSize: '14px', fontWeight: 500, letterSpacing: '0.08em',
                     textTransform: 'uppercase',
                     color: active ? 'var(--accent)' : 'var(--text)',
                     textDecoration: 'none', opacity: active ? 1 : 0.55,
@@ -146,8 +145,8 @@ export default function Navbar() {
                 onClick={() => setFormOpen(true)}
                 style={{
                   background: 'var(--accent)', color: '#0a0a0a',
-                  border: 'none', padding: '10px 20px',
-                  fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em',
+                  border: 'none', padding: '12px 24px',
+                  fontSize: '13px', fontWeight: 700, letterSpacing: '0.1em',
                   textTransform: 'uppercase', cursor: 'none',
                   fontFamily: 'inherit', transition: 'background 0.3s',
                 }}
@@ -237,15 +236,13 @@ export default function Navbar() {
       {/* ─── FORM FULLSCREEN ─── */}
       <div style={{
         position: 'fixed', inset: 0, zIndex: 500,
-        background: '#0a0a0a',
-        overflowY: 'auto',
+        background: '#0a0a0a', overflowY: 'auto',
         opacity: formOpen ? 1 : 0,
         pointerEvents: formOpen ? 'all' : 'none',
         transition: 'opacity 0.4s ease',
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto', padding: 'clamp(80px,10vw,120px) clamp(24px,5vw,40px) 80px' }}>
 
-          {/* Header form */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '64px' }}>
             <div>
               <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '12px' }}>
@@ -273,43 +270,43 @@ export default function Navbar() {
               <p style={{ fontSize: '15px', color: 'rgba(240,237,230,0.55)', marginTop: '12px' }}>
                 Ti contatteremo entro 24 ore.
               </p>
-              <button onClick={closeForm} className="btn-accent" style={{ marginTop: '40px', cursor: 'none' }}>
+              <button onClick={closeForm} style={{
+                marginTop: '40px', cursor: 'none', background: 'var(--accent)',
+                color: '#0a0a0a', border: 'none', padding: '16px 40px',
+                fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em',
+                textTransform: 'uppercase', fontFamily: 'inherit',
+              }}>
                 Torna al sito →
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
 
-              {/* 01 Nome */}
               <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
                 <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>01 — Nome *</p>
                 <input type="text" required value={nome} onChange={e => setNome(e.target.value)} placeholder="Il tuo Nome" style={inputStyle} />
               </div>
 
-              {/* 02 Cognome */}
               <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
                 <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>02 — Cognome *</p>
                 <input type="text" required value={cognome} onChange={e => setCognome(e.target.value)} placeholder="Il tuo Cognome" style={inputStyle} />
               </div>
 
-              {/* 03 Email */}
               <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
                 <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>03 — Email *</p>
                 <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="La tua Email" style={inputStyle} />
               </div>
 
-              {/* 04 Telefono */}
               <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
                 <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>04 — Numero di telefono</p>
                 <input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Il tuo Numero" style={inputStyle} />
               </div>
 
-              {/* 05 Servizi */}
               <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
                 <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '24px' }}>05 — Tipo di servizio</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   {services.map(s => (
-                    <label key={s} style={{
+                    <label key={s} onClick={() => toggleService(s)} style={{
                       display: 'flex', alignItems: 'center', gap: '16px',
                       cursor: 'none', fontSize: '15px',
                       color: selectedServices.includes(s) ? 'var(--accent)' : 'rgba(240,237,230,0.6)',
@@ -325,24 +322,16 @@ export default function Navbar() {
                           <span style={{ width: '8px', height: '8px', background: 'var(--accent)', display: 'block' }} />
                         )}
                       </span>
-                      <input
-                        type="checkbox"
-                        checked={selectedServices.includes(s)}
-                        onChange={() => toggleService(s)}
-                        style={{ display: 'none' }}
-                      />
                       {s}
                     </label>
                   ))}
                 </div>
               </div>
 
-              {/* 06 Messaggio */}
               <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '48px' }}>
                 <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>06 — Messaggio *</p>
                 <textarea
-                  required
-                  value={messaggio}
+                  required value={messaggio}
                   onChange={e => setMessaggio(e.target.value)}
                   placeholder="Parlaci brevemente della tua attività"
                   rows={4}
@@ -350,20 +339,15 @@ export default function Navbar() {
                 />
               </div>
 
-              {/* Submit */}
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <button
-                  type="submit"
-                  disabled={status === 'loading'}
-                  style={{
-                    background: 'var(--accent)', color: '#0a0a0a',
-                    border: 'none', padding: '20px 48px',
-                    fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em',
-                    textTransform: 'uppercase', cursor: 'none', fontFamily: 'inherit',
-                    opacity: status === 'loading' ? 0.7 : 1, transition: 'opacity 0.3s',
-                    borderRadius: '50px',
-                  }}
-                >
+                <button type="submit" disabled={status === 'loading'} style={{
+                  background: 'var(--accent)', color: '#0a0a0a',
+                  border: 'none', padding: '20px 48px',
+                  fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em',
+                  textTransform: 'uppercase', cursor: 'none', fontFamily: 'inherit',
+                  opacity: status === 'loading' ? 0.7 : 1, transition: 'opacity 0.3s',
+                  borderRadius: '50px',
+                }}>
                   {status === 'loading' ? 'Invio...' : 'INVIA RICHIESTA'}
                 </button>
               </div>
