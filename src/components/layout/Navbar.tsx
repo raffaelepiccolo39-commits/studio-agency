@@ -34,6 +34,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [formOpen, setFormOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [navHovered, setNavHovered] = useState(false)
 
   const [nome, setNome] = useState('')
   const [cognome, setCognome] = useState('')
@@ -94,24 +95,33 @@ export default function Navbar() {
     }
   }
 
+  // La navbar è visibile (sfondo) solo se scrolled O hovered
+  const navBg = (scrolled || navHovered)
+    ? 'rgba(10,10,10,0.92)'
+    : 'transparent'
+
   return (
     <>
-      <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: `${scrolled ? '12px' : '20px'} clamp(20px,5vw,40px)`,
-        background: scrolled ? 'rgba(10,10,10,0.95)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid var(--border)' : 'none',
-        transition: 'all 0.4s ease',
-      }}>
+      <nav
+        onMouseEnter={() => setNavHovered(true)}
+        onMouseLeave={() => setNavHovered(false)}
+        style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: `${scrolled ? '6px' : '10px'} clamp(20px,5vw,40px)`,
+          background: navBg,
+          backdropFilter: (scrolled || navHovered) ? 'blur(12px)' : 'none',
+          borderBottom: scrolled ? '1px solid var(--border)' : 'none',
+          transition: 'all 0.4s ease',
+        }}
+      >
 
         {/* Logo */}
         <Link href="/" style={{
           position: 'relative', zIndex: 210,
           textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0,
         }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '128px', width: 'auto' }} />
+          <img src="/logo.png" alt="Pira Web" style={{ height: '56px', width: 'auto', transition: 'height 0.3s ease' }} />
         </Link>
 
         {/* Desktop links */}
@@ -139,13 +149,12 @@ export default function Navbar() {
               )
             })}
 
-            {/* Pulsante richiesta */}
             <li style={{ whiteSpace: 'nowrap' }}>
               <button
                 onClick={() => setFormOpen(true)}
                 style={{
                   background: 'var(--accent)', color: '#0a0a0a',
-                  border: 'none', padding: '12px 24px',
+                  border: 'none', padding: '10px 20px',
                   fontSize: '13px', fontWeight: 700, letterSpacing: '0.1em',
                   textTransform: 'uppercase', cursor: 'none',
                   fontFamily: 'inherit', transition: 'background 0.3s',
