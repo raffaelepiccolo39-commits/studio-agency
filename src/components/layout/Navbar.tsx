@@ -121,7 +121,7 @@ export default function Navbar() {
           position: 'relative', zIndex: 210,
           textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0,
         }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '56px', width: 'auto', transition: 'height 0.3s ease' }} />
+          <img src="/logo.png" alt="Pira Web" style={{ height: '46px', width: 'auto', transition: 'height 0.3s ease' }} />
         </Link>
 
         {/* Desktop links */}

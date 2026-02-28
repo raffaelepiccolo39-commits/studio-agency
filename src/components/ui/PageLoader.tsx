@@ -30,7 +30,7 @@ export default function PageLoader() {
         animation: 'loaderLogoIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both',
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px',
       }}>
-        <img src="/logo.png" alt="Pira Web" style={{ height: '512px', width: 'auto' }} />
+        <img src="/logo.png" alt="Pira Web" style={{ height: '256px', width: 'auto' }} />
 
         {/* Testo sotto il logo */}
         <p style={{
