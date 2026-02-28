@@ -47,4 +47,17 @@ export default function RootLayout({
       <body>{children}</body>
     </html>
   )
+import PageLoader from '@/components/ui/PageLoader'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="it" className={`${bebasNeue.variable} ${dmSerifDisplay.variable} ${syne.variable}`}>
+      <body>
+        <PageLoader />
+        {children}
+      </body>
+    </html>
+  )
+}
+
 }
