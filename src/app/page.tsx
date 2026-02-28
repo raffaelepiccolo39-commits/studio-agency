@@ -7,6 +7,7 @@ import ProjectsSection from '@/components/sections/ProjectsSection'
 import ServicesSection from '@/components/sections/ServicesSection'
 import AboutSection from '@/components/sections/AboutSection'
 import ContactSection from '@/components/sections/ContactSection'
+import PartnersSection from '@/components/sections/PartnersSection'
 
 export default async function Home() {
   return (
@@ -19,6 +20,7 @@ export default async function Home() {
         <ProjectsSection projects={[]} />
         <ServicesSection />
         <AboutSection />
+        <PartnersSection />
         <ContactSection />
       </main>
       <Footer />
