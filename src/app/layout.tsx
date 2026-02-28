@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Bebas_Neue, DM_Serif_Display, Syne } from 'next/font/google'
 import './globals.css'
+import PageLoader from '@/components/ui/PageLoader'
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -44,20 +45,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="it" className={`${bebasNeue.variable} ${dmSerifDisplay.variable} ${syne.variable}`}>
-      <body>{children}</body>
-    </html>
-  )
-import PageLoader from '@/components/ui/PageLoader'
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="it" className={`${bebasNeue.variable} ${dmSerifDisplay.variable} ${syne.variable}`}>
       <body>
         <PageLoader />
         {children}
       </body>
     </html>
   )
-}
-
 }
