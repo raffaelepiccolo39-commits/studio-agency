@@ -6,14 +6,7 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
 
-const projects = [
-  { slug: 'brand-alpha', title: 'Brand Alpha', platform: 'Shopify Plus', services: ['UX/UI', 'Dev', 'SEO'], color: '#0f1a0a', accent: '#c8f55a', year: 2024 },
-  { slug: 'studio-beta', title: 'Studio Beta', platform: 'Custom', services: ['Brand', 'UX/UI'], color: '#1a0f0a', accent: '#ff4d1c', year: 2024 },
-  { slug: 'gamma-corp', title: 'Gamma Corp', platform: 'Next.js', services: ['Marketing', 'CRO'], color: '#0a0a1a', accent: '#5a8cf5', year: 2024 },
-  { slug: 'delta-store', title: 'Delta Store', platform: 'Shopify', services: ['UX/UI', 'Dev', 'Marketing'], color: '#1a1a0a', accent: '#f5c85a', year: 2023 },
-  { slug: 'epsilon-brand', title: 'Epsilon Brand', platform: 'Laravel', services: ['Dev', 'Integration'], color: '#0f0a1a', accent: '#c85af5', year: 2023 },
-  { slug: 'zeta-luxury', title: 'Zeta Luxury', platform: 'Headless', services: ['UX/UI', 'Dev', 'SEO'], color: '#1a0a0f', accent: '#f55a8c', year: 2023 },
-]
+import { projects } from '@/data/projects'
 
 export default function ProgettiPage() {
   return (
