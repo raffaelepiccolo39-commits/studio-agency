@@ -29,7 +29,7 @@ export default function PageLoader() {
       <div style={{
         animation: 'loaderLogoIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both',
       }}>
-        <img src="/logo.png" alt="Pira Web" style={{ height: '80px', width: 'auto' }} />
+        <img src="/logo.png" alt="Pira Web" style={{ height: '512px', width: 'auto' }} />
       </div>
 
       {/* Barra di progresso */}
