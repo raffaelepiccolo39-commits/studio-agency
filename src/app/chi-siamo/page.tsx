@@ -22,11 +22,6 @@ const values = [
 
 export default function ChiSiamoPage() {
   const [hoveredMember, setHoveredMember] = useState<number | null>(null)
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePos({ x: e.clientX, y: e.clientY })
-  }
 
   return (
     <>
@@ -48,7 +43,9 @@ export default function ChiSiamoPage() {
             <p style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', fontSize: 'clamp(22px,3vw,38px)', lineHeight: 1.5 }}>
               &ldquo;Il mercato non ha bisogno di un altro sito web. Ha bisogno di esperienze che lasciano il segno.&rdquo;
             </p>
-            <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '24px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>— Raffaele Antonio Piccolo, Founder</p>
+            <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '24px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+              — Raffaele Antonio Piccolo, Founder
+            </p>
           </div>
         </section>
 
@@ -69,15 +66,55 @@ export default function ChiSiamoPage() {
           </div>
         </section>
 
-        {/* Team con foto hover */}
-        <section
-          onMouseMove={handleMouseMove}
-          style={{ padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)', position: 'relative' }}
-        >
+        {/* Team */}
+        <section style={{
+          padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)',
+          borderBottom: '1px solid var(--border)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
           <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '64px', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--muted)' }} />
             Il team
           </p>
+
+          {/* Foto centrata */}
+          <div style={{
+            position: 'absolute',
+            top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '280px', height: '360px',
+            zIndex: 10, pointerEvents: 'none',
+            opacity: hoveredMember !== null ? 1 : 0,
+            transition: 'opacity 0.4s ease',
+          }}>
+            {team.map((member, i) => (
+              <img
+                key={i}
+                src={member.photo}
+                alt={member.name}
+                style={{
+                  position: 'absolute', inset: 0,
+                  width: '100%', height: '100%',
+                  objectFit: 'cover',
+                  opacity: hoveredMember === i ? 1 : 0,
+                  transition: 'opacity 0.4s ease',
+                }}
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
+              />
+            ))}
+            {hoveredMember !== null && (
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: 'var(--surface)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--font-bebas)', fontSize: '80px', color: 'var(--accent)',
+                zIndex: -1,
+              }}>
+                {team[hoveredMember]?.name.charAt(0)}
+              </div>
+            )}
+          </div>
 
           <div style={{ borderTop: '1px solid var(--border)' }}>
             {team.map((member, i) => (
@@ -88,67 +125,53 @@ export default function ChiSiamoPage() {
                 style={{
                   borderBottom: '1px solid var(--border)',
                   display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '24px',
+                  gridTemplateColumns: '1fr auto 1fr',
                   alignItems: 'center',
-                  padding: '28px 0',
+                  padding: '24px 0',
                   cursor: 'none',
+                  position: 'relative',
                   transition: 'opacity 0.3s',
-                  opacity: hoveredMember !== null && hoveredMember !== i ? 0.3 : 1,
+                  opacity: hoveredMember !== null && hoveredMember !== i ? 0.2 : 1,
                 }}
               >
+                {/* Linea accent */}
+                <div style={{
+                  position: 'absolute', top: 0, left: 0, right: 0,
+                  height: '1px', background: 'var(--accent)',
+                  transform: hoveredMember === i ? 'scaleX(1)' : 'scaleX(0)',
+                  transformOrigin: 'left',
+                  transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1)',
+                }} />
+
                 <h3 style={{
                   fontFamily: 'var(--font-bebas)',
-                  fontSize: 'clamp(24px,3vw,40px)',
+                  fontSize: 'clamp(24px,3vw,48px)',
                   letterSpacing: '0.02em',
                   color: hoveredMember === i ? 'var(--accent)' : 'var(--text)',
                   transition: 'color 0.3s',
                 }}>
                   {member.name.toUpperCase()}
                 </h3>
-                <p style={{ fontSize: '13px', color: 'var(--muted)', letterSpacing: '0.05em' }}>{member.role}</p>
+
+                <span style={{
+                  fontFamily: 'var(--font-bebas)',
+                  fontSize: '13px', color: 'var(--accent)',
+                  letterSpacing: '0.15em', padding: '0 40px',
+                  opacity: hoveredMember === i ? 1 : 0,
+                  transition: 'opacity 0.3s',
+                }}>
+                  ({String(i + 1).padStart(2, '0')})
+                </span>
+
+                <p style={{
+                  fontSize: '13px', color: 'var(--muted)',
+                  letterSpacing: '0.05em', textAlign: 'right',
+                }}>
+                  {member.role}
+                </p>
               </div>
             ))}
           </div>
-
-          {/* Foto che segue il mouse */}
-          {hoveredMember !== null && (
-            <div style={{
-              position: 'fixed',
-              left: mousePos.x + 20,
-              top: mousePos.y - 160,
-              width: '220px',
-              height: '280px',
-              zIndex: 999,
-              pointerEvents: 'none',
-              overflow: 'hidden',
-              animation: 'fadeInPhoto 0.3s ease forwards',
-            }}>
-              <img
-                src={team[hoveredMember].photo}
-                alt={team[hoveredMember].name}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-                onError={(e) => {
-                  // Se la foto non esiste mostra un placeholder
-                  e.currentTarget.style.display = 'none'
-                  e.currentTarget.parentElement!.style.background = 'var(--surface)'
-                  e.currentTarget.parentElement!.style.border = '1px solid var(--border)'
-                  e.currentTarget.parentElement!.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--font-bebas);font-size:48px;color:var(--accent)">${team[hoveredMember!].name.charAt(0)}</div>`
-                }}
-              />
-            </div>
-          )}
-
-          <style>{`
-            @keyframes fadeInPhoto {
-              from { opacity: 0; transform: scale(0.95) translateY(10px); }
-              to   { opacity: 1; transform: scale(1) translateY(0); }
-            }
-          `}</style>
         </section>
 
         {/* Numeri */}
