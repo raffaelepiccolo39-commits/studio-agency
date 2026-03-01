@@ -54,6 +54,127 @@ Lavoriamo per generare valore nel tempo."
             </p>
           </div>
         </section>
+{/* Mission & Vision */}
+<section style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--border)' }}>
+
+  {/* Mission */}
+  <div style={{
+    display: 'grid', gridTemplateColumns: '1fr 1fr',
+    minHeight: '60vh',
+  }}>
+    <div style={{
+      padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)',
+      borderRight: '1px solid var(--border)',
+      display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Numero ghost */}
+      <div style={{
+        position: 'absolute', bottom: '-20px', right: '-10px',
+        fontFamily: 'var(--font-bebas)', fontSize: '220px',
+        color: 'transparent', WebkitTextStroke: '1px rgba(255,209,8,0.06)',
+        lineHeight: 1, pointerEvents: 'none', userSelect: 'none',
+      }}>01</div>
+
+      <p style={{
+        fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
+        color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '12px',
+      }}>
+        <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--accent)' }} />
+        Mission
+      </p>
+
+      <div>
+        <h2 style={{
+          fontFamily: 'var(--font-bebas)',
+          fontSize: 'clamp(48px,7vw,100px)',
+          lineHeight: 0.9, letterSpacing: '-0.01em',
+          marginBottom: '32px',
+        }}>
+          COSTRUIRE<br />
+          <span style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', color: 'var(--accent)' }}>
+            valore
+          </span><br />
+          REALE
+        </h2>
+        <p style={{
+          fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.8,
+          color: 'rgba(240,237,230,0.6)', maxWidth: '420px',
+        }}>
+          Affiancare imprenditori e brand nella costruzione di ecosistemi digitali
+          che generano crescita misurabile, sostenibile e duratura nel tempo.
+        </p>
+      </div>
+    </div>
+
+    <div style={{
+      padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)',
+      display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+      position: 'relative', overflow: 'hidden',
+      background: 'var(--surface)',
+    }}>
+      {/* Numero ghost */}
+      <div style={{
+        position: 'absolute', bottom: '-20px', right: '-10px',
+        fontFamily: 'var(--font-bebas)', fontSize: '220px',
+        color: 'transparent', WebkitTextStroke: '1px rgba(255,209,8,0.06)',
+        lineHeight: 1, pointerEvents: 'none', userSelect: 'none',
+      }}>02</div>
+
+      <p style={{
+        fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
+        color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: '12px',
+      }}>
+        <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--accent)' }} />
+        Vision
+      </p>
+
+      <div>
+        <h2 style={{
+          fontFamily: 'var(--font-bebas)',
+          fontSize: 'clamp(48px,7vw,100px)',
+          lineHeight: 0.9, letterSpacing: '-0.01em',
+          marginBottom: '32px',
+        }}>
+          ESSERE IL<br />
+          <span style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', color: 'var(--accent)' }}>
+            punto
+          </span><br />
+          DI SVOLTA
+        </h2>
+        <p style={{
+          fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.8,
+          color: 'rgba(240,237,230,0.6)', maxWidth: '420px',
+        }}>
+          Diventare il partner di riferimento per i brand che vogliono dominare
+          il proprio mercato attraverso la sinergia tra strategia, tecnologia e creatività.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  {/* Striscia animata in fondo */}
+  <div style={{
+    borderTop: '1px solid var(--border)',
+    padding: '20px clamp(24px,5vw,40px)',
+    display: 'flex', alignItems: 'center', gap: '40px',
+    overflow: 'hidden',
+  }}>
+    {['Strategia', 'Tecnologia', 'Creatività', 'Performance', 'Crescita', 'Innovazione', 'Risultati', 'Visione'].map((word, i) => (
+      <span key={i} style={{
+        fontFamily: 'var(--font-bebas)',
+        fontSize: '13px', letterSpacing: '0.2em',
+        textTransform: 'uppercase',
+        color: i % 2 === 0 ? 'var(--accent)' : 'var(--muted)',
+        whiteSpace: 'nowrap',
+        flexShrink: 0,
+      }}>
+        {word} {i < 7 && <span style={{ marginLeft: '40px', color: 'var(--border)' }}>·</span>}
+      </span>
+    ))}
+  </div>
+
+</section>
 
         {/* Valori */}
         <section style={{ padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
