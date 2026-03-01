@@ -6,10 +6,10 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 
 const team = [
-  { name: 'Mario Rossi', role: 'Founder & Creative Director' },
-  { name: 'Laura Bianchi', role: 'Head of Technology' },
-  { name: 'Giorgio Verdi', role: 'Performance Marketing Lead' },
-  { name: 'Sofia Neri', role: 'UX/UI Designer' },
+  { name: 'Raffaele Antonio Piccolo', role: 'Founder & CEO Creative Director' },
+  { name: 'Raffaela Sparaco', role: 'Graphic Design & Creative Director ' },
+  { name: 'Bernis Del Villano', role: 'Social Media Manager & Art Director' },
+  { name: 'Manuela Del Villano', role: 'Content Creator' },
 ]
 
 const values = [
