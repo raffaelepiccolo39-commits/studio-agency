@@ -101,8 +101,14 @@ Lavoriamo per generare valore nel tempo."
           fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.8,
           color: 'rgba(240,237,230,0.6)', maxWidth: '420px',
         }}>
-          Affiancare imprenditori e brand nella costruzione di ecosistemi digitali
-          che generano crescita misurabile, sostenibile e duratura nel tempo.
+          Progettiamo sistemi digitali che lavorano per il business dei nostri clienti.
+          Ogni strategia, ogni riga di codice, ogni campagna nasce da un’analisi concreta e da obiettivi misurabili.
+          Non costruiamo progetti fine a sé stessi: sviluppiamo asset capaci di produrre crescita reale.
+
+          Affianchiamo imprenditori e professionisti con metodo, responsabilità e visione imprenditoriale, trasformando l’investimento digitale in una leva strutturata di sviluppo.
+
+          Perché il digitale non deve occupare spazio.
+          Deve generare risultati.
         </p>
       </div>
     </div>
@@ -146,8 +152,13 @@ Lavoriamo per generare valore nel tempo."
           fontSize: 'clamp(15px,1.6vw,18px)', lineHeight: 1.8,
           color: 'rgba(240,237,230,0.6)', maxWidth: '420px',
         }}>
-          Diventare il partner di riferimento per i brand che vogliono dominare
-          il proprio mercato attraverso la sinergia tra strategia, tecnologia e creatività.
+          Vogliamo diventare il punto di riferimento per gli imprenditori che cercano un partner capace di coniugare strategia, tecnologia e crescita misurabile.
+
+          Crediamo in un digitale che non sia semplice presenza, ma infrastruttura solida, strutturata e progettata per sostenere l’evoluzione di un’impresa nel tempo.
+
+          Immaginiamo aziende che non inseguono il mercato, ma lo guidano.
+          E lo fanno attraverso sistemi digitali pensati per generare valore, opportunità e vantaggio competitivo.
+          
         </p>
       </div>
     </div>
