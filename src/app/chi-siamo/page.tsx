@@ -34,7 +34,13 @@ export default function ChiSiamoPage() {
           title="il partner "
           titleAccent="per la crescita"
           titleAfter="della tua azienda."
-          subtitle="Dal 2018 affianchiamo imprenditori e professionisti nella costruzione di ecosistemi digitali solidi, misurabili e scalabili. Non realizziamo semplici strategie. Costruiamo strumenti di business."
+          subtitle="Pira Web nasce da una visione imprenditoriale precisa:
+portare rigore, metodo e responsabilità nel digitale.
+
+Ogni progetto è affrontato con approccio analitico, controllo operativo e orientamento alla performance.
+
+Non lavoriamo per consegnare.
+Lavoriamo per generare valore nel tempo."
         />
 
         {/* Manifesto */}
