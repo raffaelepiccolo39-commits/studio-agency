@@ -27,10 +27,10 @@ export default function ChiSiamoPage() {
       <main>
 
         <PageHeader
-          tag="La nostra storia"
-          title="Progettiamo"
-          titleAccent="infrastrutture digitali"
-          titleAfter="che generano crescita."
+          tag="CHI SIAMO"
+          title="Il partner di riferimento "
+          titleAccent="per la crescita"
+          titleAfter="della tua azienda."
           subtitle="Dal 2018 affianchiamo imprenditori e professionisti nella costruzione di ecosistemi digitali solidi, misurabili e scalabili.
                     Non realizziamo semplici strategie. Costruiamo strumenti di business."
         />
