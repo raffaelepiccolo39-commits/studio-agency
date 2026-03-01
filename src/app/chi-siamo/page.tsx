@@ -42,18 +42,6 @@ Ogni progetto è affrontato con approccio analitico, controllo operativo e orien
 Non lavoriamo per consegnare.
 Lavoriamo per generare valore nel tempo."
         />
-
-        {/* Manifesto */}
-        <section style={{ padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
-          <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-            <p style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', fontSize: 'clamp(22px,3vw,38px)', lineHeight: 1.5 }}>
-              &ldquo;Il mercato non ha bisogno di un altro sito web. Ha bisogno di esperienze che lasciano il segno.&rdquo;
-            </p>
-            <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: '24px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-              — Raffaele Antonio Piccolo, Founder
-            </p>
-          </div>
-        </section>
 {/* Mission & Vision */}
 <section style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--border)' }}>
 
