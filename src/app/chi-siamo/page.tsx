@@ -28,10 +28,11 @@ export default function ChiSiamoPage() {
 
         <PageHeader
           tag="La nostra storia"
-          title="UN TEAM"
-          titleAccent="visionario"
-          titleAfter="A MILANO"
-          subtitle="Siamo nati nel 2024 con un'idea semplice: fare meno cose, ma farle benissimo."
+          title="Progettiamo"
+          titleAccent="infrastrutture digitali"
+          titleAfter="che generano crescita."
+          subtitle="Dal 2018 affianchiamo imprenditori e professionisti nella costruzione di ecosistemi digitali solidi, misurabili e scalabili.
+                    Non realizziamo semplici strategie. Costruiamo strumenti di business."
         />
 
         {/* Manifesto */}
