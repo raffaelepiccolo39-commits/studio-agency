@@ -14,10 +14,10 @@ const team = [
 ]
 
 const values = [
-  { id: 'a', title: 'Autenticità', desc: 'Non costruiamo siti. Costruiamo identità digitali che rispecchiano davvero l\'anima del brand.' },
-  { id: 'b', title: 'Qualità senza compromessi', desc: 'Ogni pixel, ogni riga di codice, ogni campagna passa per un processo di revisione rigoroso.' },
-  { id: 'c', title: 'Partnership reale', desc: 'Siamo un\'estensione del tuo team, non un fornitore esterno. I tuoi obiettivi sono i nostri obiettivi.' },
-  { id: 'd', title: 'Innovazione continua', desc: 'Sperimentiamo, testiamo, iteriamo. Il digitale cambia ogni giorno e noi siamo sempre un passo avanti.' },
+  { id: 'a', title: 'Autenticità', desc: 'Non seguiamo formule preconfezionate. Ogni progetto nasce da un’analisi reale del brand, del mercato e degli obiettivi di businessPer noi autenticità significa costruire identità digitali coerenti, credibili e strategiche. Non imitare. Non replicare. Ma progettare soluzioni che rappresentino davvero l’azienda che le utilizza.' },
+  { id: 'b', title: 'SCALABILITÀ', desc: 'Progettiamo sistemi che possano crescere. Oggi funzionano. Domani evolvono. Non costruiamo per l\’immediato. Costruiamo per il futuro.' },
+  { id: 'c', title: 'PERFORMANCE', desc: 'Per noi la performance non è un dato da mostrare. È una responsabilità. Misuriamo, analizziamo, ottimizziamo. Ogni azione è finalizzata a migliorare i numeri del tuo business.' },
+  { id: 'd', title: 'Visione', desc: 'Non pensiamo da agenzia.Pensiamo da imprenditori. Valutiamo sostenibilità, marginalità, scalabilità. Perché il digitale non è comunicazione fine a sé stessa. È struttura economica.' },
 ]
 
 export default function ChiSiamoPage() {
