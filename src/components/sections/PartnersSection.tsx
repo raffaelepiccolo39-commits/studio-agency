@@ -1,14 +1,13 @@
 'use client'
 
 const partners = [
-  { name: 'Partner 1', logo: '/partners/partner1.png' },
-  { name: 'Partner 2', logo: '/partners/partner2.png' },
-  { name: 'Partner 3', logo: '/partners/partner3.png' },
-  { name: 'Partner 4', logo: '/partners/partner4.png' },
-  { name: 'Partner 5', logo: '/partners/partner5.png' },
-  { name: 'Partner 6', logo: '/partners/partner6.png' },
-  { name: 'Partner 7', logo: '/partners/partner7.png' },
-  { name: 'Partner 8', logo: '/partners/partner8.png' },
+  { name: 'Google', logo: '/partners/google.png' },
+  { name: 'Trustpilot', logo: '/partners/trustpilot.png' },
+  { name: 'Meta', logo: '/partners/meta.png' },
+  { name: 'Spoki', logo: '/partners/spoki.png' },
+  { name: 'Klaviyo', logo: '/partners/klavyo.png' },
+  { name: 'Shopify', logo: '/partners/shopify.png' },
+  { name: 'TikTok', logo: '/partners/tiktok.png' },
 ]
 
 export default function PartnersSection() {
@@ -29,24 +28,26 @@ export default function PartnersSection() {
       </p>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
         gap: '2px',
       }}>
         {partners.map((p, i) => (
           <div key={i} style={{
-            padding: '40px 32px',
+            padding: '32px 24px',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'var(--surface)', minHeight: '120px',
+            background: 'var(--surface)', minHeight: '100px',
           }}>
             <img
               src={p.logo}
               alt={p.name}
               style={{
-                maxHeight: '48px', maxWidth: '140px',
+                maxHeight: '40px', maxWidth: '120px',
                 width: 'auto', objectFit: 'contain',
-                filter: 'grayscale(100%) brightness(0.5)',
+                filter: 'grayscale(100%) brightness(0.6)',
                 transition: 'filter 0.3s ease',
               }}
+              onMouseEnter={e => (e.currentTarget.style.filter = 'grayscale(0%) brightness(1)')}
+              onMouseLeave={e => (e.currentTarget.style.filter = 'grayscale(100%) brightness(0.6)')}
             />
           </div>
         ))}
