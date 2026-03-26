@@ -5,6 +5,20 @@ import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Cosa Facciamo — Pira Web Creative Agency',
+  description: 'Branding, sviluppo web, e-commerce, social media e performance marketing. Tutti i servizi di Pira Web Creative Agency.',
+  openGraph: {
+    title: 'Cosa Facciamo — Pira Web Creative Agency',
+    description: 'Branding, sviluppo web, e-commerce, social media e performance marketing.',
+    url: 'https://www.piraweb.it/cosa-facciamo',
+    images: [{ url: 'https://www.piraweb.it/og-image.jpg', width: 1200, height: 630 }],
+  },
+  alternates: { canonical: 'https://www.piraweb.it/cosa-facciamo' },
+}
+
 const services = [
   {
     id: 'a', title: 'Brand Direction', color: '#c8f55a',
