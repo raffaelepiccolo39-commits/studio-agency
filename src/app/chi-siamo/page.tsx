@@ -6,6 +6,20 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import { useState } from 'react'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Chi Siamo — Pira Web Creative Agency',
+  description: 'Dal 2018 affianchiamo imprenditori nella costruzione di ecosistemi digitali. Scopri il team e la nostra visione.',
+  openGraph: {
+    title: 'Chi Siamo — Pira Web Creative Agency',
+    description: 'Dal 2018 affianchiamo imprenditori nella costruzione di ecosistemi digitali.',
+    url: 'https://www.piraweb.it/chi-siamo',
+    images: [{ url: 'https://www.piraweb.it/og-image.jpg', width: 1200, height: 630 }],
+  },
+  alternates: { canonical: 'https://www.piraweb.it/chi-siamo' },
+}
+
 const team = [
   { name: 'Raffaele Antonio Piccolo', role: 'Founder & CEO Creative Director', photo: '/team/raffaele.jpg' },
   { name: 'Raffaela Sparaco', role: 'Graphic Design & Creative Director', photo: '/team/raffaela.jpg' },

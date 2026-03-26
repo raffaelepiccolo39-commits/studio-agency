@@ -6,6 +6,21 @@ import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Contatti — Pira Web Creative Agency',
+  description: 'Contatta Pira Web Creative Agency. Siamo a Caserta e Napoli. Richiedi una consulenza gratuita per il tuo progetto digitale.',
+  openGraph: {
+    title: 'Contatti — Pira Web Creative Agency',
+    description: 'Richiedi una consulenza gratuita per il tuo progetto digitale.',
+    url: 'https://www.piraweb.it/contatti',
+    images: [{ url: 'https://www.piraweb.it/og-image.jpg', width: 1200, height: 630 }],
+  },
+  alternates: { canonical: 'https://www.piraweb.it/contatti' },
+}
+
+
 const services = ['Brand Identity', 'Web site development', 'E-commerce Development', 'Performance Marketing', 'Gestione Social Media', 'Creazione dei contenuti']
 const budgets = ['Meno di 5.000€', '5.000€ – 15.000€', '15.000€ – 30.000€', 'Oltre 30.000€', 'Da definire']
 
