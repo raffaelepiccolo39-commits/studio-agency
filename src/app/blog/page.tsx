@@ -6,21 +6,6 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
 
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Blog — Pira Web Creative Agency',
-  description: 'Insights su design, tecnologia e marketing digitale dal team Pira Web. Articoli su e-commerce, SEO, branding e molto altro.',
-  openGraph: {
-    title: 'Blog — Pira Web Creative Agency',
-    description: 'Insights su design, tecnologia e marketing digitale dal team Pira Web.',
-    url: 'https://www.piraweb.it/blog',
-    images: [{ url: 'https://www.piraweb.it/og-image.jpg', width: 1200, height: 630 }],
-  },
-  alternates: { canonical: 'https://www.piraweb.it/blog' },
-}
-
-
 const posts = [
   { slug: 'futuro-ecommerce-2025', title: 'Il futuro dell\'e-commerce nel 2025', excerpt: 'AI, headless commerce e personalizzazione estrema: le tendenze che stanno ridisegnando il commercio digitale.', date: '20 Feb 2025', category: 'E-commerce', readTime: '7 min', featured: true },
   { slug: 'shopify-vs-custom', title: 'Shopify Plus o sviluppo custom?', excerpt: 'Una guida pratica per capire quando ha senso usare Shopify Plus e quando conviene costruire qualcosa di custom.', date: '14 Feb 2025', category: 'Tech', readTime: '5 min', featured: false },

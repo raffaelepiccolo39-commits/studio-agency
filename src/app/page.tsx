@@ -14,13 +14,13 @@ import type { Metadata } from 'next'
 export const metadata: Metadata = {
   title: 'Pira Web Creative Agency — Agenzia Digitale Caserta Napoli',
   description: 'Agenzia digitale che unisce brand direction, sviluppo web e performance marketing. Costruiamo ecosistemi digitali per brand visionari.',
-  keywords: 'agenzia digitale, web agency, Caserta, Napoli, Shopify, e-commerce, branding, marketing',
+  keywords: ['agenzia digitale', 'web agency', 'Caserta', 'Napoli', 'Shopify', 'e-commerce', 'branding', 'marketing digitale'],
   openGraph: {
     title: 'Pira Web Creative Agency',
     description: 'Brand direction, tecnologia e performance marketing per brand visionari.',
     url: 'https://www.piraweb.it',
     siteName: 'Pira Web Creative Agency',
-    images: [{ url: 'https://www.piraweb.it/og-image.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.piraweb.it/og-image.jpg', width: 1200, height: 630, alt: 'Pira Web Creative Agency — Agenzia Digitale' }],
     type: 'website',
     locale: 'it_IT',
   },
