@@ -44,9 +44,6 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
               <span style={{ fontSize: '11px', padding: '4px 12px', border: `1px solid ${project.accent}`, color: project.accent, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                 {project.platform}
               </span>
-              <span style={{ fontSize: '11px', padding: '4px 12px', border: '1px solid var(--border)', color: 'var(--muted)', letterSpacing: '0.1em' }}>
-                {project.year}
-              </span>
             </div>
             <h1 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(48px,8vw,120px)', letterSpacing: '0.02em', lineHeight: 1, marginBottom: '24px' }}>
               {project.title.toUpperCase()}

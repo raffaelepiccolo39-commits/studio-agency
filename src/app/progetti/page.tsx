@@ -37,7 +37,7 @@ export default function ProgettiPage() {
                 <div className="project-info" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '32px', background: 'linear-gradient(to top,rgba(10,10,10,0.95) 0%,transparent 100%)', transform: 'translateY(4px)', transition: 'transform 0.4s ease' }}>
                   <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '16px' }}>
                     <div>
-                      <p style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: p.accent, marginBottom: '6px' }}>{p.platform} · {p.year}</p>
+                      <p style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: p.accent, marginBottom: '6px' }}>{p.platform}</p>
                       <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: i === 0 ? 'clamp(36px,5vw,64px)' : 'clamp(28px,3vw,44px)', letterSpacing: '0.02em', color: 'var(--text)' }}>{p.title.toUpperCase()}</h3>
                       <p style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '6px' }}>{p.services.join(' · ')}</p>
                     </div>
