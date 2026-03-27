@@ -97,8 +97,14 @@ export default function ContattiPage() {
             <div style={{ marginBottom: '48px' }}>
               <p style={labelStyle}>Telefono</p>
               <a href="tel:+3908117560017" style={{ fontFamily: 'var(--font-bebas)', fontSize: '22px', letterSpacing: '0.03em', color: '#f0ede6', textDecoration: 'none' }}>
-                +39 081 175 60017<br />+39 351 721 4074
+                +39 081 175 60017<br />+39 331 853 5698<br />+39 351 721 4074
               </a>
+            </div>
+            <div style={{ marginBottom: '48px' }}>
+              <p style={labelStyle}>P.IVA</p>
+              <p style={{ fontFamily: 'var(--font-bebas)', fontSize: '18px', letterSpacing: '0.05em', color: 'rgba(240,237,230,0.5)' }}>
+                04891370613
+              </p>
             </div>
             <div>
               <p style={labelStyle}>Social</p>

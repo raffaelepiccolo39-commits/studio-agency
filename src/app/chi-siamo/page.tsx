@@ -7,17 +7,17 @@ import Cursor from '@/components/ui/Cursor'
 import { useState } from 'react'
 
 const team = [
-  { name: 'Raffaele Antonio Piccolo', role: 'Founder & CEO Creative Director', photo: '/team/raffaele.jpg' },
-  { name: 'Raffaela Sparaco', role: 'Graphic Design & Creative Director', photo: '/team/raffaela.jpg' },
-  { name: 'Bernis Del Villano', role: 'Social Media Manager & Art Director', photo: '/team/bernis.jpg' },
-  { name: 'Manuela Del Villano', role: 'Content Creator', photo: '/team/manuela.jpg' },
+  { name: 'Raffaele Antonio Piccolo', role: 'Founder & CEO', bio: 'Ingegnere di formazione, imprenditore per vocazione. Raffaele ha fondato Pira Web nel 2018 con una visione precisa: portare rigore tecnico e mentalità imprenditoriale nel mondo del digitale. Coordina strategia, tecnologia e crescita di ogni progetto.', photo: '/team/raffaele.jpg' },
+  { name: 'Raffaela Sparaco', role: 'Graphic Design & Creative Director', bio: 'Mente creativa dietro ogni identità visiva che usciamo. Raffaela trasforma brief strategici in linguaggi grafici coerenti, riconoscibili e capaci di posizionare un brand nella mente del suo pubblico.', photo: '/team/raffaela.jpg' },
+  { name: 'Bernis Del Villano', role: 'Social Media Manager & Art Director', bio: 'Gestisce la presenza social dei nostri clienti con metodo e creatività. Bernis costruisce piani editoriali, cura la comunicazione visiva sui canali digitali e trasforma ogni profilo in uno strumento di crescita.', photo: '/team/bernis.jpg' },
+  { name: 'Manuela Del Villano', role: 'Content Creator', bio: 'Produce contenuti che raccontano, coinvolgono e convertono. Manuela si occupa della creazione di contenuti testuali e visivi su misura per ogni brand, mantenendo tono di voce e identità sempre riconoscibili.', photo: '/team/manuela.jpg' },
 ]
 
 const values = [
-  { id: 'a', title: 'Autenticità', desc: 'Non seguiamo formule preconfezionate. Ogni progetto nasce da un’analisi reale del brand, del mercato e degli obiettivi di businessPer noi autenticità significa costruire identità digitali coerenti, credibili e strategiche. Non imitare. Non replicare. Ma progettare soluzioni che rappresentino davvero l’azienda che le utilizza.' },
-  { id: 'b', title: 'SCALABILITÀ', desc: 'Progettiamo sistemi che possano crescere. Oggi funzionano. Domani evolvono. Non costruiamo per l\’immediato. Costruiamo per il futuro.' },
-  { id: 'c', title: 'PERFORMANCE', desc: 'Per noi la performance non è un dato da mostrare. È una responsabilità. Misuriamo, analizziamo, ottimizziamo. Ogni azione è finalizzata a migliorare i numeri del tuo business.' },
-  { id: 'd', title: 'Visione', desc: 'Non pensiamo da agenzia.Pensiamo da imprenditori. Valutiamo sostenibilità, marginalità, scalabilità. Perché il digitale non è comunicazione fine a sé stessa. È struttura economica.' },
+  { id: 'a', title: 'Autenticità', desc: 'Non seguiamo formule preconfezionate. Ogni progetto nasce da un\'analisi reale del brand, del mercato e degli obiettivi di business. Per noi autenticità significa costruire identità digitali coerenti, credibili e strategiche. Non imitare. Non replicare. Progettare soluzioni che rappresentino davvero l\'azienda che le utilizza.' },
+  { id: 'b', title: 'Scalabilità', desc: 'Progettiamo sistemi che possano crescere. Oggi funzionano. Domani evolvono. Non costruiamo per l\'immediato: costruiamo infrastrutture digitali pensate per accompagnare la crescita del business nel tempo, senza dover ripartire da zero.' },
+  { id: 'c', title: 'Performance', desc: 'Per noi la performance non è un dato da mostrare nelle presentazioni. È una responsabilità quotidiana. Misuriamo, analizziamo, ottimizziamo. Ogni azione è finalizzata a migliorare i numeri reali del tuo business.' },
+  { id: 'd', title: 'Visione', desc: 'Non pensiamo da agenzia. Pensiamo da imprenditori. Valutiamo sostenibilità, marginalità, scalabilità. Perché il digitale non è comunicazione fine a sé stessa: è struttura economica, e come tale va costruito.' },
 ]
 
 export default function ChiSiamoPage() {
@@ -34,10 +34,9 @@ export default function ChiSiamoPage() {
           title="il partner "
           titleAccent="per la crescita"
           titleAfter="della tua azienda."
-          subtitle="Pira Web nasce da una visione imprenditoriale precisa:
-portare rigore, metodo e responsabilità nel digitale.
+          subtitle="Pira Web nasce nel 2018 dalla visione di Raffaele, ingegnere con una convinzione precisa: il digitale doveva smettere di essere decorazione e diventare infrastruttura.
 
-Ogni progetto è affrontato con approccio analitico, controllo operativo e orientamento alla performance.
+Da allora affianchiamo imprenditori e brand con metodo, rigore e orientamento ai risultati.
 
 Non lavoriamo per consegnare.
 Lavoriamo per generare valore nel tempo."
@@ -90,10 +89,10 @@ Lavoriamo per generare valore nel tempo."
           color: 'rgba(240,237,230,0.6)', maxWidth: '420px',
         }}>
           Progettiamo sistemi digitali che lavorano per il business dei nostri clienti.
-          Ogni strategia, ogni riga di codice, ogni campagna nasce da un’analisi concreta e da obiettivi misurabili.
+          Ogni strategia, ogni riga di codice, ogni campagna nasce da un'analisi concreta e da obiettivi misurabili.
           Non costruiamo progetti fine a sé stessi: sviluppiamo asset capaci di produrre crescita reale.
 
-          Affianchiamo imprenditori e professionisti con metodo, responsabilità e visione imprenditoriale, trasformando l’investimento digitale in una leva strutturata di sviluppo.
+          Affianchiamo imprenditori e professionisti con metodo, responsabilità e visione imprenditoriale, trasformando l'investimento digitale in una leva strutturata di sviluppo.
 
           Perché il digitale non deve occupare spazio.
           Deve generare risultati.
@@ -142,7 +141,7 @@ Lavoriamo per generare valore nel tempo."
         }}>
           Vogliamo diventare il punto di riferimento per gli imprenditori che cercano un partner capace di coniugare strategia, tecnologia e crescita misurabile.
 
-          Crediamo in un digitale che non sia semplice presenza, ma infrastruttura solida, strutturata e progettata per sostenere l’evoluzione di un’impresa nel tempo.
+          Crediamo in un digitale che non sia semplice presenza, ma infrastruttura solida, strutturata e progettata per sostenere l'evoluzione di un'impresa nel tempo.
 
           Immaginiamo aziende che non inseguono il mercato, ma lo guidano.
           E lo fanno attraverso sistemi digitali pensati per generare valore, opportunità e vantaggio competitivo.
@@ -289,12 +288,19 @@ Lavoriamo per generare valore nel tempo."
                   ({String(i + 1).padStart(2, '0')})
                 </span>
 
-                <p style={{
-                  fontSize: '13px', color: 'var(--muted)',
-                  letterSpacing: '0.05em', textAlign: 'right',
-                }}>
-                  {member.role}
-                </p>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ fontSize: '13px', color: 'var(--muted)', letterSpacing: '0.05em' }}>
+                    {member.role}
+                  </p>
+                  <p style={{
+                    fontSize: '12px', color: 'rgba(240,237,230,0.4)', marginTop: '6px',
+                    maxWidth: '320px', lineHeight: 1.6,
+                    opacity: hoveredMember === i ? 1 : 0,
+                    transition: 'opacity 0.3s',
+                  }}>
+                    {member.bio}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
@@ -304,10 +310,10 @@ Lavoriamo per generare valore nel tempo."
         <section style={{ padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '1px', background: 'var(--border)' }}>
             {[
-              { num: '40+', label: 'Progetti realizzati' },
-              { num: '98%', label: 'Clienti soddisfatti' },
-              { num: '3x', label: 'ROI medio' },
-              { num: '∞', label: 'Passione per il digitale' },
+              { num: '2018', label: 'Anno di fondazione' },
+              { num: '7+', label: 'Anni di esperienza' },
+              { num: '50+', label: 'Clienti seguiti' },
+              { num: '100+', label: 'Progetti realizzati' },
             ].map(s => (
               <div key={s.label} style={{ background: 'var(--bg)', padding: '48px 40px', textAlign: 'center' }}>
                 <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(56px,8vw,100px)', lineHeight: 1, color: 'var(--accent)' }}>{s.num}</div>
