@@ -26,31 +26,47 @@ export default function PartnersSection() {
         I nostri partner
         <span style={{ display: 'inline-block', width: '40px', height: '1px', background: 'var(--border)' }} />
       </p>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-        gap: '2px',
-      }}>
-        {partners.map((p, i) => (
-          <div key={i} style={{
-            padding: '32px 24px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: '#ffffff', minHeight: '100px',
-          }}>
-            <img
-              src={p.logo}
-              alt={p.name}
-              style={{
-                maxHeight: '40px', maxWidth: '120px',
-                width: 'auto', objectFit: 'contain',
-                filter: 'grayscale(100%) opacity(0.6)',
-                transition: 'filter 0.3s ease',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.filter = 'grayscale(0%) opacity(1)')}
-              onMouseLeave={e => (e.currentTarget.style.filter = 'grayscale(100%) opacity(0.6)')}
-            />
-          </div>
-        ))}
+      <div style={{ overflow: 'hidden', position: 'relative' }}>
+        {/* Fade bordi */}
+        <div style={{
+          position: 'absolute', left: 0, top: 0, bottom: 0, width: '80px', zIndex: 2,
+          background: 'linear-gradient(to right, var(--bg), transparent)',
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute', right: 0, top: 0, bottom: 0, width: '80px', zIndex: 2,
+          background: 'linear-gradient(to left, var(--bg), transparent)',
+          pointerEvents: 'none',
+        }} />
+
+        <div style={{
+          display: 'flex',
+          animation: 'marquee 28s linear infinite',
+          width: 'max-content',
+        }}>
+          {[...partners, ...partners].map((p, i) => (
+            <div key={i} style={{
+              padding: '20px 32px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: '#ffffff',
+              marginRight: '2px',
+              minWidth: '160px', height: '88px', flexShrink: 0,
+            }}>
+              <img
+                src={p.logo}
+                alt={p.name}
+                style={{
+                  maxHeight: '36px', maxWidth: '110px',
+                  width: 'auto', objectFit: 'contain',
+                  filter: 'grayscale(100%) opacity(0.55)',
+                  transition: 'filter 0.3s ease',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.filter = 'grayscale(0%) opacity(1)')}
+                onMouseLeave={e => (e.currentTarget.style.filter = 'grayscale(100%) opacity(0.55)')}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
