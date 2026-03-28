@@ -145,3 +145,91 @@ body {
 /* Value cards */
 .value-card { transition: background 0.3s; }
 .value-card:hover { background: #161616 !important; }
+
+/* ─── RESPONSIVE ─── */
+
+/* Disabilita cursor custom su touch device */
+@media (hover: none) and (pointer: coarse) {
+  body { cursor: auto !important; }
+  .cursor, .cursor-ring { display: none !important; }
+  * { cursor: auto !important; }
+}
+
+/* Footer grid */
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px;
+  padding: 64px 40px 40px;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+}
+@media (max-width: 480px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; padding: 40px 24px 32px; }
+}
+
+/* Footer logo */
+.footer-logo { height: 96px; width: auto; }
+@media (max-width: 640px) { .footer-logo { height: 56px; } }
+
+/* Mission/Vision 2 colonne → 1 colonna su mobile */
+.mission-vision-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 60vh;
+}
+@media (max-width: 768px) {
+  .mission-vision-grid { grid-template-columns: 1fr; min-height: unset; }
+  .mission-vision-grid > div:first-child { border-right: none !important; border-bottom: 1px solid var(--border); }
+}
+
+/* Projects homepage grid */
+.projects-home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+@media (max-width: 640px) {
+  .projects-home-grid { grid-template-columns: 1fr; }
+  .projects-home-grid a[style*="1 / -1"] { grid-column: 1 !important; aspect-ratio: 4/3 !important; }
+}
+
+/* Service row: nascondi numero su mobile, adatta griglia */
+.service-row-inner {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .service-row-inner { grid-template-columns: 1fr auto; gap: 16px; }
+  .service-row-id { display: none; }
+}
+
+/* Team bio: sempre visibile su mobile */
+@media (hover: none) and (pointer: coarse) {
+  .team-bio { opacity: 1 !important; }
+  .service-expand { max-height: 500px !important; }
+}
+
+/* Griglia valori: 2 col su tablet, 1 su mobile */
+@media (max-width: 500px) {
+  .values-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Contatti sidebar + form: stack su mobile */
+@media (max-width: 640px) {
+  .contatti-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+}
+
+/* Progetti page: card min-width ridotto su mobile */
+@media (max-width: 400px) {
+  .progetti-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Padding globale sezioni su mobile */
+@media (max-width: 480px) {
+  .page-section-padding { padding: 48px 20px !important; }
+}

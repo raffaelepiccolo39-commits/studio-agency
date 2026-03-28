@@ -4,14 +4,7 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer style={{
-      borderTop: '1px solid var(--border)',
-      padding: '64px 40px 40px',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(4, 1fr)',
-
-      gap: '48px',
-    }}>
+    <footer className="footer-grid">
 
       {/* (a.) CONTACT */}
       <div>
@@ -105,7 +98,7 @@ export default function Footer() {
         flexWrap: 'wrap',
         gap: '16px',
       }}>
-        <img src="/logo.png" alt="Pira Web" style={{ height: '128px', width: 'auto' }} />
+        <img src="/logo.png" alt="Pira Web" className="footer-logo" />
         <p style={{ fontSize: '11px', color: 'var(--muted)', letterSpacing: '0.08em' }}>
           ©{year} Pira Web Creative Agency — Tutti i diritti riservati
         </p>

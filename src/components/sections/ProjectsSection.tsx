@@ -33,7 +33,7 @@ export default function ProjectsSection({ projects }: { projects: SanityProject[
       <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '64px', display: 'flex', alignItems: 'center', gap: '16px' }}>
         <span style={{ display: 'inline-block', width: '32px', height: '1px', background: 'var(--muted)' }} />Progetti Recenti
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: '2px' }}>
+      <div className="projects-home-grid">
         {data.map((project, i) => <ProjectCard key={project._id} project={project} featured={i === 0} />)}
       </div>
       <div style={{ marginTop: '48px', textAlign: 'center' }}>

@@ -72,7 +72,7 @@ export default function ContattiPage() {
           subtitle="Compila il form oppure scrivici direttamente. Rispondiamo entro 24 ore."
         />
 
-        <section style={{
+        <section className="contatti-grid" style={{
           padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))',

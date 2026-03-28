@@ -22,7 +22,7 @@ export default function ProgettiPage() {
         />
 
         <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(340px,1fr))', gap: '2px' }}>
+          <div className="progetti-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '2px' }}>
             {projects.map((p, i) => (
               <Link key={p.slug} href={`/progetti/${p.slug}`} className="project-card" style={{
                 position: 'relative', overflow: 'hidden', display: 'block',

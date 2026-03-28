@@ -45,10 +45,7 @@ Lavoriamo per generare valore nel tempo."
 <section style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--border)' }}>
 
   {/* Mission */}
-  <div style={{
-    display: 'grid', gridTemplateColumns: '1fr 1fr',
-    minHeight: '60vh',
-  }}>
+  <div className="mission-vision-grid">
     <div style={{
       padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)',
       borderRight: '1px solid var(--border)',
@@ -180,7 +177,7 @@ Lavoriamo per generare valore nel tempo."
             <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--muted)' }} />
             I nostri valori
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: '2px' }}>
+          <div className="values-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: '2px' }}>
             {values.map(v => (
               <div key={v.id} className="card-hover" style={{ background: 'var(--surface)', padding: '48px 40px', borderLeft: '1px solid var(--border)' }}>
                 <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '13px', color: 'var(--accent)', letterSpacing: '0.15em', display: 'block', marginBottom: '20px' }}>({v.id}.)</span>
@@ -292,7 +289,7 @@ Lavoriamo per generare valore nel tempo."
                   <p style={{ fontSize: '13px', color: 'var(--muted)', letterSpacing: '0.05em' }}>
                     {member.role}
                   </p>
-                  <p style={{
+                  <p className="team-bio" style={{
                     fontSize: '12px', color: 'rgba(240,237,230,0.4)', marginTop: '6px',
                     maxWidth: '320px', lineHeight: 1.6,
                     opacity: hoveredMember === i ? 1 : 0,
