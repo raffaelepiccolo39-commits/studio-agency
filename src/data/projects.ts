@@ -74,7 +74,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'contex-biancheria',
-    title: 'Con.tex',
+    title: 'Con.tex Biancheria',
     platform: 'E-commerce',
     services: ['Sito Web', 'E-commerce', 'Social Media'],
     color: '#0a0f1a',
