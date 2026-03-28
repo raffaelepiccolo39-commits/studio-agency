@@ -35,7 +35,7 @@ export default function PartnersSection() {
           <div key={i} style={{
             padding: '32px 24px',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: 'var(--surface)', minHeight: '100px',
+            background: '#ffffff', minHeight: '100px',
           }}>
             <img
               src={p.logo}
@@ -43,11 +43,11 @@ export default function PartnersSection() {
               style={{
                 maxHeight: '40px', maxWidth: '120px',
                 width: 'auto', objectFit: 'contain',
-                filter: 'grayscale(100%) brightness(0.6)',
+                filter: 'grayscale(100%) opacity(0.6)',
                 transition: 'filter 0.3s ease',
               }}
-              onMouseEnter={e => (e.currentTarget.style.filter = 'grayscale(0%) brightness(1)')}
-              onMouseLeave={e => (e.currentTarget.style.filter = 'grayscale(100%) brightness(0.6)')}
+              onMouseEnter={e => (e.currentTarget.style.filter = 'grayscale(0%) opacity(1)')}
+              onMouseLeave={e => (e.currentTarget.style.filter = 'grayscale(100%) opacity(0.6)')}
             />
           </div>
         ))}

@@ -125,16 +125,18 @@ function ServiceRow({ service, index }: { service: typeof services[0]; index: nu
         </div>
       </div>
 
-      {/* Freccia */}
+      {/* Indicatore + / × */}
       <span style={{
-        fontSize: '20px',
+        fontSize: '22px',
+        fontWeight: 300,
+        lineHeight: 1,
         color: active ? 'var(--accent)' : 'var(--muted)',
         transition: 'transform 0.4s ease, color 0.3s',
-        transform: active ? 'rotate(-45deg)' : 'none',
+        transform: active ? 'rotate(45deg)' : 'rotate(0deg)',
         display: 'block',
-        paddingTop: '8px',
+        paddingTop: '6px',
       }}>
-        ↗
+        +
       </span>
     </div>
   )
