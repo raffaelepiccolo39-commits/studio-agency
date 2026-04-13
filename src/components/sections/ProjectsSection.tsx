@@ -1,15 +1,21 @@
+'use client'
+
 import Link from 'next/link'
+import { useInView } from 'react-intersection-observer'
 import { projects } from '@/data/projects'
 
 const featured = projects.filter(p => p.immagini.length > 0).slice(0, 3)
 
 export default function ProjectsSection() {
+  const { ref: headerRef, inView: headerInView } = useInView({ threshold: 0.1, triggerOnce: true })
+  const { ref: gridRef, inView: gridInView } = useInView({ threshold: 0.1, triggerOnce: true })
+
   return (
     <section id="projects" style={{ padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)' }}>
-      <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '64px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+      <p ref={headerRef} style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '64px', display: 'flex', alignItems: 'center', gap: '16px', opacity: headerInView ? 1 : 0, transform: headerInView ? 'translateY(0)' : 'translateY(32px)', transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)' }}>
         <span style={{ display: 'inline-block', width: '32px', height: '1px', background: 'var(--muted)' }} />Progetti Recenti
       </p>
-      <div className="projects-home-grid">
+      <div ref={gridRef} className="projects-home-grid">
         {featured.map((p, i) => (
           <Link key={p.slug} href={`/progetti/${p.slug}`} className="project-card" style={{
             position: 'relative', overflow: 'hidden', display: 'block',
@@ -17,6 +23,9 @@ export default function ProjectsSection() {
             background: p.color,
             gridColumn: i === 0 ? '1 / -1' : undefined,
             textDecoration: 'none',
+            opacity: gridInView ? 1 : 0,
+            transform: gridInView ? 'translateY(0)' : 'translateY(32px)',
+            transition: `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s`,
           }}>
             <div style={{ width: '100%', height: '100%', background: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
               <svg width="100%" height="100%" style={{ position: 'absolute', inset: 0, opacity: 0.5 }}>

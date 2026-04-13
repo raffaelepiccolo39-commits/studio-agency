@@ -5,6 +5,8 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
+import Breadcrumb from '@/components/ui/Breadcrumb'
+import ScrollReveal from '@/components/ui/ScrollReveal'
 
 const openings = [
   {
@@ -104,6 +106,9 @@ export default function LavoraConNoiPage() {
       <Cursor />
       <Navbar />
       <main>
+        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Lavora con Noi' }]} />
+        </div>
 
         <PageHeader
           tag="Unisciti a noi"
@@ -119,12 +124,14 @@ export default function LavoraConNoiPage() {
             Cosa offriamo
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '2px' }}>
-            {perks.map(p => (
-              <div key={p.title} className="card-hover" style={{ padding: '40px 32px', background: 'var(--surface)' }}>
+            {perks.map((p, i) => (
+              <ScrollReveal key={p.title} delay={i * 0.1}>
+              <div className="card-hover" style={{ padding: '40px 32px', background: 'var(--surface)' }}>
                 <span style={{ fontSize: '32px', display: 'block', marginBottom: '16px' }}>{p.icon}</span>
                 <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '24px', letterSpacing: '0.03em', marginBottom: '12px' }}>{p.title.toUpperCase()}</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'rgba(240,237,230,0.55)' }}>{p.desc}</p>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </section>
@@ -136,8 +143,9 @@ export default function LavoraConNoiPage() {
             Posizioni aperte
           </p>
           <div style={{ borderTop: '1px solid var(--border)' }}>
-            {openings.map(job => (
-              <div key={job.id} style={{ borderBottom: '1px solid var(--border)', padding: '40px 0' }}>
+            {openings.map((job, i) => (
+              <ScrollReveal key={job.id} delay={i * 0.1}>
+              <div style={{ borderBottom: '1px solid var(--border)', padding: '40px 0' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', marginBottom: '20px', flexWrap: 'wrap' }}>
                   <div>
                     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '12px' }}>
@@ -158,6 +166,7 @@ export default function LavoraConNoiPage() {
                   ))}
                 </div>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </section>

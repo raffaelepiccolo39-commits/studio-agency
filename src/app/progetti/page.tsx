@@ -4,6 +4,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
+import Breadcrumb from '@/components/ui/Breadcrumb'
 import Link from 'next/link'
 
 import { projects } from '@/data/projects'
@@ -16,6 +17,9 @@ export default function ProgettiPage() {
       <Cursor />
       <Navbar />
       <main>
+        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Progetti' }]} />
+        </div>
         <PageHeader
           tag="Portfolio"
           title="I NOSTRI"

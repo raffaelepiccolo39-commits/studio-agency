@@ -5,6 +5,8 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
+import Breadcrumb from '@/components/ui/Breadcrumb'
+import ScrollReveal from '@/components/ui/ScrollReveal'
 
 const services = ['Brand Identity', 'Web site development', 'E-commerce Development', 'Performance Marketing', 'Gestione Social Media', 'Creazione dei contenuti']
 const budgets = ['Meno di 5.000€', '5.000€ – 15.000€', '15.000€ – 30.000€', 'Oltre 30.000€', 'Da definire']
@@ -60,11 +62,45 @@ export default function ContattiPage() {
     }
   }
 
+  const contattiJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ContactPage',
+        name: 'Contatti — Pira Web Creative Agency',
+        url: 'https://www.piraweb.it/contatti',
+        description: 'Contattaci per parlare del tuo progetto digitale. Rispondiamo entro 24 ore.',
+      },
+      {
+        '@type': 'LocalBusiness',
+        name: 'Pira Web Creative Agency',
+        url: 'https://www.piraweb.it',
+        telephone: '081 196 3210',
+        email: 'info@piraweb.it',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Via A.Petrillo N°171',
+          postalCode: '81030',
+          addressLocality: 'Casapesenna',
+          addressRegion: 'CE',
+          addressCountry: 'IT',
+        },
+      },
+    ],
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contattiJsonLd) }}
+      />
       <Cursor />
       <Navbar />
       <main>
+        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Contatti' }]} />
+        </div>
         <PageHeader
           tag="Inizia il tuo progetto"
           title="PARLIAMO"
@@ -81,6 +117,7 @@ export default function ContattiPage() {
         }}>
 
           {/* Sidebar info */}
+          <ScrollReveal direction="left">
           <div>
             <div style={{ marginBottom: '48px' }}>
               <p style={labelStyle}>Email</p>
@@ -121,8 +158,10 @@ export default function ContattiPage() {
 </div>
             </div>
           </div>
+          </ScrollReveal>
 
           {/* Form */}
+          <ScrollReveal direction="right" delay={0.15}>
           {status === 'success' ? (
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: '24px', padding: '80px 40px' }}>
               <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '80px', color: 'var(--accent)', lineHeight: 1 }}>✓</span>
@@ -206,6 +245,7 @@ export default function ContattiPage() {
               </div>
             </form>
           )}
+          </ScrollReveal>
         </section>
       </main>
       <Footer />

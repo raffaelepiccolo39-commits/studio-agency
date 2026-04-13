@@ -5,9 +5,12 @@ import HeroSection from '@/components/sections/HeroSection'
 import MarqueeSection from '@/components/sections/MarqueeSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
 import ServicesSection from '@/components/sections/ServicesSection'
+import ProcessSection from '@/components/sections/ProcessSection'
+import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import AboutSection from '@/components/sections/AboutSection'
 import ContactSection from '@/components/sections/ContactSection'
 import PartnersSection from '@/components/sections/PartnersSection'
+import FAQSection from '@/components/sections/FAQSection'
 
 import type { Metadata } from 'next'
 
@@ -43,8 +46,11 @@ export default async function Home() {
         <MarqueeSection />
         <ProjectsSection />
         <ServicesSection />
+        <ProcessSection />
+        <TestimonialsSection />
         <AboutSection />
         <PartnersSection />
+        <FAQSection />
         <ContactSection />
       </main>
       <Footer />

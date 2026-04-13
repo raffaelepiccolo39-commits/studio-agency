@@ -1,5 +1,7 @@
 'use client'
 
+import { useInView } from 'react-intersection-observer'
+
 const partners = [
   { name: 'Google', logo: '/partners/google.png' },
   { name: 'Trustpilot', logo: '/partners/trustpilot.png' },
@@ -11,8 +13,13 @@ const partners = [
 ]
 
 export default function PartnersSection() {
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
+
   return (
-    <section style={{
+    <section ref={ref} style={{
+      opacity: inView ? 1 : 0,
+      transform: inView ? 'translateY(0)' : 'translateY(32px)',
+      transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
       padding: 'clamp(60px,8vw,100px) clamp(24px,5vw,40px)',
       borderTop: '1px solid var(--border)',
       borderBottom: '1px solid var(--border)',

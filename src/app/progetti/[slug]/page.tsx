@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
+import Breadcrumb from '@/components/ui/Breadcrumb'
 import Link from 'next/link'
 import BluemoonGallery from '@/components/sections/BluemoonGallery'
 import ContexGallery from '@/components/sections/ContexGallery'
@@ -84,6 +85,13 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
       <Cursor />
       <Navbar />
       <main>
+        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
+          <Breadcrumb items={[
+            { label: 'Home', href: '/' },
+            { label: 'Progetti', href: '/progetti' },
+            { label: project.title },
+          ]} />
+        </div>
 
         {/* Hero */}
         <section style={{

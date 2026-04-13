@@ -4,6 +4,8 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
+import Breadcrumb from '@/components/ui/Breadcrumb'
+import ScrollReveal from '@/components/ui/ScrollReveal'
 import { useState } from 'react'
 
 const team = [
@@ -23,11 +25,46 @@ const values = [
 export default function ChiSiamoPage() {
   const [hoveredMember, setHoveredMember] = useState<number | null>(null)
 
+  const chiSiamoJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        name: 'Pira Web Creative Agency',
+        url: 'https://www.piraweb.it',
+        description: 'Pira Web nasce nel 2018 dalla visione di Raffaele, ingegnere con una convinzione precisa: il digitale doveva smettere di essere decorazione e diventare infrastruttura.',
+        foundingDate: '2018',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Via A.Petrillo N°171',
+          postalCode: '81030',
+          addressLocality: 'Casapesenna',
+          addressRegion: 'CE',
+          addressCountry: 'IT',
+        },
+        email: 'info@piraweb.it',
+      },
+      {
+        '@type': 'AboutPage',
+        name: 'Chi Siamo — Pira Web Creative Agency',
+        url: 'https://www.piraweb.it/chi-siamo',
+        description: 'Scopri il team, la mission e i valori di Pira Web Creative Agency.',
+      },
+    ],
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(chiSiamoJsonLd) }}
+      />
       <Cursor />
       <Navbar />
       <main>
+        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Chi Siamo' }]} />
+        </div>
 
         <PageHeader
           tag="CHI SIAMO"
@@ -45,6 +82,7 @@ Lavoriamo per generare valore nel tempo."
 <section style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--border)' }}>
 
   {/* Mission */}
+  <ScrollReveal>
   <div className="mission-vision-grid">
     <div style={{
       padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)',
@@ -147,6 +185,7 @@ Lavoriamo per generare valore nel tempo."
       </div>
     </div>
   </div>
+  </ScrollReveal>
 
   {/* Striscia animata in fondo */}
   <div style={{
@@ -178,12 +217,14 @@ Lavoriamo per generare valore nel tempo."
             I nostri valori
           </p>
           <div className="values-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: '2px' }}>
-            {values.map(v => (
-              <div key={v.id} className="card-hover" style={{ background: 'var(--surface)', padding: '48px 40px', borderLeft: '1px solid var(--border)' }}>
+            {values.map((v, i) => (
+              <ScrollReveal key={v.id} delay={i * 0.1}>
+              <div className="card-hover" style={{ background: 'var(--surface)', padding: '48px 40px', borderLeft: '1px solid var(--border)' }}>
                 <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '13px', color: 'var(--accent)', letterSpacing: '0.15em', display: 'block', marginBottom: '20px' }}>({v.id}.)</span>
                 <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '32px', letterSpacing: '0.02em', marginBottom: '16px' }}>{v.title.toUpperCase()}</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'rgba(240,237,230,0.55)' }}>{v.desc}</p>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </section>
@@ -240,8 +281,8 @@ Lavoriamo per generare valore nel tempo."
 
           <div style={{ borderTop: '1px solid var(--border)' }}>
             {team.map((member, i) => (
+              <ScrollReveal key={i} delay={i * 0.1}>
               <div
-                key={i}
                 onMouseEnter={() => setHoveredMember(i)}
                 onMouseLeave={() => setHoveredMember(null)}
                 style={{
@@ -299,6 +340,7 @@ Lavoriamo per generare valore nel tempo."
                   </p>
                 </div>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </section>
@@ -311,11 +353,13 @@ Lavoriamo per generare valore nel tempo."
               { num: '7+', label: 'Anni di esperienza' },
               { num: '50+', label: 'Clienti seguiti' },
               { num: '100+', label: 'Progetti realizzati' },
-            ].map(s => (
-              <div key={s.label} style={{ background: 'var(--bg)', padding: '48px 40px', textAlign: 'center' }}>
+            ].map((s, i) => (
+              <ScrollReveal key={s.label} delay={i * 0.1}>
+              <div style={{ background: 'var(--bg)', padding: '48px 40px', textAlign: 'center' }}>
                 <div style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(56px,8vw,100px)', lineHeight: 1, color: 'var(--accent)' }}>{s.num}</div>
                 <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '8px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{s.label}</div>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </section>

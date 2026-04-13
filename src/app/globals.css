@@ -262,7 +262,22 @@ body {
   .progetti-grid { grid-template-columns: 1fr !important; }
 }
 
+/* Testimonials grid: stack su mobile */
+@media (max-width: 768px) {
+  .testimonials-grid { grid-template-columns: 1fr !important; }
+  .testimonials-grid > div { border-left: none !important; border-bottom: 1px solid var(--border); }
+}
+
 /* Padding globale sezioni su mobile */
 @media (max-width: 480px) {
   .page-section-padding { padding: 48px 20px !important; }
+}
+
+/* ─── REDUCED MOTION ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

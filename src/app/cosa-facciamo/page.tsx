@@ -4,6 +4,8 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
+import Breadcrumb from '@/components/ui/Breadcrumb'
+import ScrollReveal from '@/components/ui/ScrollReveal'
 
 const services = [
   {
@@ -36,11 +38,39 @@ const process = [
 ]
 
 export default function CosaFacciamo() {
+  const serviceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    provider: {
+      '@type': 'Organization',
+      name: 'Pira Web Creative Agency',
+      url: 'https://www.piraweb.it',
+    },
+    serviceType: 'Digital Agency Services',
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'I nostri servizi',
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Brand Direction' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Advanced Tech' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Performance Marketing' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'System Integration' } },
+      ],
+    },
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
       <Cursor />
       <Navbar />
       <main>
+        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Cosa Facciamo' }]} />
+        </div>
         <PageHeader
           tag="I nostri servizi"
           title="QUELLO CHE"
@@ -50,7 +80,8 @@ export default function CosaFacciamo() {
         />
 
         {services.map((s, i) => (
-          <section key={s.id} style={{
+          <ScrollReveal key={s.id}>
+          <section style={{
             padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)',
             borderBottom: '1px solid var(--border)',
             display: 'grid',
@@ -81,20 +112,25 @@ export default function CosaFacciamo() {
               ))}
             </div>
           </section>
+          </ScrollReveal>
         ))}
 
         <section style={{ padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
+          <ScrollReveal>
           <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '80px', display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--muted)' }} />
             Come lavoriamo
           </p>
+          </ScrollReveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: '2px' }}>
-            {process.map(p => (
-              <div key={p.num} style={{ padding: '48px 32px', background: 'var(--surface)' }}>
+            {process.map((p, i) => (
+              <ScrollReveal key={p.num} delay={i * 0.1}>
+              <div style={{ padding: '48px 32px', background: 'var(--surface)' }}>
                 <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '80px', color: 'var(--border)', lineHeight: 1, display: 'block', marginBottom: '24px' }}>{p.num}</span>
                 <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '28px', letterSpacing: '0.05em', marginBottom: '16px', color: 'var(--accent)' }}>{p.title.toUpperCase()}</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'rgba(240,237,230,0.55)' }}>{p.desc}</p>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </section>

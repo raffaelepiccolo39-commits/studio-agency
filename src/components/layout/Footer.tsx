@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 
 function FooterAccordion({ id, label, children }: { id: string; label: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -64,11 +65,15 @@ function FooterAccordion({ id, label, children }: { id: string; label: string; c
 
 export default function Footer() {
   const year = new Date().getFullYear()
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
   return (
-    <footer style={{
+    <footer ref={ref} style={{
       padding: '64px 40px 40px',
       borderTop: '1px solid var(--border)',
+      opacity: inView ? 1 : 0,
+      transform: inView ? 'translateY(0)' : 'translateY(32px)',
+      transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
     }}>
 
       {/* Tre colonne accordion */}
