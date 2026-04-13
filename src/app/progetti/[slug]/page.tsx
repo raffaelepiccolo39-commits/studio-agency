@@ -10,6 +10,7 @@ import AlmaGallery from '@/components/sections/AlmaGallery'
 import QuadrifoglioGallery from '@/components/sections/QuadrifoglioGallery'
 import SvinatiGallery from '@/components/sections/SvinatiGallery'
 import MaestriCotonieriGallery from '@/components/sections/MaestriCotonieriGallery'
+import AlbaRicambiGallery from '@/components/sections/AlbaRicambiGallery'
 
 export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }))
@@ -112,6 +113,8 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
           <SvinatiGallery />
         ) : project.slug === 'maestri-cotonieri' ? (
           <MaestriCotonieriGallery />
+        ) : project.slug === 'alba-ricambi' ? (
+          <AlbaRicambiGallery />
         ) : project.immagini.length > 0 ? (
           <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))', gap: '2px' }}>

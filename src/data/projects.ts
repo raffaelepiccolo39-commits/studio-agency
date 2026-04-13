@@ -122,7 +122,17 @@ export const projects: Project[] = [
       { label: 'Catalogo', value: 'Online' },
       { label: 'Settore', value: 'Automotive' },
     ],
-    immagini: [],
+    immagini: [
+      '/progetti/alba-ricambi/sito-alba-01.jpg',
+      '/progetti/alba-ricambi/sito-alba-02.jpg',
+      '/progetti/alba-ricambi/sito-alba-03.jpg',
+      '/progetti/alba-ricambi/sito-alba-04.jpg',
+      '/progetti/alba-ricambi/sito-alba-05.jpg',
+      '/progetti/alba-ricambi/sito-alba-07.jpg',
+      '/progetti/alba-ricambi/sito-alba-08.jpg',
+      '/progetti/alba-ricambi/gif-alba.gif',
+      '/progetti/alba-ricambi/sito-alba-10.jpg',
+    ],
   },
   {
     slug: 'pedata-biancheria',
