@@ -8,6 +8,7 @@ import BluemoonGallery from '@/components/sections/BluemoonGallery'
 import ContexGallery from '@/components/sections/ContexGallery'
 import AlmaGallery from '@/components/sections/AlmaGallery'
 import QuadrifoglioGallery from '@/components/sections/QuadrifoglioGallery'
+import SvinatiGallery from '@/components/sections/SvinatiGallery'
 
 export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }))
@@ -106,6 +107,8 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
           <AlmaGallery />
         ) : project.slug === 'quadrifoglio-group' ? (
           <QuadrifoglioGallery />
+        ) : project.slug === 'svinati' ? (
+          <SvinatiGallery />
         ) : project.immagini.length > 0 ? (
           <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))', gap: '2px' }}>
