@@ -35,17 +35,16 @@ Non costruiamo semplici siti, ma asset digitali progettati per convertire.`,
 ]
 
 function ServiceRow({ service, index }: { service: typeof services[0]; index: number }) {
+  const [open, setOpen] = useState(false)
   const [hovered, setHovered] = useState(false)
-  const [tapped, setTapped] = useState(false)
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
-  const active = hovered || tapped
 
   return (
     <div
       ref={ref}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => setTapped(t => !t)}
+      onClick={() => setOpen(o => !o)}
       style={{
         borderBottom: '1px solid var(--border)',
         display: 'grid',
@@ -53,7 +52,7 @@ function ServiceRow({ service, index }: { service: typeof services[0]; index: nu
         gap: '32px',
         alignItems: 'start',
         padding: '32px 32px 32px 0',
-        paddingLeft: active ? '16px' : '0',
+        paddingLeft: open || hovered ? '16px' : '0',
         position: 'relative',
         overflow: 'hidden',
         cursor: 'pointer',
@@ -69,7 +68,7 @@ function ServiceRow({ service, index }: { service: typeof services[0]; index: nu
       {/* Bordo verde a sinistra */}
       <div style={{
         position: 'absolute', left: 0, top: 0, bottom: 0,
-        width: active ? '4px' : '0',
+        width: open || hovered ? '4px' : '0',
         background: 'var(--accent)',
         transition: 'width 0.5s cubic-bezier(0.16,1,0.3,1)',
       }} />
@@ -88,7 +87,7 @@ function ServiceRow({ service, index }: { service: typeof services[0]; index: nu
           fontFamily: 'var(--font-bebas)',
           fontSize: 'clamp(28px, 4vw, 52px)',
           letterSpacing: '0.02em',
-          color: active ? 'var(--accent)' : 'var(--text)',
+          color: open || hovered ? 'var(--accent)' : 'var(--text)',
           transition: 'color 0.3s',
           display: 'block',
         }}>
@@ -97,7 +96,7 @@ function ServiceRow({ service, index }: { service: typeof services[0]; index: nu
 
         {/* Descrizione + tag — appare con animazione su hover */}
         <div style={{
-          maxHeight: active ? '300px' : '0',
+          maxHeight: open ? '300px' : '0',
           overflow: 'hidden',
           transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1)',
         }}>
@@ -130,9 +129,9 @@ function ServiceRow({ service, index }: { service: typeof services[0]; index: nu
         fontSize: '22px',
         fontWeight: 300,
         lineHeight: 1,
-        color: active ? 'var(--accent)' : 'var(--muted)',
+        color: open ? 'var(--accent)' : 'var(--muted)',
         transition: 'transform 0.4s ease, color 0.3s',
-        transform: active ? 'rotate(45deg)' : 'rotate(0deg)',
+        transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
         display: 'block',
         paddingTop: '6px',
       }}>

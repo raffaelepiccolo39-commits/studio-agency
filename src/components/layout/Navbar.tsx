@@ -89,6 +89,22 @@ export default function Navbar() {
           messaggio,
         }),
       })
+
+      // Invia anche al CRM gestionale
+      fetch('https://gestionale.piraweb.it/api/webhook/contact-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nome,
+          surname: cognome,
+          email,
+          phone: telefono,
+          service: selectedServices.join(', '),
+          message: messaggio,
+          api_key: 'pira-form-webhook-2026-secure',
+        }),
+      }).catch(() => {})
+
       setStatus(res.ok ? 'success' : 'error')
     } catch {
       setStatus('error')

@@ -41,7 +41,7 @@ export default async function Home() {
       <main>
         <HeroSection />
         <MarqueeSection />
-        <ProjectsSection projects={[]} />
+        <ProjectsSection />
         <ServicesSection />
         <AboutSection />
         <PartnersSection />

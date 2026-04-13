@@ -4,6 +4,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
+import BluemoonGallery from '@/components/sections/BluemoonGallery'
 
 export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }))
@@ -93,8 +94,10 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
           </div>
         </section>
 
-        {/* Galleria immagini */}
-        {project.immagini.length > 0 && (
+        {/* Galleria immagini — layout custom per Bluemoon, standard per gli altri */}
+        {project.slug === 'pasticceria-bluemoon' ? (
+          <BluemoonGallery />
+        ) : project.immagini.length > 0 ? (
           <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))', gap: '2px' }}>
               {project.immagini.map((img, i) => (
@@ -104,10 +107,7 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
               ))}
             </div>
           </section>
-        )}
-
-        {/* Placeholder immagini se vuote */}
-        {project.immagini.length === 0 && (
+        ) : (
           <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '2px' }}>
               {[1,2,3].map(i => (

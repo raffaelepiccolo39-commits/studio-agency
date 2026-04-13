@@ -13,11 +13,27 @@ export default function ContactSection() {
     e.preventDefault()
     setStatus('loading')
     try {
-      const res = await fetch('https://formspree.io/f/xlgwaygp', { // ← metti qui il tuo ID Formspree
+      const res = await fetch('https://formspree.io/f/xlgwaygp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, message }),
       })
+
+      // Invia anche al CRM gestionale
+      fetch('https://gestionale.piraweb.it/api/webhook/contact-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          surname: '',
+          email,
+          phone: '',
+          service: '',
+          message,
+          api_key: 'pira-form-webhook-2026-secure',
+        }),
+      }).catch(() => {})
+
       if (res.ok) {
         setStatus('success')
         setName(''); setEmail(''); setMessage('')

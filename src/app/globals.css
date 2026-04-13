@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── KEYFRAMES ─── */
+@keyframes kenBurns {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(-32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(32px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
 /* ─── FONTS ─── */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Syne:wght@400;500;700;800&display=swap');
 
@@ -158,16 +176,31 @@ body {
 /* Footer grid */
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 48px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
   padding: 64px 40px 40px;
   border-top: 1px solid var(--border);
 }
-@media (max-width: 900px) {
+@media (max-width: 960px) {
   .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
 }
 @media (max-width: 480px) {
   .footer-grid { grid-template-columns: 1fr; gap: 32px; padding: 40px 24px 32px; }
+}
+
+/* Bluemoon gallery 2-col rows */
+.bluemoon-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 640px) {
+  .bluemoon-row-2 { grid-template-columns: 1fr; }
+}
+
+/* Footer accordion grid responsive */
+@media (max-width: 640px) {
+  .footer-accordion-grid { grid-template-columns: 1fr !important; gap: 0 !important; }
 }
 
 /* Footer logo */
