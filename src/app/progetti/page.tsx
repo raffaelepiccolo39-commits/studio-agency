@@ -8,6 +8,8 @@ import Link from 'next/link'
 
 import { projects } from '@/data/projects'
 
+const visibleProjects = projects.filter(p => p.immagini.length > 0)
+
 export default function ProgettiPage() {
   return (
     <>
@@ -23,7 +25,7 @@ export default function ProgettiPage() {
 
         <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)' }}>
           <div className="progetti-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '2px' }}>
-            {projects.map((p, i) => (
+            {visibleProjects.map((p, i) => (
               <Link key={p.slug} href={`/progetti/${p.slug}`} className="project-card" style={{
                 position: 'relative', overflow: 'hidden', display: 'block',
                 aspectRatio: i === 0 ? '16/9' : '4/3',

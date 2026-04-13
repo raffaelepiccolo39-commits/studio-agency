@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { projects } from '@/data/projects'
 
-const featured = projects.slice(0, 3)
+const featured = projects.filter(p => p.immagini.length > 0).slice(0, 3)
 
 export default function ProjectsSection() {
   return (
