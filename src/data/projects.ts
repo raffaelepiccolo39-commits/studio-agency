@@ -12,6 +12,14 @@ export type Project = {
   soluzione: string
   risultati: { label: string; value: string }[]
   immagini: string[]
+  seo?: {
+    metaTitle: string
+    metaDescription: string
+    settore: string
+    approccio: string
+    processo: string[]
+    testimonial?: { testo: string; autore: string; ruolo: string }
+  }
 }
 
 export const projects: Project[] = [
@@ -84,6 +92,19 @@ export const projects: Project[] = [
     descrizione: "Azienda specializzata in biancheria per la casa. Abbiamo creato l'e-commerce e gestiamo la presenza social, trasformando un'attivita' locale in un brand con visibilita' digitale strutturata.",
     sfida: "Portare online un'attivita' di biancheria con un catalogo ampio, mantenendo semplicita' di navigazione e un'esperienza d'acquisto fluida.",
     soluzione: "Sviluppo e-commerce con catalogo organizzato e gestione social continuativa per costruire autorevoolezza nel settore tessile.",
+    seo: {
+      metaTitle: 'Con.tex Biancheria — E-commerce Biancheria Casa | Caso Studio',
+      metaDescription: 'Come abbiamo trasformato Con.tex Biancheria da attivita locale a e-commerce di successo nel settore tessile. Sviluppo Shopify, catalogo organizzato e gestione social.',
+      settore: 'Biancheria e Tessile per la Casa',
+      approccio: "Per Con.tex Biancheria abbiamo progettato un e-commerce che rispecchiasse la qualita dei prodotti offerti. L'architettura del catalogo e stata pensata per semplificare la navigazione tra centinaia di referenze, con filtri per marca, tipologia e materiale. La gestione social continuativa ha costruito una community attenta al mondo dell'home living.",
+      processo: [
+        'Analisi del catalogo e organizzazione delle categorie prodotto',
+        'Sviluppo e-commerce Shopify con navigazione per brand e tipologia',
+        'Shooting fotografico prodotti per schede e-commerce',
+        'Piano editoriale social con contenuti lifestyle e prodotto',
+        'Ottimizzazione SEO delle schede prodotto e delle categorie',
+      ],
+    },
     risultati: [
       { label: 'Catalogo online', value: 'Attivo' },
       { label: 'Social gestiti', value: 'Continuativi' },
@@ -117,6 +138,19 @@ export const projects: Project[] = [
     descrizione: "Azienda specializzata nella vendita di ricambi auto. Abbiamo sviluppato l'e-commerce per portare online l'intero catalogo, rendendo semplice e veloce la ricerca e l'acquisto dei ricambi.",
     sfida: "Costruire un e-commerce per ricambi auto con un catalogo ampio e tecnico, garantendo una navigazione intuitiva anche per chi non e' esperto.",
     soluzione: "Sviluppo di un e-commerce strutturato con filtri avanzati, schede prodotto dettagliate e un'esperienza d'acquisto semplificata per un catalogo tecnico complesso.",
+    seo: {
+      metaTitle: 'Alba Ricambi — E-commerce Ricambi Auto | Caso Studio',
+      metaDescription: 'Come abbiamo sviluppato l\'e-commerce di Alba Ricambi: catalogo tecnico con filtri avanzati, schede prodotto dettagliate e checkout ottimizzato per il settore automotive.',
+      settore: 'Automotive e Ricambi Auto',
+      approccio: "Per Alba Ricambi abbiamo affrontato la sfida di rendere accessibile un catalogo tecnico complesso. L'e-commerce e stato progettato con un sistema di ricerca avanzato per marca, modello e anno del veicolo, semplificando un processo d'acquisto che nel settore automotive puo risultare ostico. Ogni scheda prodotto include compatibilita, specifiche tecniche e codici OEM.",
+      processo: [
+        'Mappatura del catalogo ricambi e struttura delle compatibilita veicolo',
+        'Sviluppo e-commerce con filtri avanzati per marca, modello e anno',
+        'Creazione schede prodotto con specifiche tecniche e codici OEM',
+        'Integrazione sistema carrello con calcolo spedizioni automatico',
+        'Ottimizzazione SEO per ricerche tecniche di ricambi specifici',
+      ],
+    },
     risultati: [
       { label: 'E-commerce', value: 'Live' },
       { label: 'Catalogo', value: 'Online' },
@@ -165,6 +199,19 @@ export const projects: Project[] = [
     descrizione: "Brand di biancheria di qualita'. Curiamo lo shooting fotografico dei prodotti e gestiamo i canali social per raccontare la qualita' dei tessuti e costruire una community appassionata di home living.",
     sfida: "Comunicare la qualita' di un brand di biancheria attraverso i social, con contenuti visivi capaci di evocare comfort, eleganza e cura per la casa.",
     soluzione: "Shooting fotografico professionale dei prodotti e gestione social continuativa con piano editoriale dedicato e valorizzazione di ogni collezione.",
+    seo: {
+      metaTitle: 'Maestri Cotonieri — Shooting e Social Media | Caso Studio',
+      metaDescription: 'Shooting fotografico professionale e gestione social per Maestri Cotonieri: come abbiamo raccontato la qualita della biancheria italiana attraverso contenuti visivi curati.',
+      settore: 'Home Textile e Biancheria di Qualita',
+      approccio: "Per Maestri Cotonieri abbiamo creato un universo visivo che trasmettesse la qualita dei tessuti e il comfort del prodotto. Lo shooting fotografico e stato progettato per raccontare ogni collezione con ambientazioni lifestyle, mentre il piano editoriale social alterna contenuti prodotto, dietro le quinte e storytelling del brand.",
+      processo: [
+        'Concept creativo per lo shooting fotografico delle collezioni',
+        'Shooting in location con styling e set design curato',
+        'Post-produzione e adattamento formati per ogni canale social',
+        'Piano editoriale mensile con contenuti lifestyle e prodotto',
+        'Gestione community e interazione con il pubblico',
+      ],
+    },
     risultati: [
       { label: 'Shooting', value: 'Realizzato' },
       { label: 'Social', value: 'Gestiti' },
@@ -197,6 +244,19 @@ export const projects: Project[] = [
     descrizione: "Studio commerciale associato che aveva bisogno di un'identita' visiva professionale e riconoscibile. Abbiamo costruito il brand da zero: dal logo alla gestione social.",
     sfida: "Creare un'identita' visiva che comunicasse professionalita', affidabilita' e modernita' per uno studio commerciale in un mercato competitivo.",
     soluzione: "Progettazione completa della brand identity — logo, palette colori, elementi grafici — e avvio della gestione social per costruire autorevoolezza online.",
+    seo: {
+      metaTitle: 'Alma Studio — Brand Identity Studio Commerciale | Caso Studio',
+      metaDescription: 'Brand identity completa per Alma Studio Commerciale Associato: logo, palette colori, biglietti da visita, insegna e gestione social media professionale.',
+      settore: 'Consulenza Fiscale e Commerciale',
+      approccio: "Per Alma Studio abbiamo costruito un'identita visiva che rompesse gli schemi del settore commerciale-fiscale, spesso percepito come freddo e distante. Il logo combina eleganza tipografica e un simbolo che richiama precisione e affidabilita. La brand identity si declina su tutti i touchpoint: biglietti da visita, insegna, materiali promozionali e canali social.",
+      processo: [
+        'Analisi del posizionamento e benchmark dei competitor del settore',
+        'Progettazione logo con studio tipografico e simbolo custom',
+        'Definizione palette colori, tipografia e sistema visivo completo',
+        'Declinazione su biglietti da visita, insegna e materiali stampati',
+        'Avvio gestione social con contenuti di posizionamento professionale',
+      ],
+    },
     risultati: [
       { label: 'Logo & Brand', value: 'Creati' },
       { label: 'Identity', value: 'Completa' },
@@ -228,6 +288,19 @@ export const projects: Project[] = [
     descrizione: "Azienda edile con una storia solida e una visione ambiziosa. Abbiamo progettato il logo e la brand identity per dare a Quadrifoglio Group un'immagine visiva che rispecchiasse la solidita', la precisione e i valori che l'azienda porta in ogni cantiere.",
     sfida: "Costruire un'identita' visiva per un'azienda edile che comunicasse affidabilita', professionalita' e radicamento nel territorio.",
     soluzione: "Studio del logo e progettazione completa della brand identity: simbolo, tipografia, palette colori e linee guida visive pensate per raccontare l'identita' unica di Quadrifoglio Group.",
+    seo: {
+      metaTitle: 'Quadrifoglio Group — Brand Identity Azienda Edile | Caso Studio',
+      metaDescription: 'Brand identity per Quadrifoglio Group: logo, biglietti da visita, abbigliamento aziendale e sistema visivo completo per un\'azienda edile di Caserta.',
+      settore: 'Edilizia e Ristrutturazioni',
+      approccio: "Per Quadrifoglio Group abbiamo progettato un'identita visiva che trasmettesse solidita e competenza. Il logo combina la forma della casa con gli strumenti del mestiere, sintetizzando in un unico simbolo la missione dell'azienda. La palette nero-giallo comunica professionalita e energia, declinata su biglietti da visita, abbigliamento da cantiere e materiali aziendali.",
+      processo: [
+        'Brief con il cliente e analisi dei valori aziendali',
+        'Studio del marchio con griglia costruttiva e varianti colore',
+        'Definizione palette colori e tipografia istituzionale',
+        'Declinazione su biglietti da visita, abbigliamento e caschi',
+        'Consegna brand book con linee guida per utilizzo del marchio',
+      ],
+    },
     risultati: [
       { label: 'Logo', value: 'Realizzato' },
       { label: 'Brand Identity', value: 'Completa' },
@@ -335,6 +408,19 @@ export const projects: Project[] = [
     descrizione: "Brand nel settore vinicolo. Gestiamo la presenza social con una comunicazione autentica, capace di raccontare il prodotto e costruire un rapporto diretto con gli appassionati di vino.",
     sfida: "Comunicare un prodotto di nicchia come il vino sui social, trovando un tono di voce allo stesso tempo colto e accessibile.",
     soluzione: "Gestione social continuativa con piano editoriale dedicato, contenuti visivi curati e strategia di community building per il settore enologico.",
+    seo: {
+      metaTitle: 'Svinati — Social Media Food & Wine | Caso Studio',
+      metaDescription: 'Gestione social media per Svinati: food photography, piano editoriale e community building per un brand nel settore vinicolo e gastronomico.',
+      settore: 'Food & Wine',
+      approccio: "Per Svinati abbiamo costruito una presenza social che racconta l'esperienza gastronomica attraverso immagini evocative e contenuti autentici. La food photography e pensata per trasmettere la qualita delle materie prime e la cura nella preparazione dei piatti, mentre il piano editoriale alterna contenuti di prodotto, ricette e momenti di convivialita.",
+      processo: [
+        'Definizione del tono di voce e della visual identity social',
+        'Shooting fotografico food con styling professionale',
+        'Piano editoriale mensile con rubriche tematiche',
+        'Creazione contenuti per feed, stories e reel',
+        'Community management e strategia di engagement',
+      ],
+    },
     risultati: [
       { label: 'Social', value: 'Gestiti' },
       { label: 'Community', value: 'In crescita' },
