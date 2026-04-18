@@ -37,17 +37,17 @@ export default function ContattiPage() {
     e.preventDefault()
     setStatus('loading')
     try {
-      const res = await fetch('https://formspree.io/f/mbdaqvyj', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nome: name,
-          azienda: company,
-          email: email,
-          telefono: phone,
-          servizio: service,
-          budget: budget,
-          messaggio: message,
+          name,
+          company,
+          email,
+          phone,
+          service,
+          budget,
+          message,
         }),
       })
       if (res.ok) {
