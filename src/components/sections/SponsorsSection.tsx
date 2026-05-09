@@ -31,23 +31,31 @@ export default function SponsorsSection() {
         <SectionLabel number="03" text="I NOSTRI SPONSOR" />
       </div>
 
-      <div style={{
-        padding: '0 clamp(24px, 3vw, 40px)',
-        display: 'flex',
-        justifyContent: 'center',
-      }}>
-        <div style={{
+      <div
+        className="sponsor-row-wrap"
+        style={{
+          padding: '0 clamp(16px, 2.5vw, 40px)',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 'clamp(28px, 3.5vw, 44px)',
-          flexWrap: 'wrap',
-          maxWidth: '1280px',
+          justifyContent: 'center',
           width: '100%',
-          opacity: inView ? 1 : 0,
-          transform: inView ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)',
-        }}>
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          className="sponsor-row"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 'clamp(12px, 2vw, 32px)',
+            flexWrap: 'nowrap',
+            maxWidth: '1280px',
+            width: '100%',
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)',
+          }}
+        >
           {sponsors.map((s) => (
             <img
               key={s.src}
@@ -55,10 +63,11 @@ export default function SponsorsSection() {
               alt={s.alt}
               className="sponsor-logo"
               style={{
-                height: `clamp(${Math.round(s.height * 0.6)}px, ${(s.height / 14.4).toFixed(2)}vw, ${s.height}px)`,
+                height: `clamp(14px, ${(s.height / 18).toFixed(2)}vw, ${s.height}px)`,
                 width: 'auto',
                 objectFit: 'contain',
-                flexShrink: 0,
+                flexShrink: 1,
+                minWidth: 0,
               }}
             />
           ))}
