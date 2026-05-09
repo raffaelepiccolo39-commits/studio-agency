@@ -140,48 +140,6 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
           </p>
         </div>
 
-        {/* Social */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '50px', width: '215px' }}>
-          <p style={{
-            fontFamily: 'var(--font-syne)',
-            fontWeight: 400,
-            fontSize: '16px',
-            color: '#6a6a6a',
-            margin: 0,
-          }}>
-            (social media)
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <a
-              href="https://www.instagram.com/piraweb_agency/"
-              target="_blank"
-              rel="noreferrer"
-              className="footer-social-icon"
-              aria-label="Instagram"
-            >
-              <InstagramIcon />
-            </a>
-            <a
-              href="https://www.facebook.com/pirawebonline"
-              target="_blank"
-              rel="noreferrer"
-              className="footer-social-icon"
-              aria-label="Facebook"
-            >
-              <FacebookIcon />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/pira-web/"
-              target="_blank"
-              rel="noreferrer"
-              className="footer-social-icon"
-              aria-label="LinkedIn"
-            >
-              <LinkedInIcon />
-            </a>
-          </div>
-        </div>
-
         {/* Menù */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '50px', width: '215px' }}>
           <p style={{
@@ -209,6 +167,57 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+
+      {/* Social media row (orizzontale) */}
+      <div
+        className="footer-social-row"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '32px',
+          paddingTop: '20px',
+          borderTop: '1px solid #e5e5e5',
+        }}
+      >
+        <p style={{
+          fontFamily: 'var(--font-syne)',
+          fontWeight: 400,
+          fontSize: '16px',
+          color: '#6a6a6a',
+          margin: 0,
+        }}>
+          (social media)
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <a
+            href="https://www.instagram.com/piraweb_agency/"
+            target="_blank"
+            rel="noreferrer"
+            className="footer-social-icon"
+            aria-label="Instagram"
+          >
+            <InstagramIcon />
+          </a>
+          <a
+            href="https://www.facebook.com/pirawebonline"
+            target="_blank"
+            rel="noreferrer"
+            className="footer-social-icon"
+            aria-label="Facebook"
+          >
+            <FacebookIcon />
+          </a>
+          <a
+            href="https://www.linkedin.com/company/pira-web/"
+            target="_blank"
+            rel="noreferrer"
+            className="footer-social-icon"
+            aria-label="LinkedIn"
+          >
+            <LinkedInIcon />
+          </a>
         </div>
       </div>
 
