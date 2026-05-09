@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
+import SectionLabel from '@/components/ui/SectionLabel'
 
 type Service = {
   id: string
@@ -142,15 +143,7 @@ export default function ServicesSection() {
       }}
     >
       <div style={{ padding: '0 40px' }}>
-        <p style={{
-          fontFamily: 'var(--font-syne)',
-          fontWeight: 500,
-          fontSize: '16px',
-          color: '#ffffff',
-          margin: 0,
-        }}>
-          I NOSTRI SERVIZI
-        </p>
+        <SectionLabel number="02" text="I NOSTRI SERVIZI" color="light" />
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '60px' }}>

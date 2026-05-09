@@ -1,6 +1,7 @@
 'use client'
 
 import { useInView } from 'react-intersection-observer'
+import SectionLabel from '@/components/ui/SectionLabel'
 
 const sponsors = [
   { src: '/partners/shopify.png', alt: 'Shopify Partners', height: 74 },
@@ -27,15 +28,7 @@ export default function SponsorsSection() {
       }}
     >
       <div style={{ padding: '0 clamp(24px, 3vw, 40px)' }}>
-        <p style={{
-          fontFamily: 'var(--font-syne)',
-          fontWeight: 500,
-          fontSize: '16px',
-          color: '#6a6a6a',
-          margin: 0,
-        }}>
-          I NOSTRI SPONSOR
-        </p>
+        <SectionLabel number="03" text="I NOSTRI SPONSOR" />
       </div>
 
       <div style={{

@@ -31,6 +31,9 @@ export default function MarqueeSection() {
           <span
             key={i}
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '24px',
               fontFamily: 'var(--font-syne)',
               fontWeight: 500,
               fontSize: '16px',
@@ -40,6 +43,7 @@ export default function MarqueeSection() {
             }}
           >
             {item}
+            <span aria-hidden style={{ opacity: 0.7 }}>—</span>
           </span>
         ))}
       </div>

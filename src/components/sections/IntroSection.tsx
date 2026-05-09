@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
+import RevealText from '@/components/ui/RevealText'
 
 export default function IntroSection() {
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true })
@@ -27,7 +28,7 @@ export default function IntroSection() {
         transform: inView ? 'translateY(0)' : 'translateY(24px)',
         transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)',
       }}>
-        <p style={{
+        <h2 style={{
           fontFamily: 'var(--font-syne)',
           fontWeight: 500,
           fontSize: 'clamp(32px, 4.4vw, 64px)',
@@ -36,8 +37,10 @@ export default function IntroSection() {
           textAlign: 'right',
           margin: 0,
         }}>
-          Costruiamo presenze digitali forti e solide. Pensate per durare.
-        </p>
+          <RevealText splitBy="word" stagger={0.06} duration={1}>
+            Costruiamo presenze digitali forti e solide. Pensate per durare.
+          </RevealText>
+        </h2>
 
         <Link
           href="/progetti"

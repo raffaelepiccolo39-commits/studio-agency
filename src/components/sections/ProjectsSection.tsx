@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 import { projects } from '@/data/projects'
+import SectionLabel from '@/components/ui/SectionLabel'
 
 const homepageOrder = [
   'pasticceria-bluemoon',
@@ -33,32 +34,18 @@ const tagsFor = (p: (typeof projects)[number]) => {
 }
 
 export default function ProjectsSection() {
-  const { ref: headerRef, inView: headerInView } = useInView({ threshold: 0.2, triggerOnce: true })
-
   return (
     <section
       id="projects"
       style={{
         borderTop: '0.5px solid #525252',
         borderBottom: '0.5px solid #525252',
-        padding: '40px 0 40px 30px',
+        padding: '40px 30px 40px',
       }}
     >
-      <p
-        ref={headerRef}
-        style={{
-          fontFamily: 'var(--font-syne)',
-          fontWeight: 500,
-          fontSize: '16px',
-          color: '#b2b2b2',
-          marginBottom: '30px',
-          opacity: headerInView ? 1 : 0,
-          transform: headerInView ? 'translateY(0)' : 'translateY(16px)',
-          transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
-        }}
-      >
-        I NOSTRI PROGETTI
-      </p>
+      <div style={{ marginBottom: '30px' }}>
+        <SectionLabel number="01" text="I NOSTRI PROGETTI" />
+      </div>
 
       <div
         className="projects-row"
