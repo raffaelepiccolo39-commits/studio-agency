@@ -346,12 +346,22 @@ body {
 
 /* ─── SERVICES ROW (Figma) ─── */
 @media (max-width: 1024px) {
-  .service-row-home, .service-row-cosa { grid-template-columns: 40px 1fr 37px !important; }
-  .service-row-home > :nth-child(3), .service-row-cosa > :nth-child(3) { display: none; }
+  .service-row-cosa { grid-template-columns: 40px 1fr 37px !important; }
+  .service-row-cosa > :nth-child(3) { display: none; }
 }
 @media (max-width: 640px) {
-  .service-row-home, .service-row-cosa { grid-template-columns: 1fr 37px !important; gap: 16px !important; padding: 0 24px !important; }
-  .service-row-home > :first-child, .service-row-cosa > :first-child { display: none; }
+  .service-row-cosa { grid-template-columns: 1fr 37px !important; gap: 16px !important; padding: 0 24px !important; }
+  .service-row-cosa > :first-child { display: none; }
+}
+
+/* ─── IMMERSIVE SERVICES ROW (homepage) ─── */
+.service-row-immersive { transition-property: opacity, transform; }
+@media (max-width: 1024px) {
+  .service-preview { display: none !important; }
+}
+@media (max-width: 640px) {
+  .service-row-immersive { grid-template-columns: 28px 1fr 32px !important; gap: 16px !important; }
+  .service-row-immersive .service-row-title { font-size: clamp(28px, 9vw, 48px) !important; }
 }
 
 /* ─── HOMEPAGE GALLERY (Figma) ─── */
