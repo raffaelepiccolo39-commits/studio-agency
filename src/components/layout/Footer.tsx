@@ -67,7 +67,7 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
       {/* Logo */}
       <div>
         <Link href="/" style={{ display: 'inline-block' }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '68px', width: 'auto', display: 'block' }} />
+          <img src="/logo.png" alt="Pira Web" style={{ height: '46px', width: 'auto', display: 'block' }} />
         </Link>
       </div>
 
