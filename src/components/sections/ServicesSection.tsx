@@ -203,22 +203,22 @@ export default function ServicesSection() {
         >
           <span style={{ display: 'block', overflow: 'hidden' }}>
             <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              <span aria-hidden style={{ display: 'inline-block', width: 'clamp(60px, 10vw, 200px)' }} />Non facciamo solo esecuzione. Uniamo brand
+              <span aria-hidden style={{ display: 'inline-block', width: 'clamp(60px, 10vw, 200px)' }} />Non lavoriamo per silos. Brand direction,
             </span>
           </span>
           <span style={{ display: 'block', overflow: 'hidden' }}>
             <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              direction, sviluppo web, performance marketing
+              sviluppo web, performance marketing e contenuti
             </span>
           </span>
           <span style={{ display: 'block', overflow: 'hidden' }}>
             <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              e content production in un&apos;unica visione operativa.
+              viaggiano in un&apos;unica direzione: quella del tuo business.
             </span>
           </span>
           <span style={{ display: 'block', overflow: 'hidden' }}>
             <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              Un ecosistema end-to-end pensato per crescere e scalare.
+              Il digitale diventa una leva, non un costo.
             </span>
           </span>
         </h2>
