@@ -3,14 +3,6 @@
 import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 
-const menuLinks = [
-  { label: 'HOME', href: '/' },
-  { label: 'SERVIZI', href: '/cosa-facciamo' },
-  { label: 'PROGETTI', href: '/progetti' },
-  { label: 'LAVORA CON NOI', href: '/lavora-con-noi' },
-  { label: 'CONTATTI', href: '/contatti' },
-]
-
 const SR_ONLY: React.CSSProperties = {
   position: 'absolute',
   width: '1px',
@@ -225,38 +217,6 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
           </address>
         </section>
 
-        {/* Menù */}
-        <nav
-          aria-label="Footer"
-          style={{ display: 'flex', flexDirection: 'column', gap: '24px', minWidth: '215px', flex: '1 1 215px' }}
-        >
-          <p aria-hidden style={{
-            fontFamily: 'var(--font-syne)',
-            fontWeight: 400,
-            fontSize: '14px',
-            color: '#9a9a9a',
-            margin: 0,
-            letterSpacing: '0.02em',
-          }}>
-            (menù)
-          </p>
-          <ul style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            listStyle: 'none',
-            margin: 0,
-            padding: 0,
-          }}>
-            {menuLinks.map(l => (
-              <li key={l.href}>
-                <Link href={l.href} className="footer-menu-link">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </div>
 
       {/* Bottom area */}
