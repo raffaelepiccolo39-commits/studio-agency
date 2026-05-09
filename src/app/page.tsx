@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer'
 import HeroSection from '@/components/sections/HeroSection'
 import IntroSection from '@/components/sections/IntroSection'
 import MarqueeSection from '@/components/sections/MarqueeSection'
+import StatsSection from '@/components/sections/StatsSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
 import ServicesSection from '@/components/sections/ServicesSection'
 import SponsorsSection from '@/components/sections/SponsorsSection'
@@ -42,6 +43,7 @@ export default async function Home() {
         <HeroSection />
         <IntroSection />
         <MarqueeSection />
+        <StatsSection />
         <ProjectsSection />
         <ServicesSection />
         <SponsorsSection />

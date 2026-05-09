@@ -3,6 +3,7 @@ import { Bebas_Neue, DM_Serif_Display, Syne } from 'next/font/google'
 import './globals.css'
 import PageLoader from '@/components/ui/PageLoader'
 import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider'
+import ScrollProgress from '@/components/ui/ScrollProgress'
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -86,6 +87,7 @@ export default function RootLayout({
       </head>
       <body>
         <PageLoader />
+        <ScrollProgress />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>

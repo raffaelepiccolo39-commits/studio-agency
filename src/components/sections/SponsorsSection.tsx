@@ -53,6 +53,7 @@ export default function SponsorsSection() {
               key={s.src}
               src={s.src}
               alt={s.alt}
+              className="sponsor-logo"
               style={{
                 height: `clamp(${Math.round(s.height * 0.6)}px, ${(s.height / 14.4).toFixed(2)}vw, ${s.height}px)`,
                 width: 'auto',

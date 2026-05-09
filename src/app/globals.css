@@ -308,6 +308,107 @@ body {
   .progetti-grid-card[style*="1 / -1"] { grid-column: 1 !important; }
 }
 
+/* ─── FOOTER ─── */
+.footer-cta-btn {
+  position: relative;
+}
+.footer-cta-btn:hover {
+  background: var(--accent) !important;
+  color: #0a0a0a !important;
+  padding-right: 56px !important;
+}
+.footer-cta-btn:hover .footer-cta-arrow {
+  transform: translate(8px, -2px);
+}
+
+.footer-link {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #0a0a0a;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
+}
+.footer-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: #0a0a0a;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.footer-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.footer-link-tiny {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+  padding-bottom: 2px;
+}
+.footer-link-tiny::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.footer-link-tiny:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.footer-social {
+  color: #0a0a0a;
+  display: inline-flex;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), color 0.3s ease;
+}
+.footer-social:hover {
+  transform: translateY(-3px);
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .footer-grid-bottom { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .footer-grid-bottom > :last-child { align-items: flex-start !important; }
+  .footer-bottom { font-size: 12px !important; flex-direction: column; align-items: flex-start !important; gap: 8px !important; }
+}
+
+/* ─── STATS GRID ─── */
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ─── SPONSOR LOGOS ─── */
+.sponsor-logo {
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: filter 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.sponsor-logo:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.08);
+}
+
 /* ─── SECTION LABEL (numerini + linea animata) ─── */
 .section-label {
   display: flex;
