@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:madeinevolve.com)",
+      "Bash(grep -oE \"\\(services-evolve|service-col|Brand.{0,2}Direction|Photo.{0,2}Studio|GROWTH|hero-line\\)\")"
+    ]
+  }
+}

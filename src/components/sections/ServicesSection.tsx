@@ -271,17 +271,19 @@ export default function ServicesSection() {
                   style={{
                     position: 'relative',
                     minHeight: 'clamp(380px, 38vw, 500px)',
-                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    border: '0.5px solid rgba(255,255,255,0.12)',
                     background: isActive
-                      ? 'rgba(255,255,255,0.04)'
-                      : 'rgba(255,255,255,0.025)',
+                      ? 'rgba(15,15,15,0.78)'
+                      : 'rgba(15,15,15,0.62)',
+                    backdropFilter: 'blur(6px)',
+                    WebkitBackdropFilter: 'blur(6px)',
                     padding: 'clamp(18px, 1.6vw, 24px)',
                     cursor: 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
                     overflow: 'hidden',
-                    opacity: isDimmed ? 0.18 : 1,
+                    opacity: isDimmed ? 0.35 : 1,
                     transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), background 0.5s cubic-bezier(0.16,1,0.3,1)',
                   }}
                 >
