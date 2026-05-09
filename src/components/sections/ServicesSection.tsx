@@ -1,219 +1,162 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { useInView } from 'react-intersection-observer'
+import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import SectionLabel from '@/components/ui/SectionLabel'
-import Magnetic from '@/components/ui/Magnetic'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 type Service = {
   id: string
-  name: string
-  desc: string
-  href: string
+  tag: string
+  title: [string, string]
+  features: string[]
   image: string
 }
 
 const services: Service[] = [
   {
     id: 'a',
-    name: 'BRANDING & GRAPHIC DESIGN',
-    desc: 'Un brand non deve limitarsi a essere presente, deve essere riconoscibile e impossibile da confondere. Costruiamo identità visive capaci di dare coerenza e personalità alla tua azienda.',
-    href: '/cosa-facciamo#branding',
+    tag: '(a.)',
+    title: ['Brand', 'Direction'],
+    features: [
+      'Brand Identity',
+      'Logo & Visual System',
+      'Brand Strategy',
+      'Tone of Voice',
+      'Naming',
+      'Packaging Design',
+      'Editorial Design',
+      'Style Guide',
+    ],
     image: '/progetti/alma-studio/alma-studio-case-study-04.jpg',
   },
   {
     id: 'b',
-    name: 'WEBSITE & E-COMMERCE',
-    desc: 'Progettiamo ecosistemi digitali pensati per valorizzare il brand e generare risultati concreti. Dai siti corporate agli e-commerce più strutturati: velocità, navigazione intuitiva e percorsi pensati per guidare l’utente all’azione.',
-    href: '/cosa-facciamo#web',
+    tag: '(b.)',
+    title: ['Website &', 'E-commerce'],
+    features: [
+      'Custom Website Design',
+      'Shopify Development',
+      'WooCommerce',
+      'E-commerce Strategy',
+      'UX/UI Design',
+      'Performance Optimization',
+      'CMS Integration',
+      'Analytics & Tracking',
+    ],
     image: '/progetti/pasticceria-bluemoon/screenshot-sito.jpg',
   },
   {
     id: 'c',
-    name: 'SOCIAL MEDIA MANAGEMENT',
-    desc: 'Gestiamo la presenza social del tuo brand con una strategia pensata per attirare l’attenzione giusta e trasformare i contenuti in leve di crescita.',
-    href: '/cosa-facciamo#social',
+    tag: '(c.)',
+    title: ['Social Media', 'Management'],
+    features: [
+      'Social Strategy',
+      'Content Calendar',
+      'Community Management',
+      'Meta Ads',
+      'TikTok Marketing',
+      'Influencer Strategy',
+      'Paid Media',
+      'Reporting & Insights',
+    ],
     image: '/progetti/svinati/svinati-case-study-03.jpg',
   },
   {
     id: 'd',
-    name: 'CONTENT CREATION',
-    desc: 'Creiamo contenuti pensati per lasciare il segno. Dal copywriting alla produzione visual, capaci di parlare al pubblico giusto e rafforzare la percezione del brand.',
-    href: '/cosa-facciamo#content',
+    tag: '(d.)',
+    title: ['Content', 'Creation'],
+    features: [
+      'Copywriting',
+      'Video Production',
+      'Reel & Short Form',
+      'Photography Direction',
+      'Storytelling',
+      'Editorial Content',
+      'Motion Graphics',
+      'Storyboarding',
+    ],
     image: '/progetti/maestri-cotonieri/maestri-cotonieri-pira-04.jpg',
   },
   {
     id: 'e',
-    name: 'PHOTO STUDIO',
-    desc: 'Sala posa professionale all’interno dei nostri uffici, attrezzata per servizi fotografici, shooting prodotto, produzioni video e contenuti social.',
-    href: '/cosa-facciamo#photo',
+    tag: '(e.)',
+    title: ['Photo', 'Studio'],
+    features: [
+      'Product Photography',
+      'Editorial Shooting',
+      'Video Production',
+      'Set Design',
+      'Brand Lifestyle',
+      'E-commerce Catalogue',
+      'Behind the Scenes',
+      'Studio Rental',
+    ],
     image: '/progetti/svinati/svinati-case-study-04.jpg',
   },
 ]
 
-function Arrow({ active }: { active: boolean }) {
-  return (
-    <svg
-      width="42" height="42" viewBox="0 0 37 37" fill="none" aria-hidden
-      style={{
-        flexShrink: 0,
-        transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1), color 0.4s',
-        color: active ? 'var(--accent)' : '#ffffff',
-        transform: active ? 'translate(8px, -8px)' : 'translate(0, 0)',
-      }}
-    >
-      <path d="M9 28L28 9M28 9H12M28 9V25" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" />
-    </svg>
-  )
-}
-
-function ServiceRow({
-  service,
-  active,
-  anyHovered,
-  onEnter,
-  onLeave,
-}: {
-  service: Service
-  active: boolean
-  anyHovered: boolean
-  onEnter: () => void
-  onLeave: () => void
-}) {
-  const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true })
-
-  return (
-    <Link
-      ref={ref}
-      href={service.href}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      className="service-row-immersive"
-      style={{
-        position: 'relative',
-        display: 'grid',
-        gridTemplateColumns: '60px 1fr 60px',
-        gap: '40px',
-        alignItems: 'center',
-        padding: 'clamp(28px, 4.5vw, 44px) clamp(24px, 4vw, 40px)',
-        width: '100%',
-        textDecoration: 'none',
-        color: 'inherit',
-        borderTop: '0.5px solid #2a2a2a',
-        opacity: inView ? (anyHovered && !active ? 0.35 : 1) : 1,
-        transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1)',
-      }}
-    >
-      <span style={{
-        fontFamily: 'var(--font-syne)',
-        fontWeight: 400,
-        fontSize: '14px',
-        color: active ? 'var(--accent)' : '#b2b2b2',
-        transition: 'color 0.4s',
-        zIndex: 1,
-      }}>
-        ({service.id})
-      </span>
-
-      <h3
-        className="service-row-title"
-        style={{
-          fontFamily: 'var(--font-bebas)',
-          fontSize: 'clamp(36px, 6.5vw, 92px)',
-          lineHeight: 0.95,
-          letterSpacing: '0.005em',
-          margin: 0,
-          zIndex: 1,
-          overflow: 'hidden',
-          paddingBottom: '0.05em',
-        }}
-      >
-        <span
-          style={{
-            display: 'inline-block',
-            color: active ? 'var(--accent)' : '#ffffff',
-            transform: inView
-              ? active ? 'translate3d(12px, 0, 0)' : 'translate3d(0, 0, 0)'
-              : 'translate3d(0, 105%, 0)',
-            transition: 'color 0.4s, transform 0.9s cubic-bezier(0.16,1,0.3,1)',
-            willChange: 'transform',
-          }}
-        >
-          {service.name}
-        </span>
-      </h3>
-
-      <div style={{ display: 'flex', justifyContent: 'flex-end', zIndex: 1 }}>
-        <Magnetic strength={0.6} radius={80}>
-          <Arrow active={active} />
-        </Magnetic>
-      </div>
-    </Link>
-  )
-}
-
 export default function ServicesSection() {
-  const [activeId, setActiveId] = useState<string | null>(null)
-  const activeService = services.find(s => s.id === activeId)
-  const previewRef = useRef<HTMLDivElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
+  const manifestoRef = useRef<HTMLHeadingElement>(null)
+  const [activeId, setActiveId] = useState<string | null>(null)
+
+  useGSAP(() => {
+    const lines = manifestoRef.current?.querySelectorAll<HTMLElement>('.manifesto-line')
+    if (!lines) return
+
+    gsap.set(lines, { yPercent: 110 })
+    gsap.to(lines, {
+      yPercent: 0,
+      duration: 1.1,
+      ease: 'expo.out',
+      stagger: 0.08,
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 70%',
+        toggleActions: 'play none none reverse',
+      },
+    })
+  }, { scope: sectionRef })
 
   useEffect(() => {
-    const section = sectionRef.current
-    const preview = previewRef.current
-    if (!section || !preview) return
-    if (window.matchMedia('(hover: none)').matches) return
+    const cols = sectionRef.current?.querySelectorAll<HTMLElement>('.service-col')
+    if (!cols) return
 
-    const xTo = gsap.quickTo(preview, 'x', { duration: 1.2, ease: 'expo.out' })
-    const yTo = gsap.quickTo(preview, 'y', { duration: 1.2, ease: 'expo.out' })
-
-    const onMove = (e: MouseEvent) => {
-      const rect = section.getBoundingClientRect()
-      const cx = rect.left + rect.width / 2
-      const cy = rect.top + rect.height / 2
-      xTo((e.clientX - cx) * 0.04)
-      yTo((e.clientY - cy) * 0.04)
-    }
-
-    section.addEventListener('mousemove', onMove)
-    return () => section.removeEventListener('mousemove', onMove)
+    const onLeave = () => setActiveId(null)
+    cols.forEach((col) => {
+      const id = col.dataset.service || ''
+      const handler = () => setActiveId(id)
+      col.addEventListener('mouseenter', handler)
+      col.addEventListener('mouseleave', onLeave)
+    })
   }, [])
 
   return (
     <section
       ref={sectionRef}
       id="services"
+      className="services-evolve"
       style={{
         position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '30px',
-        padding: '60px 0 0',
+        background: '#0a0a0a',
+        padding: 'clamp(60px, 8vw, 110px) clamp(24px, 4vw, 40px)',
         overflow: 'hidden',
       }}
     >
-      <div style={{ padding: '0 40px', position: 'relative', zIndex: 2 }}>
-        <SectionLabel number="02" text="I NOSTRI SERVIZI" color="light" />
-      </div>
-
-      {/* Floating preview image */}
+      {/* Background image layers */}
       <div
-        ref={previewRef}
         aria-hidden
-        className="service-preview"
         style={{
           position: 'absolute',
-          right: 'clamp(40px, 6vw, 80px)',
-          top: 'calc(50% - clamp(190px, 18vw, 280px))',
-          width: 'clamp(280px, 28vw, 420px)',
-          height: 'clamp(380px, 36vw, 560px)',
-          pointerEvents: 'none',
-          zIndex: 1,
-          opacity: activeService ? 1 : 0,
-          transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1)',
-          willChange: 'transform',
+          inset: 0,
+          zIndex: 0,
+          opacity: activeId ? 1 : 0,
+          transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1)',
         }}
       >
         {services.map((s) => (
@@ -226,28 +169,173 @@ export default function ServicesSection() {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: activeId === s.id ? 1 : 0,
-              transform: activeId === s.id ? 'scale(1) translateY(0)' : 'scale(1.05) translateY(20px)',
-              transition: 'opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1)',
-              filter: 'brightness(0.92)',
+              transform: activeId === s.id ? 'scale(1)' : 'scale(1.08)',
+              transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1)',
+              filter: 'brightness(0.35)',
             }}
           />
         ))}
+        {/* Vignette overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(180deg, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.2) 50%, rgba(10,10,10,0.85) 100%)',
+          }}
+        />
       </div>
 
-      <div
-        style={{ display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 2 }}
-        onMouseLeave={() => setActiveId(null)}
-      >
-        {services.map(s => (
-          <ServiceRow
-            key={s.id}
-            service={s}
-            active={activeId === s.id}
-            anyHovered={activeId !== null}
-            onEnter={() => setActiveId(s.id)}
-            onLeave={() => {}}
-          />
-        ))}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 'clamp(50px, 7vw, 100px)' }}>
+        {/* Manifesto */}
+        <h2
+          ref={manifestoRef}
+          className="services-manifesto"
+          style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: 'clamp(22px, 2.6vw, 38px)',
+            lineHeight: 1.25,
+            letterSpacing: '-0.01em',
+            color: '#ffffff',
+            maxWidth: '1100px',
+            margin: 0,
+          }}
+        >
+          <span style={{ display: 'block', overflow: 'hidden' }}>
+            <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
+              <span style={{ color: '#6a6a6a' }}>(02)</span> &nbsp;Non facciamo solo esecuzione.
+            </span>
+          </span>
+          <span style={{ display: 'block', overflow: 'hidden' }}>
+            <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
+              Uniamo brand direction, sviluppo web, performance marketing
+            </span>
+          </span>
+          <span style={{ display: 'block', overflow: 'hidden' }}>
+            <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
+              e content production in un&apos;unica visione operativa.
+            </span>
+          </span>
+          <span style={{ display: 'block', overflow: 'hidden' }}>
+            <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
+              Un ecosistema end-to-end pensato per crescere e scalare.
+            </span>
+          </span>
+        </h2>
+
+        {/* Top row */}
+        <div className="services-evolve-toprow" style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingBottom: '20px',
+          borderBottom: '0.5px solid #525252',
+        }}>
+          <span style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: '14px',
+            color: '#b2b2b2',
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+          }}>
+            I Nostri Servizi
+          </span>
+          <span style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: '14px',
+            color: '#b2b2b2',
+            letterSpacing: '0.04em',
+          }}>
+            Est. 2018©
+          </span>
+        </div>
+
+        {/* Grid */}
+        <div
+          className="services-evolve-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            gap: 'clamp(24px, 2.5vw, 40px)',
+          }}
+        >
+          {services.map((s) => (
+            <div
+              key={s.id}
+              data-service={s.id}
+              className="service-col"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 'clamp(20px, 2.5vw, 36px)',
+                cursor: 'pointer',
+                transition: 'opacity 0.4s cubic-bezier(0.16,1,0.3,1)',
+                opacity: activeId && activeId !== s.id ? 0.35 : 1,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px' }}>
+                <h3 style={{
+                  fontFamily: 'var(--font-bebas)',
+                  fontSize: 'clamp(28px, 3vw, 48px)',
+                  lineHeight: 1,
+                  letterSpacing: '0.005em',
+                  color: '#ffffff',
+                  margin: 0,
+                }}>
+                  {s.title[0]}<br />{s.title[1]}
+                </h3>
+                <span
+                  className="service-col-tag"
+                  style={{
+                    fontFamily: 'var(--font-syne)',
+                    fontSize: '12px',
+                    color: '#b2b2b2',
+                    letterSpacing: '0.05em',
+                    flexShrink: 0,
+                    opacity: activeId === s.id ? 1 : 0,
+                    transform: activeId === s.id ? 'translateY(0)' : 'translateY(-6px)',
+                    transition: 'opacity 0.4s, transform 0.5s cubic-bezier(0.16,1,0.3,1)',
+                  }}
+                >
+                  {s.tag}
+                </span>
+              </div>
+
+              <ul
+                className="service-col-features"
+                style={{
+                  listStyle: 'none',
+                  padding: 0,
+                  margin: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '6px',
+                  opacity: activeId === s.id ? 0.85 : 0,
+                  transform: activeId === s.id ? 'translateY(0)' : 'translateY(8px)',
+                  transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)',
+                }}
+              >
+                {s.features.map((f) => (
+                  <li
+                    key={f}
+                    style={{
+                      fontFamily: 'var(--font-syne)',
+                      fontWeight: 400,
+                      fontSize: '13px',
+                      color: '#e5e5e5',
+                      lineHeight: 1.6,
+                      letterSpacing: '0.01em',
+                    }}
+                  >
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )
