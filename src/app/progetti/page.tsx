@@ -2,14 +2,123 @@
 
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
-import Breadcrumb from '@/components/ui/Breadcrumb'
 import Link from 'next/link'
-
+import { useInView } from 'react-intersection-observer'
 import { projects } from '@/data/projects'
 
-const visibleProjects = projects.filter(p => p.immagini.length > 0)
+const displayOrder = [
+  'pasticceria-bluemoon',
+  'contex-biancheria',
+  'svinati',
+  'maestri-cotonieri',
+  'alma-studio',
+  'quadrifoglio-group',
+  'alba-ricambi',
+]
+
+const orderedProjects = displayOrder
+  .map(slug => projects.find(p => p.slug === slug))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p && p.immagini.length > 0))
+
+const tagsFor = (p: (typeof projects)[number]) => {
+  const hasEcom = /e-commerce/i.test(p.platform) || p.services.some(s => /e-commerce/i.test(s))
+  const hasBrand = p.services.some(s => /brand/i.test(s) || /logo/i.test(s))
+  const hasSocial = p.services.some(s => /social/i.test(s))
+  const hasContent = p.services.some(s => /shooting/i.test(s) || /content/i.test(s))
+
+  const tags: string[] = []
+  if (hasBrand) tags.push('BRAND IDENTITY')
+  if (hasEcom) tags.push('E-COMMERCE')
+  if (hasContent || hasSocial) tags.push('CONTENT CREATION')
+  if (hasSocial) tags.push('SOCIAL MEDIA')
+  return tags.join(' • ')
+}
+
+function ProjectCard({ project, fullWidth = false, index }: { project: (typeof projects)[number]; fullWidth?: boolean; index: number }) {
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
+
+  return (
+    <Link
+      ref={ref}
+      href={`/progetti/${project.slug}`}
+      className="project-card progetti-grid-card"
+      style={{
+        gridColumn: fullWidth ? '1 / -1' : undefined,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '30px',
+        textDecoration: 'none',
+        color: 'inherit',
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(24px)',
+        transition: `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.05}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.05}s`,
+      }}
+    >
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: fullWidth ? '1380 / 787.5' : '675 / 787.5',
+        overflow: 'hidden',
+      }}>
+        <img
+          src={project.immagini[0]}
+          alt={project.title}
+          className="project-img"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
+            filter: 'grayscale(10%)',
+          }}
+        />
+      </div>
+
+      <div style={{
+        display: 'flex',
+        gap: '30px',
+        alignItems: 'flex-start',
+        width: '100%',
+      }}>
+        <div style={{ flex: '1 1 auto', minWidth: 0 }}>
+          <p style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: '16px',
+            color: '#b2b2b2',
+            lineHeight: 1.3,
+            margin: 0,
+          }}>
+            {tagsFor(project)}
+          </p>
+          <p className="progetti-grid-title" style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: '16px',
+            color: '#ffffff',
+            textDecoration: 'underline',
+            lineHeight: 1.3,
+            marginTop: '2px',
+            textTransform: 'uppercase',
+            transition: 'color 0.3s',
+          }}>
+            {project.title}
+          </p>
+        </div>
+        <svg
+          className="progetti-grid-arrow"
+          width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden
+          style={{ flexShrink: 0, marginTop: '2px', color: '#ffffff', transition: 'transform 0.4s ease, color 0.3s' }}
+        >
+          <path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+        </svg>
+      </div>
+    </Link>
+  )
+}
 
 export default function ProgettiPage() {
   return (
@@ -17,47 +126,47 @@ export default function ProgettiPage() {
       <Cursor />
       <Navbar />
       <main>
-        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Progetti' }]} />
-        </div>
-        <PageHeader
-          tag="Portfolio"
-          title="I NOSTRI"
-          titleAccent="lavori"
-          subtitle="Ogni progetto è una storia diversa. Ecco alcune delle collaborazioni di cui siamo più orgogliosi."
-        />
+        <section style={{
+          paddingTop: '60px',
+          paddingBottom: '0',
+          background: '#0a0a0a',
+        }}>
+          <div
+            className="progetti-page-inner"
+            style={{
+              border: '0.5px solid #525252',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '30px',
+              padding: '40px 30px',
+            }}
+          >
+            <p style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#b2b2b2',
+              margin: 0,
+            }}>
+              I NOSTRI PROGETTI
+            </p>
 
-        <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)' }}>
-          <div className="progetti-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '2px' }}>
-            {visibleProjects.map((p, i) => (
-              <Link key={p.slug} href={`/progetti/${p.slug}`} className="project-card" style={{
-                position: 'relative', overflow: 'hidden', display: 'block',
-                aspectRatio: i === 0 ? '16/9' : '4/3',
-                background: p.color, textDecoration: 'none',
-                gridColumn: i === 0 ? '1 / -1' : undefined,
-              }}>
-                <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse at 20% 20%, ${p.accent}18 0%, transparent 60%)`, pointerEvents: 'none' }} />
-                <div style={{ position: 'absolute', bottom: '50%', right: '-5%', fontFamily: 'var(--font-bebas)', fontSize: 'clamp(80px,12vw,160px)', color: 'transparent', WebkitTextStroke: `1px ${p.accent}18`, pointerEvents: 'none', whiteSpace: 'nowrap', transform: 'translateY(50%)' }}>
-                  {p.title}
-                </div>
-                <div className="project-info" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '32px', background: 'linear-gradient(to top,rgba(10,10,10,0.95) 0%,transparent 100%)', transform: 'translateY(4px)', transition: 'transform 0.4s ease' }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '16px' }}>
-                    <div>
-                      <p style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: p.accent, marginBottom: '6px' }}>{p.platform}</p>
-                      <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: i === 0 ? 'clamp(36px,5vw,64px)' : 'clamp(28px,3vw,44px)', letterSpacing: '0.02em', color: 'var(--text)' }}>{p.title.toUpperCase()}</h3>
-                      <p style={{ fontSize: '11px', color: 'var(--muted)', marginTop: '6px' }}>{p.services.join(' · ')}</p>
-                    </div>
-                    <span style={{ fontSize: '24px', color: p.accent, flexShrink: 0 }}>↗</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+            <div
+              className="progetti-grid-2col"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '30px',
+              }}
+            >
+              {orderedProjects.map((p, i) => {
+                const isLast = i === orderedProjects.length - 1 && orderedProjects.length % 2 === 1
+                return (
+                  <ProjectCard key={p.slug} project={p} fullWidth={isLast} index={i} />
+                )
+              })}
+            </div>
           </div>
-        </section>
-
-        <section style={{ padding: 'clamp(60px,10vw,100px) clamp(24px,5vw,40px)', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
-          <p style={{ fontSize: '15px', color: 'rgba(240,237,230,0.5)', marginBottom: '32px' }}>Hai un progetto in mente? Parliamone.</p>
-          <a href="/contatti" className="btn-accent">Inizia il tuo progetto →</a>
         </section>
       </main>
       <Footer />

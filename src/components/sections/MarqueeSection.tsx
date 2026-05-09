@@ -1,17 +1,22 @@
 const items = [
-  'Brand Direction', 'UX / UI Design', 'Web Development',
-  'Performance Marketing', 'System Integration', 'SEO & Analytics', 'E-commerce',
+  'STRATEGIA',
+  'TECNOLOGIA',
+  'CREATIVITÀ',
+  'PERFORMANCE',
+  'CRESCITA',
+  'INNOVAZIONE',
+  'RISULTATI',
+  'VISIONE',
 ]
 
 export default function MarqueeSection() {
-  const doubled = [...items, ...items]
+  const doubled = [...items, ...items, ...items]
 
   return (
     <div
       style={{
-        borderTop: '1px solid var(--border)',
-        borderBottom: '1px solid var(--border)',
-        padding: '18px 0',
+        background: 'var(--accent)',
+        padding: '15px 0',
         overflow: 'hidden',
       }}
     >
@@ -19,28 +24,23 @@ export default function MarqueeSection() {
         style={{
           display: 'flex',
           width: 'max-content',
-          animation: 'marquee 22s linear infinite',
+          animation: 'marquee 38s linear infinite',
         }}
       >
         {doubled.map((item, i) => (
-          <div
+          <span
             key={i}
             style={{
-              fontFamily: 'var(--font-bebas)',
-              fontSize: '13px',
-              letterSpacing: '0.25em',
-              textTransform: 'uppercase',
-              color: 'var(--muted)',
-              padding: '0 40px',
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#0a0a0a',
+              padding: '0 12px',
               whiteSpace: 'nowrap',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '40px',
             }}
           >
             {item}
-            <span style={{ color: 'var(--accent)', fontSize: '10px' }}>✦</span>
-          </div>
+          </span>
         ))}
       </div>
     </div>

@@ -4,15 +4,7 @@ import type { Metadata } from 'next'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
-import Breadcrumb from '@/components/ui/Breadcrumb'
 import Link from 'next/link'
-import BluemoonGallery from '@/components/sections/BluemoonGallery'
-import ContexGallery from '@/components/sections/ContexGallery'
-import AlmaGallery from '@/components/sections/AlmaGallery'
-import QuadrifoglioGallery from '@/components/sections/QuadrifoglioGallery'
-import SvinatiGallery from '@/components/sections/SvinatiGallery'
-import MaestriCotonieriGallery from '@/components/sections/MaestriCotonieriGallery'
-import AlbaRicambiGallery from '@/components/sections/AlbaRicambiGallery'
 
 const BASE_URL = 'https://www.piraweb.it'
 
@@ -51,9 +43,39 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 }
 
+const tagsFor = (p: (typeof projects)[number]) => {
+  const hasEcom = /e-commerce/i.test(p.platform) || p.services.some(s => /e-commerce/i.test(s))
+  const hasBrand = p.services.some(s => /brand/i.test(s) || /logo/i.test(s))
+  const hasSocial = p.services.some(s => /social/i.test(s))
+  const hasContent = p.services.some(s => /shooting/i.test(s) || /content/i.test(s))
+  const tags: string[] = []
+  if (hasBrand) tags.push('BRAND IDENTITY')
+  if (hasEcom) tags.push('E-COMMERCE')
+  if (hasContent || hasSocial) tags.push('CONTENT CREATION')
+  if (hasSocial) tags.push('SOCIAL MEDIA')
+  return tags.join(' • ')
+}
+
 export default function ProgettoPage({ params }: { params: { slug: string } }) {
   const project = projects.find(p => p.slug === params.slug)
   if (!project) notFound()
+
+  const heroImage = project.immagini[0]
+
+  // Other projects to suggest at the bottom (exclude current, only those with images)
+  const otherProjectsOrder = [
+    'pasticceria-bluemoon',
+    'contex-biancheria',
+    'svinati',
+    'maestri-cotonieri',
+    'alma-studio',
+    'quadrifoglio-group',
+    'alba-ricambi',
+  ]
+  const otherProjects = otherProjectsOrder
+    .map(slug => projects.find(p => p.slug === slug))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p && p.immagini.length > 0 && p.slug !== project.slug))
+    .slice(0, 3)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -73,7 +95,7 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
     },
     genre: project.seo?.settore ?? project.platform,
     keywords: project.services.join(', '),
-    image: project.immagini[0] ? `${BASE_URL}${project.immagini[0]}` : undefined,
+    image: heroImage ? `${BASE_URL}${heroImage}` : undefined,
   }
 
   return (
@@ -85,225 +107,347 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
       <Cursor />
       <Navbar />
       <main>
-        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
-          <Breadcrumb items={[
-            { label: 'Home', href: '/' },
-            { label: 'Progetti', href: '/progetti' },
-            { label: project.title },
-          ]} />
+        {/* Breadcrumb */}
+        <div style={{
+          background: '#0a0a0a',
+          padding: '40px 30px 20px',
+          display: 'flex',
+          gap: '15px',
+          alignItems: 'center',
+        }}>
+          <Link href="/progetti" style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: '16px',
+            color: '#b2b2b2',
+            textDecoration: 'none',
+          }}>
+            I NOSTRI PROGETTI
+          </Link>
+          <span style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: '16px',
+            color: '#b2b2b2',
+          }}>{'>'}</span>
+          <span style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: '16px',
+            color: '#b2b2b2',
+            textDecoration: 'underline',
+          }}>
+            {project.title.toUpperCase()}
+          </span>
         </div>
 
         {/* Hero */}
-        <section style={{
-          minHeight: '70vh', background: project.color,
-          display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-          padding: 'clamp(120px,15vw,180px) clamp(24px,5vw,40px) clamp(40px,6vw,80px)',
-          position: 'relative', overflow: 'hidden',
-        }}>
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: `radial-gradient(ellipse at 20% 50%, ${project.accent}20 0%, transparent 60%)`,
-          }} />
-          <div style={{
-            position: 'absolute', bottom: '-10%', right: '-5%',
-            fontFamily: 'var(--font-bebas)', fontSize: 'clamp(100px,18vw,260px)',
-            color: 'transparent', WebkitTextStroke: `1px ${project.accent}15`,
-            pointerEvents: 'none', whiteSpace: 'nowrap',
-          }}>
-            {project.title}
-          </div>
+        <section
+          style={{
+            position: 'relative',
+            background: '#0a0a0a',
+            border: '0.5px solid #525252',
+            minHeight: '342px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            padding: '30px 40px 36px',
+            overflow: 'hidden',
+          }}
+        >
+          {heroImage && (
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(180deg, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.4) 50%, rgba(10,10,10,0.7) 100%), url("${heroImage}") center/cover no-repeat`,
+              zIndex: 0,
+            }} />
+          )}
 
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '24px' }}>
-              <span style={{ fontSize: '11px', padding: '4px 12px', border: `1px solid ${project.accent}`, color: project.accent, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                {project.platform}
-              </span>
-              {project.seo?.settore && (
-                <span style={{ fontSize: '11px', padding: '4px 12px', background: 'rgba(255,255,255,0.05)', color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                  {project.seo.settore}
-                </span>
-              )}
-            </div>
-            <h1 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(48px,8vw,120px)', letterSpacing: '0.02em', lineHeight: 1, marginBottom: '24px' }}>
+          <div style={{
+            position: 'relative',
+            zIndex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            paddingTop: '30px',
+            minHeight: '207px',
+          }}>
+            <p style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#ffffff',
+              margin: 0,
+            }}>
+              {tagsFor(project) || project.platform.toUpperCase()}
+            </p>
+            <h1 style={{
+              fontFamily: 'var(--font-bebas)',
+              fontSize: 'clamp(56px, 11vw, 140px)',
+              lineHeight: 0.95,
+              letterSpacing: '-0.01em',
+              color: '#ffffff',
+              margin: 0,
+            }}>
               {project.title.toUpperCase()}
             </h1>
-            <p style={{ fontSize: '15px', color: 'rgba(240,237,230,0.6)', maxWidth: '560px', lineHeight: 1.7 }}>
+          </div>
+        </section>
+
+        {/* White content intro + problem + solution */}
+        <section style={{
+          background: '#ffffff',
+          padding: '30px 0',
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <div
+            className="case-content-row"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              padding: '30px 40px',
+              gap: '40px',
+            }}
+          >
+            <p style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 400,
+              fontSize: '16px',
+              color: '#0a0a0a',
+              lineHeight: 1.5,
+              margin: 0,
+              flex: '1 1 auto',
+              maxWidth: '720px',
+            }}>
               {project.descrizione}
             </p>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '24px' }}>
-              {project.services.map(s => (
-                <span key={s} style={{ fontSize: '11px', padding: '4px 12px', background: 'rgba(255,255,255,0.05)', color: 'var(--muted)', letterSpacing: '0.08em' }}>
-                  {s}
-                </span>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: '32px', marginTop: '32px', fontSize: '12px', color: 'var(--muted)', letterSpacing: '0.08em' }}>
-              <span>Cliente: <strong style={{ color: 'var(--text)' }}>{project.cliente}</strong></span>
-              <span>Anno: <strong style={{ color: 'var(--text)' }}>{project.year}</strong></span>
-            </div>
           </div>
-        </section>
 
-        {/* KPI */}
-        <section style={{ borderBottom: '1px solid var(--border)', display: 'grid', gridTemplateColumns: `repeat(${project.risultati.length}, 1fr)` }}>
-          {project.risultati.map((r, i) => (
-            <div key={i} style={{ padding: 'clamp(32px,5vw,56px) clamp(24px,4vw,40px)', borderRight: i < project.risultati.length - 1 ? '1px solid var(--border)' : 'none' }}>
-              <p style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(36px,5vw,64px)', color: project.accent, letterSpacing: '0.02em', lineHeight: 1, marginBottom: '8px' }}>
-                {r.value}
-              </p>
-              <p style={{ fontSize: '12px', color: 'var(--muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-                {r.label}
-              </p>
-            </div>
-          ))}
-        </section>
-
-        {/* Sfida + Soluzione */}
-        <section className="case-study-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: '1px solid var(--border)' }}>
-          <div style={{ padding: 'clamp(40px,7vw,80px) clamp(24px,5vw,40px)', borderRight: '1px solid var(--border)' }}>
-            <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--muted)' }} />
-              La sfida
-            </p>
-            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,36px)', letterSpacing: '0.02em', lineHeight: 1.2, marginBottom: '16px', color: 'var(--text)' }}>
-              Il problema da risolvere
-            </h2>
-            <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(240,237,230,0.7)' }}>{project.sfida}</p>
-          </div>
-          <div style={{ padding: 'clamp(40px,7vw,80px) clamp(24px,5vw,40px)' }}>
-            <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--muted)' }} />
-              La soluzione
-            </p>
-            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,36px)', letterSpacing: '0.02em', lineHeight: 1.2, marginBottom: '16px', color: 'var(--text)' }}>
-              Il nostro intervento
-            </h2>
-            <p style={{ fontSize: '16px', lineHeight: 1.8, color: 'rgba(240,237,230,0.7)' }}>{project.soluzione}</p>
-          </div>
-        </section>
-
-        {/* Approccio — solo se presente nei dati SEO */}
-        {project.seo?.approccio && (
-          <section style={{ borderBottom: '1px solid var(--border)', padding: 'clamp(60px,8vw,100px) clamp(24px,5vw,40px)' }}>
-            <div style={{ maxWidth: '800px' }}>
-              <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--muted)' }} />
-                L&apos;approccio
-              </p>
-              <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(28px,4vw,48px)', letterSpacing: '0.02em', lineHeight: 1.1, marginBottom: '24px' }}>
-                Come abbiamo lavorato
-              </h2>
-              <p style={{ fontSize: '16px', lineHeight: 1.9, color: 'rgba(240,237,230,0.7)' }}>
-                {project.seo.approccio}
-              </p>
-            </div>
-          </section>
-        )}
-
-        {/* Galleria immagini */}
-        {project.slug === 'pasticceria-bluemoon' ? (
-          <BluemoonGallery />
-        ) : project.slug === 'contex-biancheria' ? (
-          <ContexGallery />
-        ) : project.slug === 'alma-studio' ? (
-          <AlmaGallery />
-        ) : project.slug === 'quadrifoglio-group' ? (
-          <QuadrifoglioGallery />
-        ) : project.slug === 'svinati' ? (
-          <SvinatiGallery />
-        ) : project.slug === 'maestri-cotonieri' ? (
-          <MaestriCotonieriGallery />
-        ) : project.slug === 'alba-ricambi' ? (
-          <AlbaRicambiGallery />
-        ) : project.immagini.length > 0 ? (
-          <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px,1fr))', gap: '2px' }}>
-              {project.immagini.map((img, i) => (
-                <div key={i} style={{ aspectRatio: '4/3', background: '#111', overflow: 'hidden' }}>
-                  <img src={img} alt={`${project.title} ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : (
-          <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '2px' }}>
-              {[1,2,3].map(i => (
-                <div key={i} style={{
-                  aspectRatio: '4/3', background: '#111',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  border: '1px dashed #222',
-                }}>
-                  <p style={{ fontSize: '11px', color: '#333', letterSpacing: '0.1em' }}>IMMAGINE {i}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Processo — solo se presente nei dati SEO */}
-        {project.seo?.processo && (
-          <section style={{ borderBottom: '1px solid var(--border)', padding: 'clamp(60px,8vw,100px) clamp(24px,5vw,40px)' }}>
-            <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--muted)' }} />
-              Il processo
-            </p>
-            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(28px,4vw,48px)', letterSpacing: '0.02em', lineHeight: 1.1, marginBottom: '48px' }}>
-              Step by step
-            </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1px', background: 'var(--border)' }}>
-              {project.seo.processo.map((step, i) => (
-                <div key={i} style={{ padding: 'clamp(24px,4vw,40px)', background: 'var(--bg)' }}>
-                  <span style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(36px,4vw,56px)', color: project.accent, opacity: 0.3, lineHeight: 1 }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <p style={{ fontSize: '14px', lineHeight: 1.7, color: 'rgba(240,237,230,0.7)', marginTop: '12px' }}>
-                    {step}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Servizi del progetto — riepilogo */}
-        <section style={{ borderBottom: '1px solid var(--border)', padding: 'clamp(40px,6vw,60px) clamp(24px,5vw,40px)' }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
-            <div>
-              <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>Servizi erogati</p>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                {project.services.map(s => (
-                  <span key={s} style={{ fontSize: '13px', padding: '6px 16px', border: `1px solid ${project.accent}40`, color: project.accent, letterSpacing: '0.06em' }}>
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '8px' }}>Anno</p>
-              <p style={{ fontFamily: 'var(--font-bebas)', fontSize: '32px', color: project.accent }}>{project.year}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section style={{ padding: 'clamp(60px,10vw,100px) clamp(24px,5vw,40px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '32px' }}>
-          <Link href="/progetti" style={{ fontSize: '13px', color: 'var(--muted)', textDecoration: 'none', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            ← Tutti i progetti
-          </Link>
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ fontSize: '15px', color: 'rgba(240,237,230,0.5)', marginBottom: '24px' }}>Hai un progetto simile?</p>
-            <Link href="/contatti" style={{
-              background: 'var(--accent)', color: '#0a0a0a',
-              padding: '16px 40px', fontSize: '13px', fontWeight: 700,
-              letterSpacing: '0.12em', textTransform: 'uppercase', textDecoration: 'none',
-              display: 'inline-block',
+          <div
+            className="case-content-row"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              padding: '30px 40px',
+              gap: '40px',
+            }}
+          >
+            <span style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 400,
+              fontSize: '16px',
+              color: '#b2b2b2',
+              flexShrink: 0,
+              minWidth: '120px',
             }}>
-              Parliamone →
-            </Link>
+              (PROBLEMA)
+            </span>
+            <p style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 400,
+              fontSize: '16px',
+              color: '#6a6a6a',
+              lineHeight: 1.5,
+              margin: 0,
+              maxWidth: '644px',
+              whiteSpace: 'pre-line',
+            }}>
+              {project.sfida}
+            </p>
+          </div>
+
+          <div
+            className="case-content-row"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              padding: '30px 40px',
+              gap: '40px',
+            }}
+          >
+            <span style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 400,
+              fontSize: '16px',
+              color: '#b2b2b2',
+              flexShrink: 0,
+              minWidth: '120px',
+            }}>
+              (SOLUZIONE)
+            </span>
+            <p style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 400,
+              fontSize: '16px',
+              color: '#6a6a6a',
+              lineHeight: 1.5,
+              margin: 0,
+              maxWidth: '644px',
+              whiteSpace: 'pre-line',
+            }}>
+              {project.soluzione}
+            </p>
           </div>
         </section>
 
+        {/* Gallery (Figma pattern: full-width + rows of 2 + full-width) */}
+        {project.immagini.length > 0 && (
+          <section style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            background: '#0a0a0a',
+          }}>
+            {project.immagini.map((img, i) => {
+              const total = project.immagini.length
+              if (i === 0 || (total > 2 && i === total - 1 && (total - 1) % 2 === 0)) {
+                return (
+                  <div key={img} className="case-gallery-full" style={{
+                    width: '100%',
+                    height: 'clamp(320px, 42vw, 608px)',
+                    overflow: 'hidden',
+                  }}>
+                    <img src={img} alt={`${project.title} ${i + 1}`} style={{
+                      width: '100%', height: '100%', objectFit: 'cover',
+                    }} />
+                  </div>
+                )
+              }
+              if ((i - 1) % 2 === 0) {
+                const next = project.immagini[i + 1]
+                return (
+                  <div key={img} className="case-gallery-pair" style={{
+                    display: 'grid',
+                    gridTemplateColumns: next ? '1fr 720px' : '1fr',
+                    gap: '10px',
+                  }}>
+                    <div style={{ height: 'clamp(320px, 58vw, 828px)', overflow: 'hidden' }}>
+                      <img src={img} alt={`${project.title} ${i + 1}`} style={{
+                        width: '100%', height: '100%', objectFit: 'cover',
+                      }} />
+                    </div>
+                    {next && (
+                      <div style={{ height: 'clamp(320px, 58vw, 828px)', overflow: 'hidden' }}>
+                        <img src={next} alt={`${project.title} ${i + 2}`} style={{
+                          width: '100%', height: '100%', objectFit: 'cover',
+                        }} />
+                      </div>
+                    )}
+                  </div>
+                )
+              }
+              return null
+            })}
+          </section>
+        )}
+
+        {/* Other projects suggestion */}
+        {otherProjects.length > 0 && (
+          <section style={{
+            borderTop: '0.5px solid #525252',
+            borderBottom: '0.5px solid #525252',
+            padding: '40px 30px',
+            background: '#0a0a0a',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '30px',
+          }}>
+            <p style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#b2b2b2',
+              margin: 0,
+            }}>
+              I NOSTRI PROGETTI
+            </p>
+
+            <div className="case-other-projects" style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '30px',
+            }}>
+              {otherProjects.map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/progetti/${p.slug}`}
+                  className="project-card"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '20px',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  <div style={{
+                    position: 'relative',
+                    width: '100%',
+                    aspectRatio: '500 / 728',
+                    overflow: 'hidden',
+                  }}>
+                    <img
+                      src={p.immagini[0]}
+                      alt={p.title}
+                      className="project-img"
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
+                        filter: 'grayscale(10%)',
+                      }}
+                    />
+                  </div>
+
+                  <div style={{
+                    display: 'flex',
+                    gap: '20px',
+                    alignItems: 'flex-start',
+                  }}>
+                    <div style={{ flex: '1 1 auto' }}>
+                      <p style={{
+                        fontFamily: 'var(--font-syne)',
+                        fontWeight: 500,
+                        fontSize: '16px',
+                        color: '#b2b2b2',
+                        lineHeight: 1.3,
+                        margin: 0,
+                      }}>
+                        {tagsFor(p)}
+                      </p>
+                      <p style={{
+                        fontFamily: 'var(--font-syne)',
+                        fontWeight: 500,
+                        fontSize: '16px',
+                        color: '#ffffff',
+                        textDecoration: 'underline',
+                        lineHeight: 1.3,
+                        marginTop: '2px',
+                        textTransform: 'uppercase',
+                      }}>
+                        {p.title}
+                      </p>
+                    </div>
+                    <svg
+                      width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden
+                      style={{ flexShrink: 0, marginTop: '2px', color: '#ffffff' }}
+                    >
+                      <path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+                    </svg>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
       </main>
       <Footer />
     </>

@@ -5,12 +5,11 @@ import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
 const links = [
-  { label: 'Chi Siamo', href: '/chi-siamo' },
-  { label: 'Cosa Facciamo', href: '/cosa-facciamo' },
-  { label: 'Progetti', href: '/progetti' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Lavora con Noi', href: '/lavora-con-noi' },
-  { label: 'Contatti', href: '/contatti' },
+  { label: 'HOME', href: '/' },
+  { label: 'SERVIZI', href: '/cosa-facciamo' },
+  { label: 'PROGETTI', href: '/progetti' },
+  { label: 'LAVORA CON NOI', href: '/lavora-con-noi' },
+  { label: 'CONTATTI', href: '/contatti' },
 ]
 
 const services = [
@@ -151,12 +150,11 @@ export default function Navbar() {
               return (
                 <li key={l.href} style={{ whiteSpace: 'nowrap' }}>
                   <Link href={l.href} style={{
-                    fontSize: '14px', fontWeight: 500, letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
+                    fontFamily: 'var(--font-syne)',
+                    fontSize: '16px', fontWeight: 500, letterSpacing: 0,
                     color: active ? 'var(--accent)' : 'var(--text)',
-                    textDecoration: 'none', opacity: active ? 1 : 0.55,
-                    transition: 'opacity 0.3s, color 0.3s',
-                    borderBottom: active ? '1px solid var(--accent)' : '1px solid transparent',
+                    textDecoration: active ? 'underline' : 'none',
+                    transition: 'color 0.3s',
                     paddingBottom: '2px', display: 'block',
                   }}>
                     {l.label}
@@ -170,13 +168,14 @@ export default function Navbar() {
                 onClick={() => setFormOpen(true)}
                 style={{
                   background: 'var(--accent)', color: '#0a0a0a',
-                  border: 'none', padding: '10px 20px',
-                  fontSize: '13px', fontWeight: 700, letterSpacing: '0.1em',
-                  textTransform: 'uppercase', cursor: 'none',
-                  fontFamily: 'inherit', transition: 'background 0.3s',
+                  border: 'none', padding: '10px 40px',
+                  fontFamily: 'var(--font-syne)',
+                  fontSize: '16px', fontWeight: 500, letterSpacing: 0,
+                  cursor: 'none',
+                  transition: 'background 0.3s',
                 }}
               >
-                Richiedi consulenza
+                RICHIEDI UNA CONSULENZA
               </button>
             </li>
           </ul>
@@ -190,8 +189,9 @@ export default function Navbar() {
               style={{
                 background: 'var(--accent)', color: '#0a0a0a',
                 border: 'none', padding: '8px 14px',
-                fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em',
-                textTransform: 'uppercase', cursor: 'none', fontFamily: 'inherit',
+                fontFamily: 'var(--font-syne)',
+                fontSize: '11px', fontWeight: 500, letterSpacing: '0.05em',
+                textTransform: 'uppercase', cursor: 'none',
               }}
             >
               Consulenza

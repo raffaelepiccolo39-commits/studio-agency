@@ -2,42 +2,112 @@
 
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
-import Breadcrumb from '@/components/ui/Breadcrumb'
-import ScrollReveal from '@/components/ui/ScrollReveal'
+import ProjectsSection from '@/components/sections/ProjectsSection'
+import { useInView } from 'react-intersection-observer'
 
-const services = [
+type Service = {
+  id: string
+  name: string
+  desc: string
+}
+
+const services: Service[] = [
   {
-    id: 'a', title: 'Brand Direction', color: '#c8f55a',
-    desc: 'Non progettiamo solo loghi. Costruiamo identità che durano: una voce, un linguaggio visivo, una posizione di mercato che non si confonde con nessun altro.',
-    items: ['Brand Strategy', 'Visual Identity', 'UX / UI Design', 'Market Positioning', 'Brand Audit', 'Digital Storytelling', 'Competitive Analysis', 'Tone & Messaging'],
+    id: 'a',
+    name: 'BRANDING & GRAPHIC DESIGN',
+    desc: 'Un brand non deve limitarsi a essere presente, deve essere riconoscibile e impossibile da confondere. Costruiamo identità visive capaci di dare coerenza e personalità alla tua azienda. Partiamo dal posizionamento, analizziamo il mercato e traduciamo i valori del brand in un sistema visivo coordinato: logo, colori, tipografia, stile grafico, tono di voce e percezione.',
   },
   {
-    id: 'b', title: 'Advanced Tech', color: '#5a8cf5',
-    desc: 'Sviluppiamo esperienze digitali che performano. Da Shopify Plus a soluzioni headless custom, ogni progetto è costruito con le tecnologie giuste per gli obiettivi giusti.',
-    items: ['E-commerce Development', 'Shopify Plus', 'Headless Commerce', 'Custom App Dev', 'API Integration', 'Performance Optimization', 'Mobile Optimization', 'QA Testing'],
+    id: 'b',
+    name: 'WEBSITE & E-COMMERCE',
+    desc: 'Progettiamo ecosistemi digitali pensati per valorizzare il brand e generare risultati concreti. Dai siti corporate agli e-commerce più strutturati: velocità di caricamento, navigazione intuitiva e percorsi pensati per guidare l’utente all’azione. Costruiamo asset digitali che lavorano ogni giorno per la crescita della tua azienda.',
   },
   {
-    id: 'c', title: 'Performance Marketing', color: '#ff4d1c',
-    desc: 'Non bruciamo budget. Costruiamo ecosistemi di marketing che convertono, fidelizzano e scalano in modo sostenibile, con dati alla mano ad ogni decisione.',
-    items: ['Meta Ads', 'Google Ads', 'Email Automation', 'Audience Segmentation', 'CRO Testing', 'SEO Optimization', 'Remarketing', 'AI Campaigns'],
+    id: 'c',
+    name: 'SOCIAL MEDIA MANAGEMENT',
+    desc: 'Gestiamo la presenza social del tuo brand con una strategia pensata per attirare l’attenzione giusta e trasformare i contenuti in leve di crescita. Non pubblichiamo "tanto per farlo": studiamo il target, definiamo format riconoscibili e sviluppiamo contenuti pensati per generare continuità e relazione. L’obiettivo è costruire una community che percepisce il tuo valore e sceglie di avvicinarsi alla tua azienda.',
   },
   {
-    id: 'd', title: 'System Integration', color: '#f5c85a',
-    desc: 'Il back-office di un e-commerce moderno è complesso. Noi lo rendiamo semplice: ERP, marketplace, logistica, pagamenti — tutto connesso in un ecosistema fluido.',
-    items: ['ERP Integration', 'Marketplace Sync', 'OMS Integration', 'Payment Systems', 'Logistics Automation', 'Data Architecture', 'AI Monitoring', 'AI Automation'],
+    id: 'd',
+    name: 'CONTENT CREATION',
+    desc: 'Creiamo contenuti pensati per lasciare il segno. In un mercato pieno di messaggi tutti uguali, la differenza la fa chi comunica con identità, strategia e qualità. Per questo sviluppiamo contenuti originali, dal copywriting alla produzione visual, capaci di parlare al pubblico giusto e rafforzare la percezione del brand.',
+  },
+  {
+    id: 'e',
+    name: 'PHOTO STUDIO',
+    desc: 'Mettiamo a disposizione una sala posa professionale all’interno dei nostri uffici, pensata per brand, aziende e creator che hanno bisogno di uno spazio curato e attrezzato per realizzare contenuti di qualità. Uno studio versatile, ideale per servizi fotografici professionali, shooting prodotto, produzioni video e contenuti social.',
   },
 ]
 
-const process = [
-  { num: '01', title: 'Discovery', desc: 'Analizziamo il tuo business, i tuoi obiettivi e il mercato. Prima di toccare un pixel, capiamo dove sei e dove vuoi arrivare.' },
-  { num: '02', title: 'Strategia', desc: 'Definiamo la rotta: quale piattaforma, quale approccio, quali KPI. Ogni decisione ha una ragione misurabile.' },
-  { num: '03', title: 'Produzione', desc: 'Design, sviluppo e marketing avanzano insieme. Nessun silos, nessun rimbalzo tra team — un unico flusso creativo e tecnico.' },
-  { num: '04', title: 'Launch & Scale', desc: 'Lanciamo, misuriamo, ottimizziamo. Il progetto non finisce al go-live: cresce con te nel tempo.' },
-]
+function Arrow() {
+  return (
+    <svg width="37" height="37" viewBox="0 0 37 37" fill="none" aria-hidden style={{ color: 'var(--accent)' }}>
+      <path d="M9 28L28 9M28 9H12M28 9V25" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" />
+    </svg>
+  )
+}
 
-export default function CosaFacciamo() {
+function ServiceItem({ service, index }: { service: Service; index: number }) {
+  const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true })
+
+  return (
+    <div
+      ref={ref}
+      className="service-row-cosa"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '60px 457px 1fr 50px',
+        gap: '40px',
+        alignItems: 'flex-start',
+        padding: '0 40px',
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(24px)',
+        transition: `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.05}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.05}s`,
+      }}
+    >
+      <span style={{
+        fontFamily: 'var(--font-syne)',
+        fontWeight: 400,
+        fontSize: '16px',
+        color: '#b2b2b2',
+        paddingTop: '8px',
+      }}>
+        ({service.id})
+      </span>
+
+      <h2 style={{
+        fontFamily: 'var(--font-syne)',
+        fontWeight: 500,
+        fontSize: 'clamp(32px, 3.6vw, 50px)',
+        lineHeight: 0.85,
+        color: 'var(--accent)',
+        margin: 0,
+        whiteSpace: 'pre-line',
+      }}>
+        {service.name}
+      </h2>
+
+      <p style={{
+        fontFamily: 'var(--font-syne)',
+        fontWeight: 400,
+        fontSize: '16px',
+        color: '#ffffff',
+        lineHeight: 1.5,
+        margin: 0,
+        whiteSpace: 'pre-line',
+      }}>
+        {service.desc}
+      </p>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Arrow />
+      </div>
+    </div>
+  )
+}
+
+export default function CosaFacciamoPage() {
   const serviceJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -50,98 +120,49 @@ export default function CosaFacciamo() {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'I nostri servizi',
-      itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Brand Direction' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Advanced Tech' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Performance Marketing' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'System Integration' } },
-      ],
+      itemListElement: services.map(s => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name: s.name },
+      })),
     },
   }
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <Cursor />
       <Navbar />
       <main>
-        <div style={{ padding: '16px clamp(24px,5vw,40px) 0' }}>
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Cosa Facciamo' }]} />
-        </div>
-        <PageHeader
-          tag="I nostri servizi"
-          title="QUELLO CHE"
-          titleAccent="sappiamo"
-          titleAfter="FARE BENE"
-          subtitle="Quattro aree di competenza che lavorano insieme come un unico organismo."
-        />
+        {/* Services section */}
+        <section style={{
+          background: '#0a0a0a',
+          padding: '60px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '30px',
+        }}>
+          <div style={{ padding: '40px 40px 0' }}>
+            <p style={{
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#ffffff',
+              margin: 0,
+            }}>
+              I NOSTRI SERVIZI
+            </p>
+          </div>
 
-        {services.map((s, i) => (
-          <ScrollReveal key={s.id}>
-          <section style={{
-            padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)',
-            borderBottom: '1px solid var(--border)',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(320px,1fr))',
-            gap: '80px',
-            alignItems: 'start',
-            background: i % 2 === 1 ? 'var(--surface)' : 'transparent',
-          }}>
-            <div>
-              <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '13px', color: s.color, letterSpacing: '0.2em', display: 'block', marginBottom: '16px' }}>({s.id}.)</span>
-              <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(48px,7vw,96px)', letterSpacing: '0.01em', lineHeight: 0.9, marginBottom: '32px' }}>
-                {s.title.toUpperCase()}
-              </h2>
-              <p style={{ fontSize: '15px', lineHeight: 1.8, color: 'rgba(240,237,230,0.6)', maxWidth: '440px' }}>{s.desc}</p>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px' }}>
-              {s.items.map(item => (
-                <div key={item} style={{
-                  padding: '18px 20px',
-                  background: 'var(--bg)',
-                  border: '1px solid var(--border)',
-                  fontSize: '12px',
-                  letterSpacing: '0.05em',
-                  color: 'rgba(240,237,230,0.6)',
-                }}>
-                  {item}
-                </div>
-              ))}
-            </div>
-          </section>
-          </ScrollReveal>
-        ))}
-
-        <section style={{ padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
-          <ScrollReveal>
-          <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: '80px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span style={{ display: 'inline-block', width: '24px', height: '1px', background: 'var(--muted)' }} />
-            Come lavoriamo
-          </p>
-          </ScrollReveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: '2px' }}>
-            {process.map((p, i) => (
-              <ScrollReveal key={p.num} delay={i * 0.1}>
-              <div style={{ padding: '48px 32px', background: 'var(--surface)' }}>
-                <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '80px', color: 'var(--border)', lineHeight: 1, display: 'block', marginBottom: '24px' }}>{p.num}</span>
-                <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '28px', letterSpacing: '0.05em', marginBottom: '16px', color: 'var(--accent)' }}>{p.title.toUpperCase()}</h3>
-                <p style={{ fontSize: '14px', lineHeight: 1.75, color: 'rgba(240,237,230,0.55)' }}>{p.desc}</p>
-              </div>
-              </ScrollReveal>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', paddingTop: '30px' }}>
+            {services.map((s, i) => (
+              <ServiceItem key={s.id} service={s} index={i} />
             ))}
           </div>
         </section>
 
-        <section style={{ padding: 'clamp(60px,10vw,120px) clamp(24px,5vw,40px)', textAlign: 'center' }}>
-          <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(40px,6vw,80px)', marginBottom: '16px' }}>PRONTO A</h2>
-          <h2 style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', fontSize: 'clamp(40px,6vw,80px)', color: 'var(--accent)', marginBottom: '40px' }}>iniziare?</h2>
-          <a href="/contatti" className="btn-accent">Parliamo del tuo progetto →</a>
-        </section>
+        <ProjectsSection />
       </main>
-      <Footer />
+      <Footer ctaTitle={<>Crediamo nelle idee solide<br />e nei risultati reali.</>} />
     </>
   )
 }

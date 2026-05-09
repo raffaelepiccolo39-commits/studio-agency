@@ -2,15 +2,12 @@ import Cursor from '@/components/ui/Cursor'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import HeroSection from '@/components/sections/HeroSection'
+import IntroSection from '@/components/sections/IntroSection'
 import MarqueeSection from '@/components/sections/MarqueeSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
 import ServicesSection from '@/components/sections/ServicesSection'
-import ProcessSection from '@/components/sections/ProcessSection'
-import TestimonialsSection from '@/components/sections/TestimonialsSection'
-import AboutSection from '@/components/sections/AboutSection'
-import ContactSection from '@/components/sections/ContactSection'
-import PartnersSection from '@/components/sections/PartnersSection'
-import FAQSection from '@/components/sections/FAQSection'
+import SponsorsSection from '@/components/sections/SponsorsSection'
+import GallerySection from '@/components/sections/GallerySection'
 
 import type { Metadata } from 'next'
 
@@ -43,15 +40,12 @@ export default async function Home() {
       <Navbar />
       <main>
         <HeroSection />
+        <IntroSection />
         <MarqueeSection />
         <ProjectsSection />
         <ServicesSection />
-        <ProcessSection />
-        <TestimonialsSection />
-        <AboutSection />
-        <PartnersSection />
-        <FAQSection />
-        <ContactSection />
+        <SponsorsSection />
+        <GallerySection />
       </main>
       <Footer />
     </>

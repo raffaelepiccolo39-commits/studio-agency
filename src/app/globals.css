@@ -273,6 +273,56 @@ body {
   .page-section-padding { padding: 48px 20px !important; }
 }
 
+/* ─── HOMEPAGE PROJECTS ROW (Figma) ─── */
+.projects-row { scrollbar-width: thin; }
+.projects-row::-webkit-scrollbar { height: 6px; }
+.projects-row::-webkit-scrollbar-track { background: transparent; }
+.projects-row::-webkit-scrollbar-thumb { background: #525252; border-radius: 2px; }
+.project-home-card:hover .project-img { transform: scale(1.03); filter: grayscale(0%); }
+.project-home-card:hover .project-home-title { color: var(--accent) !important; }
+.project-home-card:hover .project-home-arrow { transform: translate(4px, -4px); color: var(--accent); }
+@media (max-width: 640px) {
+  .project-home-card { flex: 0 0 80vw !important; height: 520px !important; }
+}
+
+.progetti-grid-card:hover .project-img { transform: scale(1.03); filter: grayscale(0%); }
+.progetti-grid-card:hover .progetti-grid-title { color: var(--accent) !important; }
+.progetti-grid-card:hover .progetti-grid-arrow { transform: translate(4px, -4px); color: var(--accent); }
+@media (max-width: 768px) {
+  .progetti-grid-2col { grid-template-columns: 1fr !important; }
+  .progetti-grid-card[style*="1 / -1"] { grid-column: 1 !important; }
+}
+
+/* ─── CASE STUDY PAGE (Figma) ─── */
+@media (max-width: 768px) {
+  .case-content-row { flex-direction: column !important; padding: 24px !important; gap: 12px !important; }
+  .case-gallery-pair { grid-template-columns: 1fr !important; }
+}
+
+/* ─── SERVICES ROW (Figma) ─── */
+@media (max-width: 1024px) {
+  .service-row-home, .service-row-cosa { grid-template-columns: 40px 1fr 37px !important; }
+  .service-row-home > :nth-child(3), .service-row-cosa > :nth-child(3) { display: none; }
+}
+@media (max-width: 640px) {
+  .service-row-home, .service-row-cosa { grid-template-columns: 1fr 37px !important; gap: 16px !important; padding: 0 24px !important; }
+  .service-row-home > :first-child, .service-row-cosa > :first-child { display: none; }
+}
+
+/* ─── HOMEPAGE GALLERY (Figma) ─── */
+@media (max-width: 768px) {
+  .gallery-grid { grid-template-columns: 1fr !important; height: auto !important; gap: 16px !important; }
+  .gallery-grid > div { height: 60vh !important; }
+}
+
+/* ─── HOMEPAGE FOOTER WHITE (Figma) ─── */
+@media (max-width: 768px) {
+  .footer-home-inner, .contatti-page-inner { padding: 0 24px !important; }
+  .footer-row, .contatti-row { flex-direction: column !important; align-items: flex-start !important; gap: 16px !important; }
+  .footer-bottom { font-size: 13px !important; }
+  .footer-bottom > * { flex: 1 1 100%; text-align: left !important; }
+}
+
 /* ─── REDUCED MOTION ─── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
