@@ -419,7 +419,7 @@ body {
   position: relative;
 }
 
-/* CTA button in cima */
+/* CTA button */
 .footer-cta-button {
   display: inline-flex;
   align-items: center;
@@ -435,10 +435,18 @@ body {
   cursor: none;
   transition: background 0.4s cubic-bezier(0.16,1,0.3,1), color 0.4s ease, padding 0.4s cubic-bezier(0.16,1,0.3,1);
 }
+.footer-cta-button-lg {
+  font-size: 18px;
+  padding: 24px 48px;
+  gap: 22px;
+}
 .footer-cta-button:hover {
   background: #ffffff;
   color: #0a0a0a;
   padding-right: 56px;
+}
+.footer-cta-button-lg:hover {
+  padding-right: 64px;
 }
 .footer-cta-button:hover .footer-cta-arrow {
   transform: translate(8px, -2px);
@@ -447,9 +455,14 @@ body {
   transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
 }
 
+@media (max-width: 1024px) {
+  .footer-columns {
+    grid-template-columns: 1fr !important;
+    gap: 50px !important;
+  }
+}
 @media (max-width: 600px) {
   .footer-cta-block { align-items: stretch !important; }
-  .footer-cta-block h2 { text-align: left !important; }
   .footer-cta-button { width: 100%; justify-content: space-between; }
 }
 
