@@ -83,88 +83,69 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
           alignItems: 'flex-start',
         }}
       >
-        {/* Sinistra: contatti + sede stacked */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
-          {/* Contatti */}
-          <section
-            aria-labelledby="footer-contatti"
-            style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
-          >
-            <h3 id="footer-contatti" style={SR_ONLY}>Contatti</h3>
-            <p aria-hidden style={{
-              fontFamily: 'var(--font-syne)',
-              fontWeight: 400,
-              fontSize: '14px',
-              color: '#9a9a9a',
-              margin: 0,
-              letterSpacing: '0.02em',
-            }}>
-              (contatti)
-            </p>
+        {/* Sinistra: contatti unificato (email, telefoni, sede) */}
+        <section
+          aria-labelledby="footer-contatti"
+          style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
+        >
+          <h3 id="footer-contatti" style={SR_ONLY}>Contatti</h3>
+          <p aria-hidden style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 400,
+            fontSize: '14px',
+            color: '#9a9a9a',
+            margin: 0,
+            letterSpacing: '0.02em',
+          }}>
+            (contatti)
+          </p>
 
+          <a
+            href="mailto:info@piraweb.it"
+            className="footer-email-primary"
+            aria-label="Scrivici a info@piraweb.it"
+          >
+            info@piraweb.it
+          </a>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <a
-              href="mailto:info@piraweb.it"
-              className="footer-email-primary"
-              aria-label="Scrivici a info@piraweb.it"
+              href="tel:+3908117560017"
+              className="footer-phone-primary"
+              aria-label={phoneAria('+39 081 175 60017')}
             >
-              info@piraweb.it
+              +39 081 175 60017
             </a>
+            <a
+              href="tel:+393318535698"
+              className="footer-phone-secondary"
+              aria-label={phoneAria('+39 331 853 5698')}
+            >
+              +39 331 853 5698
+            </a>
+            <a
+              href="tel:+393517214074"
+              className="footer-phone-secondary"
+              aria-label={phoneAria('+39 351 721 4074')}
+            >
+              +39 351 721 4074
+            </a>
+          </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <a
-                href="tel:+3908117560017"
-                className="footer-phone-primary"
-                aria-label={phoneAria('+39 081 175 60017')}
-              >
-                +39 081 175 60017
-              </a>
-              <a
-                href="tel:+393318535698"
-                className="footer-phone-secondary"
-                aria-label={phoneAria('+39 331 853 5698')}
-              >
-                +39 331 853 5698
-              </a>
-              <a
-                href="tel:+393517214074"
-                className="footer-phone-secondary"
-                aria-label={phoneAria('+39 351 721 4074')}
-              >
-                +39 351 721 4074
-              </a>
-            </div>
-          </section>
-
-          {/* Sede */}
-          <section
-            aria-labelledby="footer-sede"
-            style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
-          >
-            <h3 id="footer-sede" style={SR_ONLY}>Sede</h3>
-            <p aria-hidden style={{
-              fontFamily: 'var(--font-syne)',
-              fontWeight: 400,
-              fontSize: '14px',
-              color: '#9a9a9a',
-              margin: 0,
-              letterSpacing: '0.02em',
-            }}>
-              (sede)
-            </p>
-            <address style={{
-              fontFamily: 'var(--font-syne)',
-              fontWeight: 500,
-              fontSize: '16px',
-              color: '#ffffff',
-              margin: 0,
-              lineHeight: 1.5,
-              fontStyle: 'normal',
-            }}>
-              Via A.Petrillo N°171<br />
-              81030 CASAPESENNA CE, IT
-            </address>
-          </section>
-        </div>
+          <address style={{
+            fontFamily: 'var(--font-syne)',
+            fontWeight: 500,
+            fontSize: '16px',
+            color: '#ffffff',
+            margin: 0,
+            lineHeight: 1.5,
+            fontStyle: 'normal',
+            paddingTop: '8px',
+          }}>
+            Via A.Petrillo N°171<br />
+            81030 CASAPESENNA CE, IT
+          </address>
+        </section>
 
         {/* Destra: CTA prominente */}
         <div
