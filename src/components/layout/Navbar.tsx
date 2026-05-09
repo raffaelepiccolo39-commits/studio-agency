@@ -30,6 +30,7 @@ const inputStyle = {
 export default function Navbar() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [formOpen, setFormOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -51,8 +52,22 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', handler)
+    let lastY = window.scrollY
+    let ticking = false
+    const handler = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        const y = window.scrollY
+        setScrolled(y > 40)
+        const delta = y - lastY
+        if (y > 200 && delta > 6) setHidden(true)
+        else if (delta < -6 || y < 100) setHidden(false)
+        lastY = y
+        ticking = false
+      })
+    }
+    window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
@@ -125,9 +140,11 @@ export default function Navbar() {
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: `${scrolled ? '6px' : '10px'} clamp(20px,5vw,40px)`,
           background: navBg,
-          backdropFilter: (scrolled || navHovered) ? 'blur(12px)' : 'none',
-          borderBottom: scrolled ? '1px solid var(--border)' : 'none',
-          transition: 'all 0.4s ease',
+          backdropFilter: (scrolled || navHovered) ? 'blur(14px)' : 'none',
+          WebkitBackdropFilter: (scrolled || navHovered) ? 'blur(14px)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : 'none',
+          transform: hidden && !menuOpen && !formOpen ? 'translateY(-110%)' : 'translateY(0)',
+          transition: 'transform 0.5s cubic-bezier(0.16,1,0.3,1), background 0.4s ease, backdrop-filter 0.4s ease, padding 0.3s ease, border-bottom 0.3s ease',
         }}
       >
 
@@ -149,14 +166,15 @@ export default function Navbar() {
               const active = pathname === l.href
               return (
                 <li key={l.href} style={{ whiteSpace: 'nowrap' }}>
-                  <Link href={l.href} style={{
-                    fontFamily: 'var(--font-syne)',
-                    fontSize: '16px', fontWeight: 500, letterSpacing: 0,
-                    color: active ? 'var(--accent)' : 'var(--text)',
-                    textDecoration: active ? 'underline' : 'none',
-                    transition: 'color 0.3s',
-                    paddingBottom: '2px', display: 'block',
-                  }}>
+                  <Link
+                    href={l.href}
+                    className={`nav-link-anim ${active ? 'is-active' : ''}`}
+                    style={{
+                      fontFamily: 'var(--font-syne)',
+                      fontSize: '16px', fontWeight: 500, letterSpacing: 0,
+                      color: active ? 'var(--accent)' : 'var(--text)',
+                    }}
+                  >
                     {l.label}
                   </Link>
                 </li>

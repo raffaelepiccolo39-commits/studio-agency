@@ -42,6 +42,7 @@ function ProjectCard({ project, fullWidth = false, index }: { project: (typeof p
     <Link
       ref={ref}
       href={`/progetti/${project.slug}`}
+      data-cursor="VEDI"
       className="project-card progetti-grid-card"
       style={{
         gridColumn: fullWidth ? '1 / -1' : undefined,

@@ -4,6 +4,7 @@ import './globals.css'
 import PageLoader from '@/components/ui/PageLoader'
 import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider'
 import ScrollProgress from '@/components/ui/ScrollProgress'
+import PageTransition from '@/components/ui/PageTransition'
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -88,6 +89,7 @@ export default function RootLayout({
       <body>
         <PageLoader />
         <ScrollProgress />
+        <PageTransition />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
