@@ -124,15 +124,15 @@ export default function ServicesSection() {
   }, { scope: sectionRef })
 
   useEffect(() => {
-    const cols = sectionRef.current?.querySelectorAll<HTMLElement>('.service-col')
-    if (!cols) return
+    const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.service-card')
+    if (!cards) return
 
     const onLeave = () => setActiveId(null)
-    cols.forEach((col) => {
-      const id = col.dataset.service || ''
+    cards.forEach((card) => {
+      const id = card.dataset.service || ''
       const handler = () => setActiveId(id)
-      col.addEventListener('mouseenter', handler)
-      col.addEventListener('mouseleave', onLeave)
+      card.addEventListener('mouseenter', handler)
+      card.addEventListener('mouseleave', onLeave)
     })
   }, [])
 
@@ -144,11 +144,11 @@ export default function ServicesSection() {
       style={{
         position: 'relative',
         background: '#0a0a0a',
-        padding: 'clamp(60px, 8vw, 100px) clamp(20px, 3vw, 40px)',
+        padding: 'clamp(60px, 8vw, 110px) clamp(20px, 3vw, 40px)',
         overflow: 'hidden',
       }}
     >
-      {/* Background image layers */}
+      {/* Background image full-bleed (hover) */}
       <div
         aria-hidden
         style={{
@@ -169,57 +169,41 @@ export default function ServicesSection() {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: activeId === s.id ? 1 : 0,
-              transform: activeId === s.id ? 'scale(1)' : 'scale(1.08)',
+              transform: activeId === s.id ? 'scale(1)' : 'scale(1.06)',
               transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1)',
-              filter: 'brightness(0.32)',
             }}
           />
         ))}
+        {/* Vignette overlay */}
         <div
           aria-hidden
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.25) 50%, rgba(10,10,10,0.9) 100%)',
+            background: 'linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.35) 50%, rgba(10,10,10,0.85) 100%)',
           }}
         />
       </div>
 
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 'clamp(36px, 5vw, 64px)' }}>
-        {/* Eyebrow */}
-        <div className="services-evolve-eyebrow" style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '14px',
-          fontFamily: 'var(--font-syne)',
-          fontWeight: 500,
-          fontSize: '13px',
-          color: '#b2b2b2',
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-        }}>
-          <span style={{ display: 'inline-block', width: '24px', height: '1px', background: '#525252' }} />
-          (02) I Nostri Servizi
-        </div>
-
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 'clamp(50px, 7vw, 100px)' }}>
         {/* Manifesto */}
         <h2
           ref={manifestoRef}
           className="services-manifesto"
           style={{
             fontFamily: 'var(--font-syne)',
-            fontWeight: 500,
-            fontSize: 'clamp(24px, 3vw, 44px)',
-            lineHeight: 1.22,
+            fontWeight: 600,
+            fontSize: 'clamp(28px, 3.6vw, 56px)',
+            lineHeight: 1.18,
             letterSpacing: '-0.015em',
             color: '#ffffff',
-            maxWidth: '1280px',
             margin: 0,
+            textAlign: 'left',
           }}
         >
           <span style={{ display: 'block', overflow: 'hidden' }}>
             <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              <span aria-hidden style={{ display: 'inline-block', width: 'clamp(60px, 8vw, 140px)' }} />Non facciamo solo esecuzione. Uniamo brand
+              <span aria-hidden style={{ display: 'inline-block', width: 'clamp(60px, 10vw, 200px)' }} />Non facciamo solo esecuzione. Uniamo brand
             </span>
           </span>
           <span style={{ display: 'block', overflow: 'hidden' }}>
@@ -239,28 +223,12 @@ export default function ServicesSection() {
           </span>
         </h2>
 
-        {/* Rettangolo: griglia servizi + description */}
-        <div
-          className="services-evolve-box"
-          style={{
-            border: '0.5px solid rgba(255,255,255,0.12)',
-            borderRadius: '0',
-            padding: 'clamp(24px, 3vw, 44px) clamp(20px, 2.5vw, 36px)',
-            background: 'rgba(10,10,10,0.35)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'clamp(28px, 3.5vw, 48px)',
-          }}
-        >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(20px, 2.5vw, 36px)' }}>
           {/* Top row */}
           <div className="services-evolve-toprow" style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingBottom: '20px',
-            borderBottom: '0.5px solid rgba(255,255,255,0.12)',
           }}>
             <span style={{
               fontFamily: 'var(--font-syne)',
@@ -268,7 +236,6 @@ export default function ServicesSection() {
               fontSize: '13px',
               color: '#e5e5e5',
               letterSpacing: '0.04em',
-              textTransform: 'uppercase',
             }}>
               Our Services
             </span>
@@ -283,119 +250,130 @@ export default function ServicesSection() {
             </span>
           </div>
 
-          {/* Grid: 5 servizi + 1 description */}
+          {/* Grid: 5 cards + description */}
           <div
             className="services-evolve-grid"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(5, 1fr) 1.4fr',
-              gap: 'clamp(20px, 2vw, 36px)',
-              alignItems: 'start',
+              gridTemplateColumns: 'repeat(5, 1fr) 1.3fr',
+              gap: 'clamp(14px, 1.6vw, 24px)',
+              alignItems: 'stretch',
             }}
           >
-            {services.map((s) => (
-              <div
-                key={s.id}
-                data-service={s.id}
-                className="service-col"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 'clamp(20px, 2.4vw, 36px)',
-                  cursor: 'pointer',
-                  minHeight: '260px',
-                  transition: 'opacity 0.4s cubic-bezier(0.16,1,0.3,1)',
-                  opacity: activeId && activeId !== s.id ? 0.32 : 1,
-                }}
-              >
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'space-between',
-                  gap: '8px',
-                  paddingBottom: '14px',
-                  borderBottom: '0.5px solid rgba(255,255,255,0.12)',
-                }}>
-                  <h3 style={{
-                    fontFamily: 'var(--font-bebas)',
-                    fontSize: 'clamp(26px, 2.8vw, 44px)',
-                    lineHeight: 1,
-                    letterSpacing: '0.005em',
-                    color: '#ffffff',
-                    margin: 0,
-                  }}>
-                    {s.title[0]}<br />{s.title[1]}
-                  </h3>
-                  <span
-                    className="service-col-tag"
-                    style={{
-                      fontFamily: 'var(--font-syne)',
-                      fontSize: '11px',
-                      color: '#b2b2b2',
-                      letterSpacing: '0.05em',
-                      flexShrink: 0,
-                      marginTop: '4px',
-                      opacity: activeId === s.id ? 1 : 0,
-                      transform: activeId === s.id ? 'translateY(0)' : 'translateY(-6px)',
-                      transition: 'opacity 0.4s, transform 0.5s cubic-bezier(0.16,1,0.3,1)',
-                    }}
-                  >
-                    {s.tag}
-                  </span>
-                </div>
-
-                <ul
-                  className="service-col-features"
+            {services.map((s) => {
+              const isActive = activeId === s.id
+              const isDimmed = activeId !== null && !isActive
+              return (
+                <div
+                  key={s.id}
+                  data-service={s.id}
+                  className="service-card"
                   style={{
-                    listStyle: 'none',
-                    padding: 0,
-                    margin: 0,
+                    position: 'relative',
+                    minHeight: 'clamp(380px, 38vw, 500px)',
+                    border: '0.5px solid rgba(255,255,255,0.08)',
+                    background: isActive
+                      ? 'rgba(255,255,255,0.04)'
+                      : 'rgba(255,255,255,0.025)',
+                    padding: 'clamp(18px, 1.6vw, 24px)',
+                    cursor: 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '4px',
-                    opacity: activeId === s.id ? 0.85 : 0,
-                    transform: activeId === s.id ? 'translateY(0)' : 'translateY(8px)',
-                    transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)',
+                    justifyContent: 'space-between',
+                    overflow: 'hidden',
+                    opacity: isDimmed ? 0.18 : 1,
+                    transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), background 0.5s cubic-bezier(0.16,1,0.3,1)',
                   }}
                 >
-                  {s.features.map((f) => (
-                    <li
-                      key={f}
+                  {/* Top: title + tag */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                    gap: '8px',
+                  }}>
+                    <h3 style={{
+                      fontFamily: 'var(--font-syne)',
+                      fontWeight: 500,
+                      fontSize: 'clamp(18px, 1.4vw, 22px)',
+                      lineHeight: 1.18,
+                      letterSpacing: '0.005em',
+                      color: '#ffffff',
+                      margin: 0,
+                    }}>
+                      {s.title[0]}<br />{s.title[1]}
+                    </h3>
+                    <span
+                      className="service-card-tag"
                       style={{
                         fontFamily: 'var(--font-syne)',
-                        fontWeight: 400,
-                        fontSize: '12.5px',
-                        color: '#e5e5e5',
-                        lineHeight: 1.65,
-                        letterSpacing: '0.005em',
+                        fontSize: '11px',
+                        color: '#b2b2b2',
+                        letterSpacing: '0.05em',
+                        flexShrink: 0,
+                        marginTop: '4px',
+                        opacity: isActive ? 1 : 0,
+                        transform: isActive ? 'translateY(0)' : 'translateY(-6px)',
+                        transition: 'opacity 0.4s, transform 0.5s cubic-bezier(0.16,1,0.3,1)',
                       }}
                     >
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+                      {s.tag}
+                    </span>
+                  </div>
 
-            {/* Description column (6th) */}
+                  {/* Bottom: features list */}
+                  <ul
+                    className="service-card-features"
+                    style={{
+                      listStyle: 'none',
+                      padding: 0,
+                      margin: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '2px',
+                      opacity: isActive ? 0.95 : 0,
+                      transform: isActive ? 'translateY(0)' : 'translateY(8px)',
+                      transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)',
+                    }}
+                  >
+                    {s.features.map((f) => (
+                      <li
+                        key={f}
+                        style={{
+                          fontFamily: 'var(--font-syne)',
+                          fontWeight: 400,
+                          fontSize: '12.5px',
+                          color: '#ffffff',
+                          lineHeight: 1.55,
+                          letterSpacing: '0.005em',
+                        }}
+                      >
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            })}
+
+            {/* Description column */}
             <div
               className="services-evolve-desc"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '14px',
-                paddingLeft: 'clamp(8px, 1.2vw, 20px)',
-                borderLeft: '0.5px solid rgba(255,255,255,0.12)',
+                paddingLeft: 'clamp(8px, 1.2vw, 18px)',
+                paddingTop: '4px',
               }}
             >
               <p style={{
                 fontFamily: 'var(--font-syne)',
                 fontWeight: 500,
                 fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.6,
-                color: '#cfcfcf',
+                lineHeight: 1.55,
+                color: '#e5e5e5',
                 margin: 0,
-                letterSpacing: '0.005em',
               }}>
                 Ogni brand è un organismo già in movimento. Persone, processi, decisioni. Il nostro
                 lavoro non è inserirci sopra. È <strong style={{ color: '#ffffff' }}>entrare dentro</strong>.
@@ -404,8 +382,8 @@ export default function ServicesSection() {
                 fontFamily: 'var(--font-syne)',
                 fontWeight: 500,
                 fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.6,
-                color: '#cfcfcf',
+                lineHeight: 1.55,
+                color: '#e5e5e5',
                 margin: 0,
               }}>
                 Affianchiamo i team, leggiamo il business, capiamo dove l&apos;energia si disperde
@@ -416,12 +394,12 @@ export default function ServicesSection() {
                 fontFamily: 'var(--font-syne)',
                 fontWeight: 500,
                 fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.6,
-                color: '#cfcfcf',
+                lineHeight: 1.55,
+                color: '#e5e5e5',
                 margin: 0,
               }}>
                 Riduciamo passaggi, allineiamo scelte, trasformiamo complessità in struttura.
-                Non aggiungiamo rumore. <strong style={{ color: 'var(--accent)' }}>Portiamo direzione.</strong>
+                Non aggiungiamo rumore. <strong style={{ color: '#ffffff' }}>Portiamo direzione.</strong>
               </p>
             </div>
           </div>

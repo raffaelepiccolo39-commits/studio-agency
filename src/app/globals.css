@@ -307,18 +307,17 @@ body {
 @media (max-width: 1280px) {
   .services-evolve-grid {
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 28px 24px !important;
+    gap: 16px !important;
   }
   .services-evolve-desc {
     grid-column: 1 / -1 !important;
-    border-left: none !important;
-    border-top: 0.5px solid rgba(255,255,255,0.12) !important;
     padding-left: 0 !important;
     padding-top: 24px !important;
     margin-top: 8px !important;
     flex-direction: row !important;
     flex-wrap: wrap !important;
     gap: 18px !important;
+    border-top: 0.5px solid rgba(255,255,255,0.12);
   }
   .services-evolve-desc p {
     flex: 1 1 280px;
@@ -329,17 +328,23 @@ body {
   .services-evolve-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
-  .services-evolve .service-col-features,
-  .services-evolve .service-col-tag {
+  .services-evolve .service-card {
+    min-height: 320px !important;
+  }
+  .services-evolve .service-card-features,
+  .services-evolve .service-card-tag {
     opacity: 1 !important;
     transform: translateY(0) !important;
   }
-  .services-evolve .service-col-features { opacity: 0.85 !important; }
+  .services-evolve .service-card-features { opacity: 0.92 !important; }
 }
 @media (max-width: 600px) {
   .services-evolve-grid {
     grid-template-columns: 1fr !important;
-    gap: 36px !important;
+    gap: 14px !important;
+  }
+  .services-evolve .service-card {
+    min-height: 280px !important;
   }
   .services-evolve-desc {
     flex-direction: column !important;
