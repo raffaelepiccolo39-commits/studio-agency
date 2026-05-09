@@ -304,10 +304,30 @@ body {
 }
 
 /* ─── SERVICES EVOLVE ─── */
+@media (max-width: 1280px) {
+  .services-evolve-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 28px 24px !important;
+  }
+  .services-evolve-desc {
+    grid-column: 1 / -1 !important;
+    border-left: none !important;
+    border-top: 0.5px solid rgba(255,255,255,0.12) !important;
+    padding-left: 0 !important;
+    padding-top: 24px !important;
+    margin-top: 8px !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 18px !important;
+  }
+  .services-evolve-desc p {
+    flex: 1 1 280px;
+    min-width: 240px;
+  }
+}
 @media (max-width: 1024px) {
   .services-evolve-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 32px !important;
   }
   .services-evolve .service-col-features,
   .services-evolve .service-col-tag {
@@ -319,7 +339,10 @@ body {
 @media (max-width: 600px) {
   .services-evolve-grid {
     grid-template-columns: 1fr !important;
-    gap: 40px !important;
+    gap: 36px !important;
+  }
+  .services-evolve-desc {
+    flex-direction: column !important;
   }
 }
 
