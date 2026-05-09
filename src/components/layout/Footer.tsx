@@ -68,13 +68,12 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
       <div>
         <Link href="/" style={{ display: 'inline-block' }}>
           <img
-            src="/logo.png"
-            alt="Pira Web"
+            src="/logo-dark.png"
+            alt="Pira Web Creative Agency"
             style={{
               height: '46px',
               width: 'auto',
               display: 'block',
-              filter: 'invert(1)',
             }}
           />
         </Link>
