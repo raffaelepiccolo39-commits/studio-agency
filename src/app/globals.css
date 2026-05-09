@@ -419,6 +419,40 @@ body {
   position: relative;
 }
 
+/* CTA button in cima */
+.footer-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--accent);
+  color: #0a0a0a;
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  padding: 20px 40px;
+  border: none;
+  cursor: none;
+  transition: background 0.4s cubic-bezier(0.16,1,0.3,1), color 0.4s ease, padding 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.footer-cta-button:hover {
+  background: #ffffff;
+  color: #0a0a0a;
+  padding-right: 56px;
+}
+.footer-cta-button:hover .footer-cta-arrow {
+  transform: translate(8px, -2px);
+}
+.footer-cta-arrow {
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+@media (max-width: 600px) {
+  .footer-cta-block { align-items: stretch !important; }
+  .footer-cta-block h2 { text-align: left !important; }
+  .footer-cta-button { width: 100%; justify-content: space-between; }
+}
+
 /* Email primaria — peso massimo nei contatti */
 .footer-email-primary {
   font-family: var(--font-syne), sans-serif;

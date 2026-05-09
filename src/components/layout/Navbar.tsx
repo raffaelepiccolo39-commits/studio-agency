@@ -73,6 +73,13 @@ export default function Navbar() {
 
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
+  // Permette ad altri componenti (es. Footer) di aprire il form via custom event
+  useEffect(() => {
+    const open = () => setFormOpen(true)
+    window.addEventListener('pira:openConsulenza', open)
+    return () => window.removeEventListener('pira:openConsulenza', open)
+  }, [])
+
   useEffect(() => {
     document.body.style.overflow = (menuOpen || formOpen) ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }

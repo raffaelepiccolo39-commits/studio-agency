@@ -81,6 +81,45 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
         transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
       }}
     >
+      {/* CTA in cima */}
+      <div
+        className="footer-cta-block"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          gap: '32px',
+          paddingBottom: '50px',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+        }}
+      >
+        <h2 style={{
+          fontFamily: 'var(--font-syne)',
+          fontWeight: 500,
+          fontSize: 'clamp(28px, 4vw, 48px)',
+          lineHeight: 0.95,
+          color: '#ffffff',
+          textAlign: 'right',
+          margin: 0,
+        }}>
+          {resolvedTitle}
+        </h2>
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new CustomEvent('pira:openConsulenza'))}
+          className="footer-cta-button"
+          aria-label="Richiedi una consulenza"
+        >
+          <span>RICHIEDI UNA CONSULENZA</span>
+          <svg
+            className="footer-cta-arrow"
+            width="20" height="20" viewBox="0 0 16 16" fill="none" aria-hidden focusable="false"
+          >
+            <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+          </svg>
+        </button>
+      </div>
+
       {/* Logo */}
       <div>
         <Link href="/" aria-label="Vai alla home" style={{ display: 'inline-block' }}>
@@ -219,20 +258,6 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
           </ul>
         </nav>
       </div>
-
-      {/* Big CTA */}
-      <h2 style={{
-        fontFamily: 'var(--font-syne)',
-        fontWeight: 500,
-        fontSize: 'clamp(28px, 4vw, 48px)',
-        lineHeight: 0.95,
-        color: '#ffffff',
-        textAlign: 'right',
-        margin: 0,
-        width: '100%',
-      }}>
-        {resolvedTitle}
-      </h2>
 
       {/* Bottom bar */}
       <div
