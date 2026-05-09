@@ -73,22 +73,7 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
         transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
       }}
     >
-      {/* Logo */}
-      <div>
-        <Link href="/" aria-label="Vai alla home" style={{ display: 'inline-block' }}>
-          <img
-            src="/logo.png"
-            alt="Pira Web Creative Agency"
-            style={{
-              height: '46px',
-              width: 'auto',
-              display: 'block',
-            }}
-          />
-        </Link>
-      </div>
-
-      {/* 3 columns: contatti, sede, menù */}
+      {/* Columns: contatti, sede, CTA */}
       <div
         className="footer-columns"
         style={{
