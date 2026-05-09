@@ -318,6 +318,28 @@ body {
   100% { transform: translateY(-100%); }
 }
 
+.page-transition-stripes {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.page-transition-stripe {
+  flex: 1;
+  height: 100%;
+  background: #0a0a0a;
+  transform: translateY(0);
+  animation: stripeReveal 0.95s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+  will-change: transform;
+}
+@keyframes stripeReveal {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
 /* ─── NAV LINK ANIMATED UNDERLINE ─── */
 .nav-link-anim {
   position: relative;

@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
+import gsap from 'gsap'
 import SectionLabel from '@/components/ui/SectionLabel'
+import Magnetic from '@/components/ui/Magnetic'
 
 type Service = {
   id: string
@@ -100,9 +102,8 @@ function ServiceRow({
         textDecoration: 'none',
         color: 'inherit',
         borderTop: '0.5px solid #2a2a2a',
-        opacity: inView ? (anyHovered && !active ? 0.35 : 1) : 0,
-        transform: inView ? 'translateY(0)' : 'translateY(24px)',
-        transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
+        opacity: inView ? (anyHovered && !active ? 0.35 : 1) : 1,
+        transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1)',
       }}
     >
       <span style={{
@@ -123,18 +124,31 @@ function ServiceRow({
           fontSize: 'clamp(36px, 6.5vw, 92px)',
           lineHeight: 0.95,
           letterSpacing: '0.005em',
-          color: active ? 'var(--accent)' : '#ffffff',
-          transition: 'color 0.4s, transform 0.6s cubic-bezier(0.16,1,0.3,1)',
-          transform: active ? 'translateX(12px)' : 'translateX(0)',
           margin: 0,
           zIndex: 1,
+          overflow: 'hidden',
+          paddingBottom: '0.05em',
         }}
       >
-        {service.name}
+        <span
+          style={{
+            display: 'inline-block',
+            color: active ? 'var(--accent)' : '#ffffff',
+            transform: inView
+              ? active ? 'translate3d(12px, 0, 0)' : 'translate3d(0, 0, 0)'
+              : 'translate3d(0, 105%, 0)',
+            transition: 'color 0.4s, transform 0.9s cubic-bezier(0.16,1,0.3,1)',
+            willChange: 'transform',
+          }}
+        >
+          {service.name}
+        </span>
       </h3>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', zIndex: 1 }}>
-        <Arrow active={active} />
+        <Magnetic strength={0.6} radius={80}>
+          <Arrow active={active} />
+        </Magnetic>
       </div>
     </Link>
   )
@@ -143,9 +157,33 @@ function ServiceRow({
 export default function ServicesSection() {
   const [activeId, setActiveId] = useState<string | null>(null)
   const activeService = services.find(s => s.id === activeId)
+  const previewRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const section = sectionRef.current
+    const preview = previewRef.current
+    if (!section || !preview) return
+    if (window.matchMedia('(hover: none)').matches) return
+
+    const xTo = gsap.quickTo(preview, 'x', { duration: 1.2, ease: 'expo.out' })
+    const yTo = gsap.quickTo(preview, 'y', { duration: 1.2, ease: 'expo.out' })
+
+    const onMove = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      xTo((e.clientX - cx) * 0.04)
+      yTo((e.clientY - cy) * 0.04)
+    }
+
+    section.addEventListener('mousemove', onMove)
+    return () => section.removeEventListener('mousemove', onMove)
+  }, [])
 
   return (
     <section
+      ref={sectionRef}
       id="services"
       style={{
         position: 'relative',
@@ -162,19 +200,20 @@ export default function ServicesSection() {
 
       {/* Floating preview image */}
       <div
+        ref={previewRef}
         aria-hidden
         className="service-preview"
         style={{
           position: 'absolute',
           right: 'clamp(40px, 6vw, 80px)',
-          top: '50%',
-          transform: 'translateY(-50%)',
+          top: 'calc(50% - clamp(190px, 18vw, 280px))',
           width: 'clamp(280px, 28vw, 420px)',
           height: 'clamp(380px, 36vw, 560px)',
           pointerEvents: 'none',
           zIndex: 1,
           opacity: activeService ? 1 : 0,
           transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1)',
+          willChange: 'transform',
         }}
       >
         {services.map((s) => (

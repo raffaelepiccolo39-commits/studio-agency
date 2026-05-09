@@ -1,9 +1,17 @@
 'use client'
 
 import Link from 'next/link'
-import { useInView } from 'react-intersection-observer'
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { projects } from '@/data/projects'
 import SectionLabel from '@/components/ui/SectionLabel'
+import Magnetic from '@/components/ui/Magnetic'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const homepageOrder = [
   'pasticceria-bluemoon',
@@ -34,8 +42,47 @@ const tagsFor = (p: (typeof projects)[number]) => {
 }
 
 export default function ProjectsSection() {
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(() => {
+    const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.project-home-card')
+    if (!cards) return
+
+    cards.forEach((card) => {
+      const wrap = card.querySelector<HTMLElement>('.project-img-wrap')
+      const img = card.querySelector<HTMLImageElement>('.project-img')
+      if (!wrap || !img) return
+
+      gsap.set(wrap, { clipPath: 'inset(0% 0% 100% 0%)' })
+      gsap.set(img, { scale: 1.25 })
+
+      gsap.to(wrap, {
+        clipPath: 'inset(0% 0% 0% 0%)',
+        duration: 1.3,
+        ease: 'expo.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+
+      gsap.to(img, {
+        scale: 1,
+        duration: 1.5,
+        ease: 'expo.out',
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 88%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+    })
+  }, { scope: sectionRef })
+
   return (
     <section
+      ref={sectionRef}
       id="projects"
       style={{
         borderTop: '0.5px solid #525252',
@@ -75,12 +122,15 @@ export default function ProjectsSection() {
               scrollSnapAlign: 'start',
             }}
           >
-            <div style={{
-              position: 'relative',
-              width: '100%',
-              aspectRatio: '4 / 5',
-              overflow: 'hidden',
-            }}>
+            <div
+              className="project-img-wrap"
+              style={{
+                position: 'relative',
+                width: '100%',
+                aspectRatio: '4 / 5',
+                overflow: 'hidden',
+              }}
+            >
               <img
                 src={p.immagini[0]}
                 alt={p.title}
@@ -91,8 +141,9 @@ export default function ProjectsSection() {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
+                  transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
                   filter: 'grayscale(10%)',
+                  willChange: 'transform',
                 }}
               />
             </div>
@@ -128,13 +179,15 @@ export default function ProjectsSection() {
                   {p.title}
                 </p>
               </div>
-              <svg
-                className="project-home-arrow"
-                width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden
-                style={{ flexShrink: 0, marginTop: '2px', transition: 'transform 0.4s ease' }}
-              >
-                <path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
-              </svg>
+              <Magnetic strength={0.5} radius={60}>
+                <svg
+                  className="project-home-arrow"
+                  width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden
+                  style={{ flexShrink: 0, marginTop: '2px', transition: 'transform 0.4s ease', display: 'block' }}
+                >
+                  <path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+                </svg>
+              </Magnetic>
             </div>
           </Link>
         ))}

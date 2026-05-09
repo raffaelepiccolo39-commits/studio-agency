@@ -2,7 +2,14 @@
 
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useInView } from 'react-intersection-observer'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Magnetic from '@/components/ui/Magnetic'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const images = [
   '/progetti/pasticceria-bluemoon/mockup-prodotto.jpg',
@@ -13,16 +20,15 @@ const images = [
 const parallaxFactors = [0.08, -0.12, 0.06]
 
 export default function GallerySection() {
-  const elRef = useRef<HTMLElement | null>(null)
+  const sectionRef = useRef<HTMLElement | null>(null)
   const [scrollOffset, setScrollOffset] = useState(0)
-  const { ref: inViewRef, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
   useEffect(() => {
     let rafId = 0
     const onScroll = () => {
       if (rafId) return
       rafId = requestAnimationFrame(() => {
-        const el = elRef.current
+        const el = sectionRef.current
         if (el) {
           const rect = el.getBoundingClientRect()
           const viewportH = window.innerHeight
@@ -40,17 +46,46 @@ export default function GallerySection() {
     }
   }, [])
 
-  const setRefs = useCallback(
-    (el: HTMLElement | null) => {
-      elRef.current = el
-      inViewRef(el)
-    },
-    [inViewRef]
-  )
+  useGSAP(() => {
+    const tiles = sectionRef.current?.querySelectorAll<HTMLElement>('.gallery-tile')
+    if (!tiles) return
+
+    tiles.forEach((tile, i) => {
+      const img = tile.querySelector<HTMLElement>('.gallery-tile-img')
+      if (!img) return
+
+      gsap.set(tile, { clipPath: 'inset(0% 100% 0% 0%)' })
+      gsap.set(img, { scale: 1.3 })
+
+      gsap.to(tile, {
+        clipPath: 'inset(0% 0% 0% 0%)',
+        duration: 1.4,
+        ease: 'expo.out',
+        delay: i * 0.12,
+        scrollTrigger: {
+          trigger: tile,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+
+      gsap.to(img, {
+        scale: 1,
+        duration: 1.6,
+        ease: 'expo.out',
+        delay: i * 0.12,
+        scrollTrigger: {
+          trigger: tile,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+    })
+  }, { scope: sectionRef })
 
   return (
     <section
-      ref={setRefs}
+      ref={sectionRef}
       style={{
         borderTop: '0.5px solid #525252',
         borderBottom: '0.5px solid #525252',
@@ -82,10 +117,8 @@ export default function GallerySection() {
                 position: 'relative',
                 height: '100%',
                 overflow: 'hidden',
-                opacity: inView ? 1 : 0,
-                transform: inView ? 'translateY(0)' : 'translateY(40px)',
-                transition: `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s`,
                 cursor: 'none',
+                willChange: 'clip-path',
               }}
             >
               <div
@@ -99,9 +132,9 @@ export default function GallerySection() {
                   backgroundPosition: 'center',
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
-                  transform: `translate3d(0, ${translate}px, 0) scale(1)`,
+                  transform: `translate3d(0, ${translate}px, 0)`,
                   willChange: 'transform',
-                  transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
+                  transition: 'filter 0.6s ease',
                   filter: 'grayscale(15%) brightness(0.92)',
                 }}
               />
@@ -111,27 +144,29 @@ export default function GallerySection() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '30px 0' }}>
-        <Link
-          href="/progetti"
-          className="gallery-cta"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '15px',
-            fontFamily: 'var(--font-syne)',
-            fontWeight: 500,
-            fontSize: '16px',
-            color: '#ffffff',
-            textDecoration: 'none',
-            paddingBottom: '4px',
-            position: 'relative',
-          }}
-        >
-          ESPLORA TUTTI I NOSTRI PROGETTI
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-            <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
-          </svg>
-        </Link>
+        <Magnetic strength={0.3} radius={100}>
+          <Link
+            href="/progetti"
+            className="gallery-cta"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '15px',
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#ffffff',
+              textDecoration: 'none',
+              paddingBottom: '4px',
+              position: 'relative',
+            }}
+          >
+            ESPLORA TUTTI I NOSTRI PROGETTI
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+            </svg>
+          </Link>
+        </Magnetic>
       </div>
     </section>
   )

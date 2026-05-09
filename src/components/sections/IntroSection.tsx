@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 import RevealText from '@/components/ui/RevealText'
+import Magnetic from '@/components/ui/Magnetic'
 
 export default function IntroSection() {
   const { ref, inView } = useInView({ threshold: 0.2, triggerOnce: true })
@@ -42,25 +43,27 @@ export default function IntroSection() {
           </RevealText>
         </h2>
 
-        <Link
-          href="/progetti"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '15px',
-            fontFamily: 'var(--font-syne)',
-            fontWeight: 500,
-            fontSize: '16px',
-            color: '#6a6a6a',
-            textDecoration: 'underline',
-            textDecorationSkipInk: 'auto',
-          }}
-        >
-          ESPLORA TUTTI I NOSTRI PROGETTI
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-            <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="#6a6a6a" strokeWidth="1.5" strokeLinecap="square" />
-          </svg>
-        </Link>
+        <Magnetic strength={0.3} radius={100}>
+          <Link
+            href="/progetti"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '15px',
+              fontFamily: 'var(--font-syne)',
+              fontWeight: 500,
+              fontSize: '16px',
+              color: '#6a6a6a',
+              textDecoration: 'underline',
+              textDecorationSkipInk: 'auto',
+            }}
+          >
+            ESPLORA TUTTI I NOSTRI PROGETTI
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="#6a6a6a" strokeWidth="1.5" strokeLinecap="square" />
+            </svg>
+          </Link>
+        </Magnetic>
       </div>
     </section>
   )

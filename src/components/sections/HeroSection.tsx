@@ -18,10 +18,36 @@ export default function HeroSection() {
   const [activeIndex, setActiveIndex] = useState(0)
 
   useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } })
-    tl.from('.hero-line-1', { y: '110%', opacity: 0, duration: 0.9, delay: 0.2 })
-      .from('.hero-line-2', { y: '110%', opacity: 0, duration: 0.9 }, '-=0.7')
-      .from('.hero-line-3', { y: '110%', opacity: 0, duration: 0.9 }, '-=0.7')
+    const lines = heroRef.current?.querySelectorAll<HTMLElement>('.hero-line')
+    if (!lines) return
+
+    lines.forEach((line) => {
+      const text = line.dataset.text || line.textContent || ''
+      line.textContent = ''
+      line.setAttribute('aria-label', text)
+      const chars = text.split('').map((ch) => {
+        const span = document.createElement('span')
+        span.className = 'hero-char'
+        span.textContent = ch === ' ' ? ' ' : ch
+        span.style.display = 'inline-block'
+        span.style.willChange = 'transform'
+        line.appendChild(span)
+        return span
+      })
+      gsap.set(chars, { yPercent: 110, rotate: 6 })
+    })
+
+    const allChars = heroRef.current?.querySelectorAll('.hero-char')
+    if (allChars) {
+      gsap.to(allChars, {
+        yPercent: 0,
+        rotate: 0,
+        duration: 1.1,
+        ease: 'expo.out',
+        stagger: 0.025,
+        delay: 0.3,
+      })
+    }
   }, { scope: heroRef })
 
   useEffect(() => {
@@ -107,13 +133,13 @@ export default function HeroSection() {
         margin: 0,
       }}>
         <div style={{ overflow: 'hidden' }}>
-          <div className="hero-line-1">GROWTH</div>
+          <div className="hero-line" data-text="GROWTH">GROWTH</div>
         </div>
         <div style={{ overflow: 'hidden' }}>
-          <div className="hero-line-2">FOCUSED</div>
+          <div className="hero-line" data-text="FOCUSED">FOCUSED</div>
         </div>
         <div style={{ overflow: 'hidden' }}>
-          <div className="hero-line-3">AGENCY</div>
+          <div className="hero-line" data-text="AGENCY">AGENCY</div>
         </div>
       </h1>
 
