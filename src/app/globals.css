@@ -414,66 +414,141 @@ body {
   transform-origin: left;
 }
 
-/* ─── FOOTER (Figma) ─── */
-.footer-link-item {
-  font-family: var(--font-syne), sans-serif;
-  font-weight: 500;
-  font-size: 16px;
-  color: #0a0a0a;
-  text-decoration: underline;
-  text-decoration-skip-ink: none;
-  transition: color 0.3s ease;
-  cursor: none;
-}
-.footer-link-item:hover {
-  color: #6a6a6a;
+/* ─── FOOTER (dark + accent giallo) ─── */
+.footer-dark {
+  position: relative;
 }
 
+/* Email primaria — peso massimo nei contatti */
+.footer-email-primary {
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 500;
+  font-size: clamp(20px, 2vw, 28px);
+  color: #ffffff;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+  padding-bottom: 4px;
+  cursor: none;
+  transition: color 0.3s ease;
+}
+.footer-email-primary::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.footer-email-primary:hover {
+  color: var(--accent);
+}
+
+/* Telefono primario — Syne Medium 18px */
+.footer-phone-primary {
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  color: #ffffff;
+  text-decoration: none;
+  cursor: none;
+  width: fit-content;
+  padding: 4px 0;
+  min-height: 28px;
+  transition: color 0.3s ease;
+}
+.footer-phone-primary:hover { color: var(--accent); }
+
+/* Telefoni secondari — più piccoli e grigi */
+.footer-phone-secondary {
+  font-family: var(--font-syne), sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #b8b8b8;
+  text-decoration: none;
+  cursor: none;
+  width: fit-content;
+  padding: 2px 0;
+  min-height: 24px;
+  letter-spacing: 0.01em;
+  transition: color 0.3s ease;
+}
+.footer-phone-secondary:hover { color: #ffffff; }
+
+/* Menu link */
 .footer-menu-link {
   font-family: var(--font-syne), sans-serif;
   font-weight: 500;
   font-size: 16px;
-  color: #0a0a0a;
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
   cursor: none;
+  display: inline-block;
+  padding: 4px 0;
+  min-height: 28px;
 }
 .footer-menu-link:hover {
-  color: #6a6a6a;
+  color: var(--accent);
 }
 
+/* Social icons */
 .footer-social-icon {
-  color: #0a0a0a;
+  color: #ffffff;
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
   transition: color 0.3s ease, transform 0.3s ease;
   cursor: none;
 }
-.footer-social-icon:hover {
-  color: #6a6a6a;
-  transform: translateY(-2px);
-}
-.footer-social-icon-sm svg {
+.footer-social-icon svg {
   width: 18px;
   height: 18px;
 }
+.footer-social-icon:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
 
+/* Bottom bar links */
 .footer-bottom-link {
   color: inherit;
   text-decoration: none;
   transition: color 0.3s ease;
   cursor: none;
+  padding: 2px 0;
 }
 .footer-bottom-link:hover {
-  color: #0a0a0a;
+  color: #ffffff;
+}
+
+/* Focus visible — keyboard a11y */
+.footer-dark a:focus-visible,
+.footer-dark button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
 @media (max-width: 1024px) {
   .footer-columns { gap: 40px !important; }
-  .footer-columns > div { width: calc(50% - 20px) !important; }
 }
 @media (max-width: 600px) {
-  .footer-columns > div { width: 100% !important; }
-  .footer-bottom-bar { font-size: 13px !important; flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+  .footer-columns > * { width: 100% !important; flex-basis: 100% !important; }
+  .footer-bottom-bar { font-size: 13px !important; flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+}
+
+/* Reduced motion — niente animazioni di entrata */
+@media (prefers-reduced-motion: reduce) {
+  .footer-dark { opacity: 1 !important; transform: none !important; transition: none !important; }
 }
 
 /* ─── STATS GRID ─── */
