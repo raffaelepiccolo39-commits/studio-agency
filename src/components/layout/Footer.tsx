@@ -61,7 +61,7 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
   const resolvedTitle = ctaTitle ?? (
     <>
       Hai un’idea da realizzare?<br />
-      Confrontiamoci.
+      Parliamone insieme.
     </>
   )
 
@@ -259,15 +259,12 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
         </nav>
       </div>
 
-      {/* Bottom bar */}
+      {/* Bottom area */}
       <div
-        className="footer-bottom-bar"
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px',
+          flexDirection: 'column',
+          gap: '20px',
           fontFamily: 'var(--font-syne)',
           fontWeight: 500,
           fontSize: '14px',
@@ -275,16 +272,22 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
           letterSpacing: '0.02em',
         }}
       >
-        <p style={{ margin: 0 }}>
-          <Link href="/privacy" className="footer-bottom-link">PRIVACY POLICY</Link>
-          <span aria-hidden> • </span>
-          <Link href="/cookie" className="footer-bottom-link">COOKIE POLICY</Link>
-        </p>
-        <p style={{ margin: 0 }}>
-          ©2018–{year} Pira Web S.r.l. — Tutti i diritti riservati
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-          <p style={{ margin: 0 }}>P.IVA IT04891370613</p>
+        {/* Riga 1: Privacy/Cookie a sx, social a dx */}
+        <div
+          className="footer-bottom-bar"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '16px',
+          }}
+        >
+          <p style={{ margin: 0 }}>
+            <Link href="/privacy" className="footer-bottom-link">PRIVACY POLICY</Link>
+            <span aria-hidden> • </span>
+            <Link href="/cookie" className="footer-bottom-link">COOKIE POLICY</Link>
+          </p>
           <ul style={{ display: 'flex', alignItems: 'center', gap: '4px', listStyle: 'none', margin: 0, padding: 0 }}>
             <li>
               <a
@@ -321,6 +324,11 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
             </li>
           </ul>
         </div>
+
+        {/* Riga 2: Copyright + P.IVA centrato come unica frase */}
+        <p style={{ margin: 0, textAlign: 'center' }}>
+          ©{year} Pira Web S.r.l. — Tutti i diritti riservati — P.IVA IT04891370613
+        </p>
       </div>
     </footer>
   )
