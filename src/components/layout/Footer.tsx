@@ -170,57 +170,6 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
         </div>
       </div>
 
-      {/* Social media row (orizzontale) */}
-      <div
-        className="footer-social-row"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '32px',
-          paddingTop: '20px',
-          borderTop: '1px solid #e5e5e5',
-        }}
-      >
-        <p style={{
-          fontFamily: 'var(--font-syne)',
-          fontWeight: 400,
-          fontSize: '16px',
-          color: '#6a6a6a',
-          margin: 0,
-        }}>
-          (social media)
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <a
-            href="https://www.instagram.com/piraweb_agency/"
-            target="_blank"
-            rel="noreferrer"
-            className="footer-social-icon"
-            aria-label="Instagram"
-          >
-            <InstagramIcon />
-          </a>
-          <a
-            href="https://www.facebook.com/pirawebonline"
-            target="_blank"
-            rel="noreferrer"
-            className="footer-social-icon"
-            aria-label="Facebook"
-          >
-            <FacebookIcon />
-          </a>
-          <a
-            href="https://www.linkedin.com/company/pira-web/"
-            target="_blank"
-            rel="noreferrer"
-            className="footer-social-icon"
-            aria-label="LinkedIn"
-          >
-            <LinkedInIcon />
-          </a>
-        </div>
-      </div>
-
       {/* Big CTA */}
       <h2 style={{
         fontFamily: 'var(--font-syne)',
@@ -241,7 +190,7 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           flexWrap: 'wrap',
           gap: '16px',
           fontFamily: 'var(--font-syne)',
@@ -258,7 +207,38 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
         <p style={{ margin: 0 }}>
           ©2018–{year} Pira Web S.r.l. — Tutti i diritti riservati
         </p>
-        <p style={{ margin: 0 }}>P.IVA IT04891370613</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+          <p style={{ margin: 0 }}>P.IVA IT04891370613</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <a
+              href="https://www.instagram.com/piraweb_agency/"
+              target="_blank"
+              rel="noreferrer"
+              className="footer-social-icon footer-social-icon-sm"
+              aria-label="Instagram"
+            >
+              <InstagramIcon />
+            </a>
+            <a
+              href="https://www.facebook.com/pirawebonline"
+              target="_blank"
+              rel="noreferrer"
+              className="footer-social-icon footer-social-icon-sm"
+              aria-label="Facebook"
+            >
+              <FacebookIcon />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/pira-web/"
+              target="_blank"
+              rel="noreferrer"
+              className="footer-social-icon footer-social-icon-sm"
+              aria-label="LinkedIn"
+            >
+              <LinkedInIcon />
+            </a>
+          </div>
+        </div>
       </div>
     </footer>
   )

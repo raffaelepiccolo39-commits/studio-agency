@@ -452,6 +452,10 @@ body {
   color: #6a6a6a;
   transform: translateY(-2px);
 }
+.footer-social-icon-sm svg {
+  width: 18px;
+  height: 18px;
+}
 
 .footer-bottom-link {
   color: inherit;
