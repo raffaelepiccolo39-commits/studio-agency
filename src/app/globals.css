@@ -296,7 +296,7 @@ body {
 }
 
 @media (max-width: 640px) {
-  .project-home-card { flex: 0 0 80vw !important; height: 520px !important; }
+  .project-home-card { flex: 0 0 80vw !important; }
 }
 @media (max-width: 768px) {
   .progetti-grid-2col { grid-template-columns: 1fr !important; }

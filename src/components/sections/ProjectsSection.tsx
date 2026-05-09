@@ -67,7 +67,6 @@ export default function ProjectsSection() {
             className="project-card project-home-card"
             style={{
               flex: '0 0 500px',
-              height: '798px',
               display: 'flex',
               flexDirection: 'column',
               gap: '30px',
@@ -78,9 +77,8 @@ export default function ProjectsSection() {
           >
             <div style={{
               position: 'relative',
-              flex: '1 1 auto',
-              minHeight: 0,
               width: '100%',
+              aspectRatio: '4 / 5',
               overflow: 'hidden',
             }}>
               <img
