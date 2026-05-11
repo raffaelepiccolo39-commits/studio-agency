@@ -198,23 +198,15 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="consulenza-cta-marquee"
+        className="consulenza-cta-bar"
         aria-label="Invia richiesta"
       >
-        {status === 'loading' ? (
-          <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            INVIO IN CORSO
-          </span>
-        ) : (
-          <div className="marquee-track" aria-hidden="true">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <span key={i}>
-                INVIA RICHIESTA
-                <span className="marquee-arrow">{'→'}</span>
-              </span>
-            ))}
-          </div>
-        )}
+        <span>{status === 'loading' ? 'INVIO IN CORSO' : 'INVIA RICHIESTA'}</span>
+        <span className="cta-arrow" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M7 17L17 7M17 7H8M17 7V16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter" />
+          </svg>
+        </span>
       </button>
     </form>
   )
