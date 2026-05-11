@@ -116,7 +116,7 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
             textTransform: 'uppercase', fontFamily: 'inherit',
           }}
         >
-          Invia un'altra richiesta →
+          Invia un&apos;altra richiesta
         </button>
       </div>
     )
@@ -184,27 +184,38 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
         <textarea
           required value={messaggio}
           onChange={e => setMessaggio(e.target.value)}
-          placeholder="Parlaci brevemente della tua attività"
+          placeholder="Parlaci brevemente della tua attivita"
           rows={3}
           style={{ ...localInputStyle, resize: 'none', lineHeight: 1.7 }}
         />
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '20px' }}>
-        {status === 'error' && (
-          <p style={{ color: '#ff4d4d', fontSize: '13px', margin: 0 }}>
-            Errore. Scrivici a <a href="mailto:info@piraweb.it" style={{ color: 'var(--accent)' }}>info@piraweb.it</a>
-          </p>
+      {status === 'error' && (
+        <p style={{ color: '#ff4d4d', fontSize: '13px', marginBottom: '16px' }}>
+          Errore. Scrivici a <a href="mailto:info@piraweb.it" style={{ color: 'var(--accent)' }}>info@piraweb.it</a>
+        </p>
+      )}
+      <button
+        type="submit"
+        disabled={status === 'loading'}
+        className="consulenza-cta-marquee"
+        aria-label="Invia richiesta"
+      >
+        {status === 'loading' ? (
+          <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            INVIO IN CORSO
+          </span>
+        ) : (
+          <div className="marquee-track" aria-hidden="true">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <span key={i}>
+                INVIA RICHIESTA
+                <span className="marquee-arrow">{'→'}</span>
+              </span>
+            ))}
+          </div>
         )}
-        <button
-          type="submit"
-          disabled={status === 'loading'}
-          className="consulenza-cta-circle"
-          aria-label="Invia richiesta"
-        >
-          {status === 'loading' ? 'INVIO…' : 'INVIA RICHIESTA'}
-        </button>
-      </div>
+      </button>
     </form>
   )
 }

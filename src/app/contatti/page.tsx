@@ -65,7 +65,7 @@ export default function ContattiPage() {
           background: 'var(--bg)',
           color: 'var(--text)',
           minHeight: '100vh',
-          paddingTop: 'clamp(110px, 12vw, 160px)',
+          paddingTop: 'clamp(160px, 16vw, 220px)',
           paddingBottom: 'clamp(60px, 8vw, 100px)',
           opacity: inView ? 1 : 0,
           transform: inView ? 'translateY(0)' : 'translateY(24px)',
