@@ -1,9 +1,9 @@
 'use client'
 
 import Navbar from '@/components/layout/Navbar'
+import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import ConsulenzaForm from '@/components/sections/ConsulenzaForm'
-import Link from 'next/link'
 import { useInView } from 'react-intersection-observer'
 
 function InstagramIcon() {
@@ -49,7 +49,6 @@ const jsonLd = {
 }
 
 export default function ContattiPage() {
-  const year = new Date().getFullYear()
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
   return (
@@ -158,35 +157,9 @@ export default function ContattiPage() {
             {/* Destra: form */}
             <ConsulenzaForm variant="dark" />
           </div>
-
-          {/* Bottom bar */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              gap: '16px',
-              fontFamily: 'var(--font-syne)',
-              fontWeight: 500,
-              fontSize: '14px',
-              color: 'rgba(240,237,230,0.45)',
-              borderTop: '1px solid var(--border)',
-              marginTop: 'clamp(60px, 10vw, 120px)',
-              paddingTop: '32px',
-            }}
-          >
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <Link href="/privacy" style={{ color: 'inherit', textDecoration: 'none' }}>PRIVACY POLICY</Link>
-              <span>•</span>
-              <Link href="/cookie" style={{ color: 'inherit', textDecoration: 'none' }}>COOKIE POLICY</Link>
-            </div>
-            <p style={{ margin: 0 }}>
-              ©2018–{year} Pira Web S.r.l. — P.IVA IT04891370613
-            </p>
-          </div>
         </div>
       </main>
+      <Footer />
     </>
   )
 }
