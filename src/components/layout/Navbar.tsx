@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import ConsulenzaForm from '@/components/sections/ConsulenzaForm'
 
 const links = [
   { label: 'HOME', href: '/' },
@@ -12,21 +13,6 @@ const links = [
   { label: 'CONTATTI', href: '/contatti' },
 ]
 
-const services = [
-  'Brand Identity',
-  'Web Site Development',
-  'E-commerce Development',
-  'Performance Marketing',
-  'Gestione Social Media',
-  'Creazione dei Contenuti',
-]
-
-const inputStyle = {
-  width: '100%', background: 'transparent', border: 'none',
-  borderBottom: '1px solid #333', padding: '16px 0',
-  color: '#f0ede6', fontSize: '16px', fontFamily: 'inherit', outline: 'none',
-} as React.CSSProperties
-
 export default function Navbar() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
@@ -35,14 +21,6 @@ export default function Navbar() {
   const [formOpen, setFormOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [navHovered, setNavHovered] = useState(false)
-
-  const [nome, setNome] = useState('')
-  const [cognome, setCognome] = useState('')
-  const [email, setEmail] = useState('')
-  const [telefono, setTelefono] = useState('')
-  const [selectedServices, setSelectedServices] = useState<string[]>([])
-  const [messaggio, setMessaggio] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024)
@@ -85,52 +63,7 @@ export default function Navbar() {
     return () => { document.body.style.overflow = '' }
   }, [menuOpen, formOpen])
 
-  const toggleService = (s: string) => {
-    setSelectedServices(prev =>
-      prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]
-    )
-  }
-
-  const closeForm = () => {
-    setFormOpen(false)
-    setNome(''); setCognome(''); setEmail(''); setTelefono('')
-    setSelectedServices([]); setMessaggio(''); setStatus('idle')
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatus('loading')
-    try {
-      const res = await fetch('https://formspree.io/f/mbdaqvyj', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          nome, cognome, email, telefono,
-          servizi: selectedServices.join(', '),
-          messaggio,
-        }),
-      })
-
-      // Invia anche al CRM gestionale
-      fetch('https://gestionale.piraweb.it/api/webhook/contact-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: nome,
-          surname: cognome,
-          email,
-          phone: telefono,
-          service: selectedServices.join(', '),
-          message: messaggio,
-          api_key: 'pira-form-webhook-2026-secure',
-        }),
-      }).catch(() => {})
-
-      setStatus(res.ok ? 'success' : 'error')
-    } catch {
-      setStatus('error')
-    }
-  }
+  const closeForm = () => setFormOpen(false)
 
   // La navbar è visibile (sfondo) solo se scrolled O hovered
   const navBg = (scrolled || navHovered)
@@ -295,125 +228,51 @@ export default function Navbar() {
         pointerEvents: formOpen ? 'all' : 'none',
         transition: 'opacity 0.4s ease',
       }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', padding: 'clamp(80px,10vw,120px) clamp(24px,5vw,40px) 80px' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: 'clamp(80px,10vw,120px) clamp(24px,5vw,40px) 80px' }}>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '64px' }}>
-            <div>
-              <p style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '12px' }}>
-                Richiedi consulenza
-              </p>
-              <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(36px,5vw,64px)', lineHeight: 1 }}>
-                RACCONTACI<br />
-                <span style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', color: 'var(--accent)' }}>il tuo progetto</span>
-              </h2>
-            </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '48px' }}>
             <button onClick={closeForm} style={{
               background: 'none', border: '1px solid var(--border)',
               color: 'var(--text)', fontSize: '13px', padding: '10px 20px',
               cursor: 'none', fontFamily: 'inherit', letterSpacing: '0.1em',
-              flexShrink: 0, marginTop: '8px',
             }}>
               ✕ CHIUDI
             </button>
           </div>
 
-          {status === 'success' ? (
-            <div style={{ textAlign: 'center', padding: '80px 0' }}>
-              <div style={{ fontFamily: 'var(--font-bebas)', fontSize: '100px', color: 'var(--accent)', lineHeight: 1 }}>✓</div>
-              <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: '48px', marginTop: '16px' }}>RICHIESTA INVIATA!</h3>
-              <p style={{ fontSize: '15px', color: 'rgba(240,237,230,0.55)', marginTop: '12px' }}>
-                Ti contatteremo entro 24 ore.
-              </p>
-              <button onClick={closeForm} style={{
-                marginTop: '40px', cursor: 'none', background: 'var(--accent)',
-                color: '#0a0a0a', border: 'none', padding: '16px 40px',
-                fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em',
-                textTransform: 'uppercase', fontFamily: 'inherit',
-              }}>
-                Torna al sito →
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
-
-              <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
-                <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>01 — Nome *</p>
-                <input type="text" required value={nome} onChange={e => setNome(e.target.value)} placeholder="Il tuo Nome" style={inputStyle} />
-              </div>
-
-              <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
-                <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>02 — Cognome *</p>
-                <input type="text" required value={cognome} onChange={e => setCognome(e.target.value)} placeholder="Il tuo Cognome" style={inputStyle} />
-              </div>
-
-              <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
-                <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>03 — Email *</p>
-                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="La tua Email" style={inputStyle} />
-              </div>
-
-              <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
-                <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>04 — Numero di telefono</p>
-                <input type="tel" value={telefono} onChange={e => setTelefono(e.target.value)} placeholder="Il tuo Numero" style={inputStyle} />
-              </div>
-
-              <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '32px' }}>
-                <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '24px' }}>05 — Tipo di servizio</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {services.map(s => (
-                    <label key={s} onClick={() => toggleService(s)} style={{
-                      display: 'flex', alignItems: 'center', gap: '16px',
-                      cursor: 'none', fontSize: '15px',
-                      color: selectedServices.includes(s) ? 'var(--accent)' : 'rgba(240,237,230,0.6)',
-                      transition: 'color 0.3s',
-                    }}>
-                      <span style={{
-                        width: '16px', height: '16px', border: '1px solid',
-                        borderColor: selectedServices.includes(s) ? 'var(--accent)' : '#444',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        flexShrink: 0, transition: 'border-color 0.3s',
-                      }}>
-                        {selectedServices.includes(s) && (
-                          <span style={{ width: '8px', height: '8px', background: 'var(--accent)', display: 'block' }} />
-                        )}
-                      </span>
-                      {s}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '32px', marginBottom: '48px' }}>
-                <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '16px' }}>06 — Messaggio *</p>
-                <textarea
-                  required value={messaggio}
-                  onChange={e => setMessaggio(e.target.value)}
-                  placeholder="Parlaci brevemente della tua attività"
-                  rows={4}
-                  style={{ ...inputStyle, resize: 'none', lineHeight: 1.7 }}
-                />
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <button type="submit" disabled={status === 'loading'} style={{
-                  background: 'var(--accent)', color: '#0a0a0a',
-                  border: 'none', padding: '20px 48px',
-                  fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em',
-                  textTransform: 'uppercase', cursor: 'none', fontFamily: 'inherit',
-                  opacity: status === 'loading' ? 0.7 : 1, transition: 'opacity 0.3s',
-                  borderRadius: '50px',
-                }}>
-                  {status === 'loading' ? 'Invio...' : 'INVIA RICHIESTA'}
-                </button>
-              </div>
-
-              {status === 'error' && (
-                <p style={{ color: '#ff4d4d', fontSize: '13px', textAlign: 'center', marginTop: '16px' }}>
-                  Errore. Scrivici a <a href="mailto:info@piraweb.it" style={{ color: 'var(--accent)' }}>info@piraweb.it</a>
+          <div className="consulenza-grid">
+            {/* Colonna sinistra: contatti + headline */}
+            <aside style={{ display: 'flex', flexDirection: 'column', gap: '40px', position: 'sticky', top: '40px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <a href="mailto:info@piraweb.it" style={{
+                  fontFamily: 'var(--font-syne)', fontSize: '15px', color: 'var(--text)',
+                  textDecoration: 'none',
+                }}>info@piraweb.it</a>
+                <p style={{ margin: 0, fontSize: '15px', color: 'rgba(240,237,230,0.7)', lineHeight: 1.5 }}>
+                  Via A.Petrillo N°171<br />
+                  81030 Casapesenna CE, IT
                 </p>
-              )}
+              </div>
 
-            </form>
-          )}
+              <h2 style={{
+                fontFamily: 'var(--font-syne)', fontWeight: 500,
+                fontSize: 'clamp(28px, 3.4vw, 44px)', lineHeight: 1.1,
+                color: 'var(--text)', margin: 0, letterSpacing: '-0.01em',
+              }}>
+                Vuoi scoprire come possiamo aiutare la tua azienda o il tuo Personal brand?
+              </h2>
+
+              <p style={{
+                margin: 0, fontSize: '14px', color: 'rgba(240,237,230,0.55)',
+                lineHeight: 1.5, maxWidth: '420px',
+              }}>
+                Richiedi una consulenza gratuita compilando il breve modulo.
+              </p>
+            </aside>
+
+            {/* Colonna destra: form */}
+            <ConsulenzaForm variant="dark" />
+          </div>
         </div>
       </div>
     </>

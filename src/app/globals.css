@@ -127,6 +127,47 @@ body {
 }
 .btn-outline-accent:hover { background: var(--accent); color: #0a0a0a; }
 
+/* Consulenza form — CTA circle (stile ICONA) */
+.consulenza-cta-circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #0a0a0a;
+  border: none;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.15;
+  padding: 0 18px;
+  cursor: none;
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), background 0.3s ease, color 0.3s ease;
+  flex-shrink: 0;
+}
+.consulenza-cta-circle:hover:not(:disabled) {
+  background: var(--accent);
+  color: #0a0a0a;
+  transform: scale(1.05);
+}
+.consulenza-cta-circle:disabled { opacity: 0.6; }
+@media (max-width: 768px) {
+  .consulenza-cta-circle { width: 130px; height: 130px; font-size: 11px; }
+}
+
+/* Consulenza layout — 2 colonne (stile ICONA) */
+.consulenza-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: clamp(40px, 6vw, 100px);
+  align-items: start;
+}
+@media (max-width: 960px) {
+  .consulenza-grid { grid-template-columns: 1fr; gap: 60px; }
+}
+
 /* Cards */
 .card-hover { transition: background 0.3s; }
 .card-hover:hover { background: #161616 !important; }
