@@ -9,7 +9,6 @@ const links = [
   { label: 'SERVIZI', href: '/cosa-facciamo' },
   { label: 'PROGETTI', href: '/progetti' },
   { label: 'LAVORA CON NOI', href: '/lavora-con-noi' },
-  { label: 'CONTATTI', href: '/contatti' },
 ]
 
 export default function Navbar() {

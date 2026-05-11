@@ -127,21 +127,6 @@ export default function ContattiPage() {
                 Richiedi una consulenza gratuita compilando il breve modulo.
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <a href="tel:+3908117560017" style={{
-                  fontFamily: 'var(--font-syne)', fontSize: '15px',
-                  color: 'rgba(240,237,230,0.8)', textDecoration: 'none',
-                }}>+39 081 175 60017</a>
-                <a href="tel:+393318535698" style={{
-                  fontFamily: 'var(--font-syne)', fontSize: '15px',
-                  color: 'rgba(240,237,230,0.8)', textDecoration: 'none',
-                }}>+39 331 853 5698</a>
-                <a href="tel:+393517214074" style={{
-                  fontFamily: 'var(--font-syne)', fontSize: '15px',
-                  color: 'rgba(240,237,230,0.8)', textDecoration: 'none',
-                }}>+39 351 721 4074</a>
-              </div>
-
               <div style={{ display: 'flex', gap: '16px', alignItems: 'center', color: 'var(--text)' }}>
                 <a href="https://www.instagram.com/piraweb_agency/" target="_blank" rel="noreferrer"
                   style={{ color: 'inherit', display: 'flex' }} aria-label="Instagram">
