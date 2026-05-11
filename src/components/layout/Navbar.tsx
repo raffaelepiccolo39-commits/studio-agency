@@ -284,9 +284,13 @@ export default function Navbar() {
       )}
 
       {/* ─── FORM FULLSCREEN ─── */}
-      <div style={{
+      <div
+        data-lenis-prevent
+        style={{
         position: 'fixed', inset: 0, zIndex: 500,
         background: '#0a0a0a', overflowY: 'auto',
+        overscrollBehavior: 'contain',
+        WebkitOverflowScrolling: 'touch',
         opacity: formOpen ? 1 : 0,
         pointerEvents: formOpen ? 'all' : 'none',
         transition: 'opacity 0.4s ease',
