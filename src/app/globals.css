@@ -168,6 +168,16 @@ body {
   .consulenza-grid { grid-template-columns: 1fr; gap: 60px; }
 }
 
+/* Riga form a 2 colonne (Nome + Cognome) */
+.consulenza-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3vw, 40px);
+}
+@media (max-width: 600px) {
+  .consulenza-row-2 { grid-template-columns: 1fr; gap: 24px; }
+}
+
 /* Cards */
 .card-hover { transition: background 0.3s; }
 .card-hover:hover { background: #161616 !important; }

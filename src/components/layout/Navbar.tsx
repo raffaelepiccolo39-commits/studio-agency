@@ -259,7 +259,7 @@ export default function Navbar() {
                 fontSize: 'clamp(28px, 3.4vw, 44px)', lineHeight: 1.1,
                 color: 'var(--text)', margin: 0, letterSpacing: '-0.01em',
               }}>
-                Vuoi scoprire come possiamo aiutare la tua azienda o il tuo Personal brand?
+                Scopri come possiamo aiutare la tua azienda.
               </h2>
 
               <p style={{

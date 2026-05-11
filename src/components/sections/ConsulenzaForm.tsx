@@ -124,14 +124,16 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', color: textColor }}>
-      <div style={{ borderBottom: `1px solid ${borderColor}`, paddingBottom: '24px', marginBottom: '24px' }}>
-        <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '12px' }}>01 — Nome *</p>
-        <input type="text" required value={nome} onChange={e => setNome(e.target.value)} placeholder="Il tuo Nome" style={localInputStyle} />
-      </div>
+      <div className="consulenza-row-2" style={{ marginBottom: '24px' }}>
+        <div style={{ borderBottom: `1px solid ${borderColor}`, paddingBottom: '24px' }}>
+          <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '12px' }}>01 — Nome *</p>
+          <input type="text" required value={nome} onChange={e => setNome(e.target.value)} placeholder="Il tuo Nome" style={localInputStyle} />
+        </div>
 
-      <div style={{ borderBottom: `1px solid ${borderColor}`, paddingBottom: '24px', marginBottom: '24px' }}>
-        <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '12px' }}>02 — Cognome *</p>
-        <input type="text" required value={cognome} onChange={e => setCognome(e.target.value)} placeholder="Il tuo Cognome" style={localInputStyle} />
+        <div style={{ borderBottom: `1px solid ${borderColor}`, paddingBottom: '24px' }}>
+          <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '12px' }}>02 — Cognome *</p>
+          <input type="text" required value={cognome} onChange={e => setCognome(e.target.value)} placeholder="Il tuo Cognome" style={localInputStyle} />
+        </div>
       </div>
 
       <div style={{ borderBottom: `1px solid ${borderColor}`, paddingBottom: '24px', marginBottom: '24px' }}>

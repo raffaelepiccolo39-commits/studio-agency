@@ -115,7 +115,7 @@ export default function ContattiPage() {
                 margin: 0,
                 letterSpacing: '-0.01em',
               }}>
-                Vuoi scoprire come possiamo aiutare la tua azienda o il tuo Personal brand?
+                Scopri come possiamo aiutare la tua azienda.
               </h1>
 
               <p style={{
