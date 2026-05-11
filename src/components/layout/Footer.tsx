@@ -168,9 +168,8 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
           }}>
             {resolvedTitle}
           </h2>
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent('pira:openConsulenza'))}
+          <Link
+            href="/contatti"
             className="footer-cta-button footer-cta-button-lg"
             aria-label="Richiedi una consulenza"
           >
@@ -181,7 +180,7 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
             >
               <path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
             </svg>
-          </button>
+          </Link>
         </div>
       </div>
 

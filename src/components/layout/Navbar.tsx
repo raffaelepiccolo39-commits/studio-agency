@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import ConsulenzaForm from '@/components/sections/ConsulenzaForm'
 
 const links = [
   { label: 'HOME', href: '/' },
@@ -18,7 +17,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [formOpen, setFormOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [navHovered, setNavHovered] = useState(false)
 
@@ -51,19 +49,10 @@ export default function Navbar() {
 
   useEffect(() => { setMenuOpen(false) }, [pathname])
 
-  // Permette ad altri componenti (es. Footer) di aprire il form via custom event
   useEffect(() => {
-    const open = () => setFormOpen(true)
-    window.addEventListener('pira:openConsulenza', open)
-    return () => window.removeEventListener('pira:openConsulenza', open)
-  }, [])
-
-  useEffect(() => {
-    document.body.style.overflow = (menuOpen || formOpen) ? 'hidden' : ''
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
-  }, [menuOpen, formOpen])
-
-  const closeForm = () => setFormOpen(false)
+  }, [menuOpen])
 
   // La navbar è visibile (sfondo) solo se scrolled O hovered
   const navBg = (scrolled || navHovered)
@@ -83,7 +72,7 @@ export default function Navbar() {
           backdropFilter: (scrolled || navHovered) ? 'blur(14px)' : 'none',
           WebkitBackdropFilter: (scrolled || navHovered) ? 'blur(14px)' : 'none',
           borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : 'none',
-          transform: hidden && !menuOpen && !formOpen ? 'translateY(-110%)' : 'translateY(0)',
+          transform: hidden && !menuOpen ? 'translateY(-110%)' : 'translateY(0)',
           transition: 'transform 0.5s cubic-bezier(0.16,1,0.3,1), background 0.4s ease, backdrop-filter 0.4s ease, padding 0.3s ease, border-bottom 0.3s ease',
         }}
       >
@@ -122,19 +111,21 @@ export default function Navbar() {
             })}
 
             <li style={{ whiteSpace: 'nowrap' }}>
-              <button
-                onClick={() => setFormOpen(true)}
+              <Link
+                href="/contatti"
                 style={{
                   background: 'var(--accent)', color: '#0a0a0a',
                   border: 'none', padding: '10px 40px',
                   fontFamily: 'var(--font-syne)',
                   fontSize: '16px', fontWeight: 500, letterSpacing: 0,
                   cursor: 'none',
+                  textDecoration: 'none',
+                  display: 'inline-block',
                   transition: 'background 0.3s',
                 }}
               >
                 RICHIEDI UNA CONSULENZA
-              </button>
+              </Link>
             </li>
           </ul>
         )}
@@ -142,18 +133,19 @@ export default function Navbar() {
         {/* Hamburger mobile */}
         {isMobile && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <button
-              onClick={() => setFormOpen(true)}
+            <Link
+              href="/contatti"
               style={{
                 background: 'var(--accent)', color: '#0a0a0a',
                 border: 'none', padding: '8px 14px',
                 fontFamily: 'var(--font-syne)',
                 fontSize: '11px', fontWeight: 500, letterSpacing: '0.05em',
                 textTransform: 'uppercase', cursor: 'none',
+                textDecoration: 'none',
               }}
             >
               Consulenza
-            </button>
+            </Link>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               style={{
@@ -216,65 +208,6 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* ─── FORM FULLSCREEN ─── */}
-      <div
-        data-lenis-prevent
-        style={{
-        position: 'fixed', inset: 0, zIndex: 500,
-        background: '#0a0a0a', overflowY: 'auto',
-        overscrollBehavior: 'contain',
-        WebkitOverflowScrolling: 'touch',
-        opacity: formOpen ? 1 : 0,
-        pointerEvents: formOpen ? 'all' : 'none',
-        transition: 'opacity 0.4s ease',
-      }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: 'clamp(80px,10vw,120px) clamp(24px,5vw,40px) 80px' }}>
-
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '48px' }}>
-            <button onClick={closeForm} style={{
-              background: 'none', border: '1px solid var(--border)',
-              color: 'var(--text)', fontSize: '13px', padding: '10px 20px',
-              cursor: 'none', fontFamily: 'inherit', letterSpacing: '0.1em',
-            }}>
-              ✕ CHIUDI
-            </button>
-          </div>
-
-          <div className="consulenza-grid">
-            {/* Colonna sinistra: contatti + headline */}
-            <aside style={{ display: 'flex', flexDirection: 'column', gap: '40px', position: 'sticky', top: '40px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <a href="mailto:info@piraweb.it" style={{
-                  fontFamily: 'var(--font-syne)', fontSize: '15px', color: 'var(--text)',
-                  textDecoration: 'none',
-                }}>info@piraweb.it</a>
-                <p style={{ margin: 0, fontSize: '15px', color: 'rgba(240,237,230,0.7)', lineHeight: 1.5 }}>
-                  Via A.Petrillo N°171<br />
-                  81030 Casapesenna CE, IT
-                </p>
-              </div>
-
-              <h2 style={{
-                fontFamily: 'var(--font-syne)', fontWeight: 500,
-                fontSize: 'clamp(28px, 3.4vw, 44px)', lineHeight: 1.1,
-                color: 'var(--text)', margin: 0, letterSpacing: '-0.01em',
-              }}>
-                Scopri come possiamo aiutare la tua azienda.
-              </h2>
-
-              <p style={{
-                margin: 0, fontSize: '14px', color: 'rgba(240,237,230,0.55)',
-                lineHeight: 1.5, maxWidth: '420px',
-              }}>
-                Richiedi una consulenza gratuita compilando il breve modulo.
-              </p>
-            </aside>
-
-            {/* Colonna destra: form */}
-            <ConsulenzaForm variant="dark" />
-          </div>
-        </div>
-      </div>
     </>
   )
 }
