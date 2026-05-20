@@ -6,6 +6,7 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import Image from 'next/image'
 import { useState } from 'react'
 
 const team = [
@@ -252,13 +253,13 @@ Lavoriamo per generare valore nel tempo."
             transition: 'opacity 0.4s ease',
           }}>
             {team.map((member, i) => (
-              <img
+              <Image
                 key={i}
                 src={member.photo}
                 alt={member.name}
+                fill
+                sizes="280px"
                 style={{
-                  position: 'absolute', inset: 0,
-                  width: '100%', height: '100%',
                   objectFit: 'cover',
                   opacity: hoveredMember === i ? 1 : 0,
                   transition: 'opacity 0.4s ease',

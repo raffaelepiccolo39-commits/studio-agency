@@ -6,6 +6,7 @@ import Cursor from '@/components/ui/Cursor'
 import ImageTrail from '@/components/ui/ImageTrail'
 import Magnetic from '@/components/ui/Magnetic'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -71,15 +72,13 @@ function ProjectCard({ project, fullWidth = false }: { project: (typeof projects
           overflow: 'hidden',
         }}
       >
-        <img
+        <Image
           src={project.immagini[0]}
           alt={project.title}
+          fill
+          sizes={fullWidth ? '100vw' : '(max-width: 768px) 100vw, 50vw'}
           className="project-img"
           style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
             objectFit: 'cover',
             transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
             filter: 'grayscale(10%)',

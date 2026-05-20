@@ -1,3 +1,11 @@
+import type { Metadata } from 'next'
+import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Coming Soon — Pira Web',
+  robots: { index: false, follow: false },
+}
+
 export default function ComingSoonPage() {
   return (
     <main style={{
@@ -7,7 +15,7 @@ export default function ComingSoonPage() {
       padding: '40px', textAlign: 'center',
       fontFamily: 'sans-serif',
     }}>
-      <img src="/logo.png" alt="Pira Web" style={{ height: '80px', marginBottom: '48px' }} />
+      <Image src="/logo.png" alt="Pira Web" width={169} height={80} priority style={{ height: '80px', width: 'auto', marginBottom: '48px' }} />
 
       <h1 style={{
         fontSize: 'clamp(48px,8vw,100px)',

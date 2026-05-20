@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const BASE_URL = 'https://www.piraweb.it'
 
@@ -308,13 +309,19 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
               if (i === 0 || (total > 2 && i === total - 1 && (total - 1) % 2 === 0)) {
                 return (
                   <div key={img} className="case-gallery-full" style={{
+                    position: 'relative',
                     width: '100%',
                     height: 'clamp(320px, 42vw, 608px)',
                     overflow: 'hidden',
                   }}>
-                    <img src={img} alt={`${project.title} ${i + 1}`} style={{
-                      width: '100%', height: '100%', objectFit: 'cover',
-                    }} />
+                    <Image
+                      src={img}
+                      alt={`${project.title} ${i + 1}`}
+                      fill
+                      sizes="100vw"
+                      priority={i === 0}
+                      style={{ objectFit: 'cover' }}
+                    />
                   </div>
                 )
               }
@@ -326,16 +333,24 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
                     gridTemplateColumns: next ? '1fr 720px' : '1fr',
                     gap: '10px',
                   }}>
-                    <div style={{ height: 'clamp(320px, 58vw, 828px)', overflow: 'hidden' }}>
-                      <img src={img} alt={`${project.title} ${i + 1}`} style={{
-                        width: '100%', height: '100%', objectFit: 'cover',
-                      }} />
+                    <div style={{ position: 'relative', height: 'clamp(320px, 58vw, 828px)', overflow: 'hidden' }}>
+                      <Image
+                        src={img}
+                        alt={`${project.title} ${i + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 60vw"
+                        style={{ objectFit: 'cover' }}
+                      />
                     </div>
                     {next && (
-                      <div style={{ height: 'clamp(320px, 58vw, 828px)', overflow: 'hidden' }}>
-                        <img src={next} alt={`${project.title} ${i + 2}`} style={{
-                          width: '100%', height: '100%', objectFit: 'cover',
-                        }} />
+                      <div style={{ position: 'relative', height: 'clamp(320px, 58vw, 828px)', overflow: 'hidden' }}>
+                        <Image
+                          src={next}
+                          alt={`${project.title} ${i + 2}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 720px"
+                          style={{ objectFit: 'cover' }}
+                        />
                       </div>
                     )}
                   </div>
@@ -391,15 +406,13 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
                     aspectRatio: '500 / 728',
                     overflow: 'hidden',
                   }}>
-                    <img
+                    <Image
                       src={p.immagini[0]}
                       alt={p.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="project-img"
                       style={{
-                        position: 'absolute',
-                        inset: 0,
-                        width: '100%',
-                        height: '100%',
                         objectFit: 'cover',
                         transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
                         filter: 'grayscale(10%)',

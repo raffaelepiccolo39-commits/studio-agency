@@ -40,6 +40,7 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
   const [telefono, setTelefono] = useState('')
   const [selectedServices, setSelectedServices] = useState<string[]>([])
   const [messaggio, setMessaggio] = useState('')
+  const [honeypot, setHoneypot] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
   const toggleService = (s: string) => {
@@ -57,17 +58,7 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
     e.preventDefault()
     setStatus('loading')
     try {
-      const res = await fetch('https://formspree.io/f/mbdaqvyj', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          nome, cognome, email, telefono,
-          servizi: selectedServices.join(', '),
-          messaggio,
-        }),
-      })
-
-      fetch('https://gestionale.piraweb.it/api/webhook/contact-form', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -77,9 +68,10 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
           phone: telefono,
           service: selectedServices.join(', '),
           message: messaggio,
-          api_key: 'pira-form-webhook-2026-secure',
+          formType: 'consulenza',
+          _gotcha: honeypot,
         }),
-      }).catch(() => {})
+      })
 
       if (res.ok) {
         setStatus('success')
@@ -124,6 +116,16 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', color: textColor }}>
+      <input
+        type="text"
+        name="_gotcha"
+        tabIndex={-1}
+        autoComplete="off"
+        value={honeypot}
+        onChange={e => setHoneypot(e.target.value)}
+        style={{ position: 'absolute', left: '-9999px', width: 0, height: 0, opacity: 0 }}
+        aria-hidden="true"
+      />
       <div className="consulenza-row-2" style={{ marginBottom: '24px' }}>
         <div style={{ borderBottom: `1px solid ${borderColor}`, paddingBottom: '24px' }}>
           <p style={{ fontSize: '11px', color: 'var(--accent)', letterSpacing: '0.15em', marginBottom: '12px' }}>01 — Nome *</p>

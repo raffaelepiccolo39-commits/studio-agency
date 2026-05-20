@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -131,15 +132,13 @@ export default function ProjectsSection() {
                 overflow: 'hidden',
               }}
             >
-              <img
+              <Image
                 src={p.immagini[0]}
                 alt={p.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 80vw"
                 className="project-img"
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
                   objectFit: 'cover',
                   transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
                   filter: 'grayscale(10%)',

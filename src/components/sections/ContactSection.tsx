@@ -6,6 +6,7 @@ export default function ContactSection() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [honeypot, setHoneypot] = useState('')
   const [status, setStatus] = useState<'idle'|'loading'|'success'|'error'>('idle')
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
@@ -13,26 +14,15 @@ export default function ContactSection() {
     e.preventDefault()
     setStatus('loading')
     try {
-      const res = await fetch('https://formspree.io/f/xlgwaygp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
-      })
-
-      // Invia anche al CRM gestionale
-      fetch('https://gestionale.piraweb.it/api/webhook/contact-form', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name,
-          surname: '',
-          email,
-          phone: '',
-          service: '',
-          message,
-          api_key: 'pira-form-webhook-2026-secure',
+          name, email, message,
+          formType: 'contact',
+          _gotcha: honeypot,
         }),
-      }).catch(() => {})
+      })
 
       if (res.ok) {
         setStatus('success')
@@ -67,6 +57,16 @@ export default function ContactSection() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
+            <input
+              type="text"
+              name="_gotcha"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={e => setHoneypot(e.target.value)}
+              style={{ position: 'absolute', left: '-9999px', width: 0, height: 0, opacity: 0 }}
+              aria-hidden="true"
+            />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '24px' }}>
               <div>
                 <label style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--muted)', display: 'block', marginBottom: '8px' }}>Nome Cognome</label>

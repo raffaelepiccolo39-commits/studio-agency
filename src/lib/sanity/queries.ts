@@ -1,10 +1,14 @@
 import { client } from './client'
 import { SanityProject, SanityPost } from '@/types'
 
+const PROJECT_REVALIDATE = 3600
+const POST_REVALIDATE = 1800
+
 // ─── PROJECTS ───────────────────────────────────────────────────────────────
 
 export async function getProjects(): Promise<SanityProject[]> {
-  return client.fetch(`
+  return client.fetch(
+    `
     *[_type == "project"] | order(_createdAt desc) {
       _id,
       title,
@@ -17,11 +21,15 @@ export async function getProjects(): Promise<SanityProject[]> {
       year,
       kpis,
     }
-  `)
+  `,
+    {},
+    { next: { revalidate: PROJECT_REVALIDATE, tags: ['projects'] } }
+  )
 }
 
 export async function getProjectBySlug(slug: string): Promise<SanityProject | null> {
-  return client.fetch(`
+  return client.fetch(
+    `
     *[_type == "project" && slug.current == $slug][0] {
       _id,
       title,
@@ -36,13 +44,17 @@ export async function getProjectBySlug(slug: string): Promise<SanityProject | nu
       description,
       gallery[] { "url": asset->url, alt },
     }
-  `, { slug })
+  `,
+    { slug },
+    { next: { revalidate: PROJECT_REVALIDATE, tags: ['projects', `project:${slug}`] } }
+  )
 }
 
 // ─── BLOG POSTS ──────────────────────────────────────────────────────────────
 
 export async function getPosts(): Promise<SanityPost[]> {
-  return client.fetch(`
+  return client.fetch(
+    `
     *[_type == "post"] | order(publishedAt desc) {
       _id,
       title,
@@ -53,11 +65,15 @@ export async function getPosts(): Promise<SanityPost[]> {
       "author": author->{ name, "avatar": avatar.asset->url },
       categories[]->{ title },
     }
-  `)
+  `,
+    {},
+    { next: { revalidate: POST_REVALIDATE, tags: ['posts'] } }
+  )
 }
 
 export async function getPostBySlug(slug: string): Promise<SanityPost | null> {
-  return client.fetch(`
+  return client.fetch(
+    `
     *[_type == "post" && slug.current == $slug][0] {
       _id,
       title,
@@ -69,5 +85,8 @@ export async function getPostBySlug(slug: string): Promise<SanityPost | null> {
       "author": author->{ name, "avatar": avatar.asset->url },
       categories[]->{ title },
     }
-  `, { slug })
+  `,
+    { slug },
+    { next: { revalidate: POST_REVALIDATE, tags: ['posts', `post:${slug}`] } }
+  )
 }

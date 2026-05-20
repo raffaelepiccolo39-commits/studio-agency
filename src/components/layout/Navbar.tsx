@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
@@ -81,7 +82,7 @@ export default function Navbar() {
           position: 'relative', zIndex: 210,
           textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0,
         }}>
-          <img src="/logo.png" alt="Pira Web" style={{ height: '46px', width: 'auto', transition: 'height 0.3s ease' }} />
+          <Image src="/logo.png" alt="Pira Web" width={97} height={46} priority style={{ height: '46px', width: 'auto', transition: 'height 0.3s ease' }} />
         </Link>
 
         {/* Desktop links */}

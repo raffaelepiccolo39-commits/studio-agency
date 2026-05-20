@@ -1,9 +1,15 @@
-'use client'
-
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
+
+const VALID_SLUGS = new Set([
+  'futuro-ecommerce-2025',
+  'shopify-vs-custom',
+  'design-che-converte',
+  'meta-ads-2025',
+])
 
 const mockPost = {
   title: 'Il futuro dell\'e-commerce nel 2025',
@@ -20,6 +26,7 @@ const mockPost = {
 }
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  if (!VALID_SLUGS.has(params.slug)) notFound()
   const post = mockPost
   return (
     <>
