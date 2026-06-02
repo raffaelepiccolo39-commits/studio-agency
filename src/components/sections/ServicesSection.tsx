@@ -32,7 +32,7 @@ const services: Service[] = [
       'Editorial Design',
       'Style Guide',
     ],
-    image: '/progetti/alma-studio/alma-studio-case-study-04.jpg',
+    image: '/servizi/servizi-01.jpg',
   },
   {
     id: 'b',
@@ -48,7 +48,7 @@ const services: Service[] = [
       'CMS Integration',
       'Analytics & Tracking',
     ],
-    image: '/progetti/pasticceria-bluemoon/screenshot-sito.jpg',
+    image: '/servizi/servizi-02.jpg',
   },
   {
     id: 'c',
@@ -64,7 +64,7 @@ const services: Service[] = [
       'Paid Media',
       'Reporting & Insights',
     ],
-    image: '/progetti/svinati/svinati-case-study-03.jpg',
+    image: '/servizi/servizi-03.jpg',
   },
   {
     id: 'd',
@@ -80,23 +80,7 @@ const services: Service[] = [
       'Motion Graphics',
       'Storyboarding',
     ],
-    image: '/progetti/maestri-cotonieri/maestri-cotonieri-pira-04.jpg',
-  },
-  {
-    id: 'e',
-    tag: '(e.)',
-    title: ['Photo', 'Studio'],
-    features: [
-      'Product Photography',
-      'Editorial Shooting',
-      'Video Production',
-      'Set Design',
-      'Brand Lifestyle',
-      'E-commerce Catalogue',
-      'Behind the Scenes',
-      'Studio Rental',
-    ],
-    image: '/progetti/svinati/svinati-case-study-04.jpg',
+    image: '/servizi/servizi-04.jpg',
   },
 ]
 
@@ -255,7 +239,7 @@ export default function ServicesSection() {
             className="services-evolve-grid"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(5, 1fr) 1.3fr',
+              gridTemplateColumns: 'repeat(4, 1fr) 1.3fr',
               gap: 'clamp(14px, 1.6vw, 24px)',
               alignItems: 'stretch',
             }}
