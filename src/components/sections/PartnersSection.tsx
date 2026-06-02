@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
 
 const partners = [
@@ -59,9 +60,12 @@ export default function PartnersSection() {
               marginRight: '2px',
               minWidth: '160px', height: '88px', flexShrink: 0,
             }}>
-              <img
+              <Image
                 src={p.logo}
                 alt={p.name}
+                width={110}
+                height={36}
+                sizes="110px"
                 style={{
                   maxHeight: '36px', maxWidth: '110px',
                   width: 'auto', objectFit: 'contain',

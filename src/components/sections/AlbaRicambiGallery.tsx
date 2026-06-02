@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+import { getDims } from '@/lib/imageDims'
 import { useInView } from 'react-intersection-observer'
 
 const BASE = '/progetti/alba-ricambi'
@@ -22,10 +24,12 @@ const GAP = '10px'
 function HeroImg() {
   return (
     <div style={{ background: '#c00', overflow: 'hidden', position: 'relative', lineHeight: 0 }}>
-      <img
+      <Image
         src={IMG.heroLaptop}
         alt="Alba Ricambi e-commerce laptop mockup"
-        loading="eager"
+        {...getDims(IMG.heroLaptop)}
+        priority
+        sizes="100vw"
         style={{
           width: '100%', height: 'auto', display: 'block',
           animation: 'kenBurns 1.4s cubic-bezier(0.16,1,0.3,1) forwards',
@@ -63,10 +67,12 @@ function GalleryImg({
           : 'none',
       }}
     >
-      <img
+      <Image
         src={src}
         alt={alt}
         loading={loading}
+        {...getDims(src)}
+        sizes="(max-width: 768px) 100vw, 50vw"
         style={{
           width: '100%', height: 'auto', display: 'block',
           transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1)',

@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
 import SectionLabel from '@/components/ui/SectionLabel'
 
@@ -57,10 +58,13 @@ export default function SponsorsSection() {
           }}
         >
           {sponsors.map((s) => (
-            <img
+            <Image
               key={s.src}
               src={s.src}
               alt={s.alt}
+              width={s.height * 3}
+              height={s.height}
+              sizes="200px"
               className="sponsor-logo"
               style={{
                 height: `clamp(14px, ${(s.height / 18).toFixed(2)}vw, ${s.height}px)`,
