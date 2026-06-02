@@ -63,7 +63,7 @@ const organizationSchema = {
   url: 'https://www.piraweb.it',
   logo: 'https://www.piraweb.it/logo.png',
   description: 'Agenzia digitale che unisce brand direction, sviluppo web e performance marketing. Costruiamo ecosistemi digitali per brand visionari.',
-  email: 'piraweb1@gmail.com',
+  email: 'info@piraweb.it',
   areaServed: ['Caserta', 'Napoli', 'Italia'],
   sameAs: [],
   address: {
