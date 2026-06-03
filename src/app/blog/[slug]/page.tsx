@@ -3,31 +3,16 @@ import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { getPosts, getPostBySlug } from '@/lib/sanity/queries'
 
-const VALID_SLUGS = new Set([
-  'futuro-ecommerce-2025',
-  'shopify-vs-custom',
-  'design-che-converte',
-  'meta-ads-2025',
-])
-
-const mockPost = {
-  title: 'Il futuro dell\'e-commerce nel 2025',
-  date: '20 Febbraio 2025', category: 'E-commerce', readTime: '7 min',
-  author: { name: 'Mario Rossi', role: 'Founder' },
-  excerpt: 'AI, headless commerce e personalizzazione estrema: ecco le tendenze che stanno ridisegnando il commercio digitale.',
-  content: [
-    { type: 'p', text: 'Il 2025 si presenta come un anno di svolta per l\'e-commerce. Dopo anni di crescita accelerata dalla pandemia, il mercato sta maturando e le regole del gioco stanno cambiando profondamente.' },
-    { type: 'h2', text: 'L\'intelligenza artificiale non è più un\'opzione' },
-    { type: 'p', text: 'I brand che stanno crescendo più velocemente hanno una cosa in comune: usano l\'AI non come gadget, ma come infrastruttura. Dalla personalizzazione dei prodotti mostrati, alle email generate dinamicamente, fino alle previsioni di stock — l\'AI sta diventando il sistema nervoso dell\'e-commerce moderno.' },
-    { type: 'h2', text: 'Headless commerce: quando ha senso davvero' },
-    { type: 'p', text: 'L\'architettura headless ha senso quando hai specifiche esigenze di performance e flessibilità — non come default per ogni progetto.' },
-  ],
+export async function generateStaticParams() {
+  const posts = await getPosts()
+  return posts.map(p => ({ slug: p.slug }))
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  if (!VALID_SLUGS.has(params.slug)) notFound()
-  const post = mockPost
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = await getPostBySlug(params.slug)
+  if (!post) notFound()
   return (
     <>
       <Cursor />

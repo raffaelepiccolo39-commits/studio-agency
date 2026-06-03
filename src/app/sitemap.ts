@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next'
-import { projects } from '@/data/projects'
+import { getProjects } from '@/lib/sanity/queries'
 
 const BASE_URL = 'https://www.piraweb.it'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const projects = await getProjects()
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${BASE_URL}/chi-siamo`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },

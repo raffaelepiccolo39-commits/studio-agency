@@ -11,7 +11,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { projects } from '@/data/projects'
+import type { Project } from '@/data/projects'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -27,13 +27,7 @@ const displayOrder = [
   'alba-ricambi',
 ]
 
-const orderedProjects = displayOrder
-  .map(slug => projects.find(p => p.slug === slug))
-  .filter((p): p is NonNullable<typeof p> => Boolean(p && p.immagini.length > 0))
-
-const trailImages = orderedProjects.map(p => p.immagini[0])
-
-const tagsFor = (p: (typeof projects)[number]) => {
+const tagsFor = (p: Project) => {
   const hasEcom = /e-commerce/i.test(p.platform) || p.services.some(s => /e-commerce/i.test(s))
   const hasBrand = p.services.some(s => /brand/i.test(s) || /logo/i.test(s))
   const hasSocial = p.services.some(s => /social/i.test(s))
@@ -47,7 +41,7 @@ const tagsFor = (p: (typeof projects)[number]) => {
   return tags.join(' • ')
 }
 
-function ProjectCard({ project, fullWidth = false }: { project: (typeof projects)[number]; fullWidth?: boolean }) {
+function ProjectCard({ project, fullWidth = false }: { project: Project; fullWidth?: boolean }) {
   return (
     <Link
       href={`/progetti/${project.slug}`}
@@ -132,8 +126,14 @@ function ProjectCard({ project, fullWidth = false }: { project: (typeof projects
   )
 }
 
-export default function ProgettiPage() {
+export default function ProgettiPage({ projects }: { projects: Project[] }) {
   const gridRef = useRef<HTMLDivElement>(null)
+
+  const orderedProjects = displayOrder
+    .map(slug => projects.find(p => p.slug === slug))
+    .filter((p): p is Project => Boolean(p && p.immagini.length > 0))
+
+  const trailImages = orderedProjects.map(p => p.immagini[0])
 
   useGSAP(() => {
     const wraps = gridRef.current?.querySelectorAll<HTMLElement>('.progetti-grid-img-wrap')

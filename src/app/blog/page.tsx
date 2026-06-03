@@ -3,20 +3,16 @@ import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
-
-const posts = [
-  { slug: 'futuro-ecommerce-2025', title: 'Il futuro dell\'e-commerce nel 2025', excerpt: 'AI, headless commerce e personalizzazione estrema: le tendenze che stanno ridisegnando il commercio digitale.', date: '20 Feb 2025', category: 'E-commerce', readTime: '7 min', featured: true },
-  { slug: 'shopify-vs-custom', title: 'Shopify Plus o sviluppo custom?', excerpt: 'Una guida pratica per capire quando ha senso usare Shopify Plus e quando conviene costruire qualcosa di custom.', date: '14 Feb 2025', category: 'Tech', readTime: '5 min', featured: false },
-  { slug: 'design-che-converte', title: 'Design che converte: i principi UX', excerpt: 'Non basta essere belli. Ecco come costruiamo interfacce che guidano l\'utente verso l\'acquisto in modo naturale.', date: '5 Feb 2025', category: 'Design', readTime: '6 min', featured: false },
-  { slug: 'meta-ads-2025', title: 'Meta Ads nel 2025: strategie che funzionano', excerpt: 'Con iOS e le restrizioni sulla privacy, molti pensano che Meta sia morta. Sbagliato. Ecco come adattarsi.', date: '28 Gen 2025', category: 'Marketing', readTime: '8 min', featured: false },
-]
+import { getPosts } from '@/lib/sanity/queries'
 
 const categoryColors: Record<string, string> = {
   'E-commerce': '#c8f55a', 'Tech': '#5a8cf5', 'Design': '#ff4d1c', 'Marketing': '#f5c85a',
 }
 
-export default function BlogPage() {
-  const [featured, ...rest] = posts
+export default async function BlogPage() {
+  const posts = await getPosts()
+  const featured = posts.find(p => p.featured) ?? posts[0]
+  const rest = posts.filter(p => p.slug !== featured?.slug)
   return (
     <>
       <Cursor />

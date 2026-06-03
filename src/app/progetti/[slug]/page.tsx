@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
-import { projects } from '@/data/projects'
+import { getProjects, getProjectBySlug } from '@/lib/sanity/queries'
+import type { Project } from '@/data/projects'
 import type { Metadata } from 'next'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
@@ -9,12 +10,13 @@ import Image from 'next/image'
 
 const BASE_URL = 'https://www.piraweb.it'
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const projects = await getProjects()
   return projects.map(p => ({ slug: p.slug }))
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const project = projects.find(p => p.slug === params.slug)
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const project = await getProjectBySlug(params.slug)
   if (!project) return {}
 
   const title = project.seo?.metaTitle ?? `${project.title} — ${project.platform}`
@@ -44,7 +46,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 }
 
-const tagsFor = (p: (typeof projects)[number]) => {
+const tagsFor = (p: Project) => {
   const hasEcom = /e-commerce/i.test(p.platform) || p.services.some(s => /e-commerce/i.test(s))
   const hasBrand = p.services.some(s => /brand/i.test(s) || /logo/i.test(s))
   const hasSocial = p.services.some(s => /social/i.test(s))
@@ -57,8 +59,8 @@ const tagsFor = (p: (typeof projects)[number]) => {
   return tags.join(' • ')
 }
 
-export default function ProgettoPage({ params }: { params: { slug: string } }) {
-  const project = projects.find(p => p.slug === params.slug)
+export default async function ProgettoPage({ params }: { params: { slug: string } }) {
+  const project = await getProjectBySlug(params.slug)
   if (!project) notFound()
 
   const heroImage = project.immagini[0]
@@ -73,9 +75,10 @@ export default function ProgettoPage({ params }: { params: { slug: string } }) {
     'quadrifoglio-group',
     'alba-ricambi',
   ]
+  const allProjects = await getProjects()
   const otherProjects = otherProjectsOrder
-    .map(slug => projects.find(p => p.slug === slug))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p && p.immagini.length > 0 && p.slug !== project.slug))
+    .map(slug => allProjects.find(p => p.slug === slug))
+    .filter((p): p is Project => Boolean(p && p.immagini.length > 0 && p.slug !== project.slug))
     .slice(0, 3)
 
   const jsonLd = {

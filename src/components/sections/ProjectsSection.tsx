@@ -6,7 +6,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { projects } from '@/data/projects'
+import { projects as mockProjects, type Project } from '@/data/projects'
 import SectionLabel from '@/components/ui/SectionLabel'
 import Magnetic from '@/components/ui/Magnetic'
 
@@ -24,11 +24,7 @@ const homepageOrder = [
   'alba-ricambi',
 ]
 
-const homepageProjects = homepageOrder
-  .map(slug => projects.find(p => p.slug === slug))
-  .filter((p): p is NonNullable<typeof p> => Boolean(p && p.immagini.length > 0))
-
-const tagsFor = (p: (typeof projects)[number]) => {
+const tagsFor = (p: Project) => {
   const hasEcom = /e-commerce/i.test(p.platform) || p.services.some(s => /e-commerce/i.test(s))
   const hasBrand = p.services.some(s => /brand/i.test(s) || /logo/i.test(s))
   const hasSocial = p.services.some(s => /social/i.test(s))
@@ -42,8 +38,12 @@ const tagsFor = (p: (typeof projects)[number]) => {
   return tags.join(' • ')
 }
 
-export default function ProjectsSection() {
+export default function ProjectsSection({ projects = mockProjects }: { projects?: Project[] }) {
   const sectionRef = useRef<HTMLElement>(null)
+
+  const homepageProjects = homepageOrder
+    .map(slug => projects.find(p => p.slug === slug))
+    .filter((p): p is Project => Boolean(p && p.immagini.length > 0))
 
   useGSAP(() => {
     const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.project-home-card')

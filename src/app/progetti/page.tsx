@@ -1,4 +1,5 @@
 import { pageMetadata } from '@/lib/seo'
+import { getProjects } from '@/lib/sanity/queries'
 import ProgettiClient from './ProgettiClient'
 
 export const metadata = pageMetadata({
@@ -8,6 +9,7 @@ export const metadata = pageMetadata({
   path: '/progetti',
 })
 
-export default function Page() {
-  return <ProgettiClient />
+export default async function Page() {
+  const projects = await getProjects()
+  return <ProgettiClient projects={projects} />
 }

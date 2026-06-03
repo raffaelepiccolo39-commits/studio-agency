@@ -9,6 +9,7 @@ import ProjectsSection from '@/components/sections/ProjectsSection'
 import ServicesSection from '@/components/sections/ServicesSection'
 import SponsorsSection from '@/components/sections/SponsorsSection'
 import GallerySection from '@/components/sections/GallerySection'
+import { getProjects } from '@/lib/sanity/queries'
 
 import type { Metadata } from 'next'
 
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
+  const projects = await getProjects()
   return (
     <>
       <Cursor />
@@ -44,7 +46,7 @@ export default async function Home() {
         <IntroSection />
         <MarqueeSection />
         <StatsSection />
-        <ProjectsSection />
+        <ProjectsSection projects={projects} />
         <ServicesSection />
         <SponsorsSection />
         <GallerySection />
