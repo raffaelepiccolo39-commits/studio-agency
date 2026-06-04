@@ -21,7 +21,7 @@ const services: Service[] = [
   {
     id: 'a',
     tag: '(a.)',
-    title: ['Brand', 'Direction'],
+    title: ['Branding &', 'Graphic Design'],
     features: [
       'Brand Identity',
       'Logo & Visual System',
