@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
+import Link from 'next/link'
 
 type Stat = {
   value: number
@@ -10,10 +11,10 @@ type Stat = {
 }
 
 const stats: Stat[] = [
-  { value: 50, suffix: '+', label: 'Progetti realizzati' },
-  { value: 7, suffix: '+', label: 'Anni di esperienza' },
-  { value: 25, suffix: '+', label: 'Brand partner' },
-  { value: 100, suffix: '%', label: 'Passione' },
+  { value: 100, suffix: '+', label: 'Progetti realizzati' },
+  { value: 10, suffix: '+', label: 'Anni di esperienza' },
+  { value: 80, suffix: '+', label: 'Brand partner' },
+  { value: 10, suffix: 'M+', label: 'Generati tramite le ads' },
 ]
 
 function Counter({ stat, start }: { stat: Stat; start: boolean }) {
@@ -106,6 +107,21 @@ export default function StatsSection() {
             </span>
           </div>
         ))}
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: 'clamp(44px, 5vw, 72px)',
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1) 0.45s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.45s',
+        }}
+      >
+        <Link href="/contatti" className="btn-accent">
+          Scopri come →
+        </Link>
       </div>
     </section>
   )
