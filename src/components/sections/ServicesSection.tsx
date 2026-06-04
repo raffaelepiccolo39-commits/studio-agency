@@ -233,16 +233,7 @@ export default function ServicesSection() {
               color: '#e5e5e5',
               letterSpacing: '0.04em',
             }}>
-              Our Services
-            </span>
-            <span style={{
-              fontFamily: 'var(--font-syne)',
-              fontWeight: 500,
-              fontSize: '13px',
-              color: '#b2b2b2',
-              letterSpacing: '0.04em',
-            }}>
-              Est. 2018©
+              Servizi
             </span>
           </div>
 
