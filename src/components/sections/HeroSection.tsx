@@ -134,19 +134,20 @@ export default function HeroSection() {
       }}>
         <h1 style={{
           fontFamily: 'var(--font-boldonse)',
-          fontSize: 'clamp(34px, 6.5vw, 96px)',
-          lineHeight: 1.25,
+          fontSize: 'clamp(28px, 5.6vw, 80px)',
+          lineHeight: 1.35,
           color: '#ffffff',
           letterSpacing: '-0.01em',
           margin: 0,
+          width: '100%',
         }}>
-          <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+          <div style={{ overflow: 'hidden', padding: '0.16em 0.06em 0.1em' }}>
             <div className="hero-line" data-text="GROWTH">GROWTH</div>
           </div>
-          <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+          <div style={{ overflow: 'hidden', padding: '0.16em 0.06em 0.1em' }}>
             <div className="hero-line" data-text="FOCUSED">FOCUSED</div>
           </div>
-          <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+          <div style={{ overflow: 'hidden', padding: '0.16em 0.06em 0.1em' }}>
             <div className="hero-line" data-text="AGENCY">AGENCY</div>
           </div>
         </h1>
