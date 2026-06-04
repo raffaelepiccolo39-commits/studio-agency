@@ -702,6 +702,10 @@ body {
   flex: 0 0 auto;
   width: 325px;
   max-width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 20px 54px -22px rgba(0, 0, 0, 0.3), 0 4px 12px -6px rgba(0, 0, 0, 0.12);
 }
 .tiktok-card .tiktok-embed {
   width: 100% !important;

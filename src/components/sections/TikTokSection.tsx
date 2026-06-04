@@ -10,10 +10,6 @@ const videos = [
   { user: 'ladeliziapasticcerie', id: '7549236385270615318' },
 ]
 
-const Hl = ({ children }: { children: React.ReactNode }) => (
-  <span style={{ color: 'var(--accent)' }}>{children}</span>
-)
-
 export default function TikTokSection() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
 
@@ -35,9 +31,8 @@ export default function TikTokSection() {
     <section
       ref={ref}
       style={{
-        background: '#0a0a0a',
-        borderTop: '0.5px solid #525252',
-        padding: 'clamp(56px, 8vw, 100px) clamp(24px, 5vw, 40px)',
+        background: '#ffffff',
+        padding: 'clamp(56px, 8vw, 104px) clamp(24px, 5vw, 40px)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -50,11 +45,11 @@ export default function TikTokSection() {
           alignItems: 'center',
           gap: '12px',
           fontFamily: 'var(--font-syne)',
-          fontWeight: 500,
+          fontWeight: 600,
           fontSize: '13px',
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
-          color: '#b2b2b2',
+          color: '#6a6a6a',
           margin: '0 0 clamp(18px, 2vw, 26px)',
           opacity: inView ? 1 : 0,
           transform: inView ? 'translateY(0)' : 'translateY(20px)',
@@ -71,14 +66,17 @@ export default function TikTokSection() {
           fontSize: 'clamp(40px, 6.5vw, 104px)',
           lineHeight: 0.95,
           letterSpacing: '0.005em',
-          color: '#ffffff',
+          color: '#0a0a0a',
           margin: '0 0 clamp(16px, 2vw, 24px)',
           opacity: inView ? 1 : 0,
           transform: inView ? 'translateY(0)' : 'translateY(24px)',
           transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.08s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.08s',
         }}
       >
-        VIDEO CHE <Hl>SPACCANO</Hl>
+        VIDEO CHE{' '}
+        <span style={{ background: 'var(--accent)', color: '#0a0a0a', padding: '0 0.14em', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>
+          SPACCANO
+        </span>
       </h2>
 
       <p
@@ -87,7 +85,7 @@ export default function TikTokSection() {
           fontWeight: 400,
           fontSize: 'clamp(15px, 1.3vw, 19px)',
           lineHeight: 1.5,
-          color: 'rgba(255,255,255,0.65)',
+          color: '#6a6a6a',
           maxWidth: '620px',
           margin: '0 0 clamp(40px, 5vw, 64px)',
           opacity: inView ? 1 : 0,
