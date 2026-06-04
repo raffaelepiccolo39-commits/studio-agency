@@ -9,14 +9,13 @@ if (typeof window !== 'undefined') {
 }
 
 const items = [
-  'STRATEGIA',
-  'TECNOLOGIA',
-  'CREATIVITÀ',
-  'PERFORMANCE',
-  'CRESCITA',
-  'INNOVAZIONE',
-  'RISULTATI',
-  'VISIONE',
+  'PERFORMANCE MARKETING',
+  'BRANDING',
+  'E-COMMERCE',
+  'SOCIAL MEDIA',
+  'GRAPHIC DESIGN',
+  'PHOTO',
+  'VIDEO',
 ]
 
 export default function MarqueeSection() {
