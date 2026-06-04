@@ -2,6 +2,10 @@
 
 import { useEffect } from 'react'
 import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -13,15 +17,14 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
       touchMultiplier: 1.4,
     })
 
-    let rafId = 0
-    function raf(time: number) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
-    rafId = requestAnimationFrame(raf)
+    // Sincronizza Lenis con GSAP ScrollTrigger (necessario per pin/scroll orizzontale fluidi)
+    lenis.on('scroll', ScrollTrigger.update)
+    const onTick = (time: number) => lenis.raf(time * 1000)
+    gsap.ticker.add(onTick)
+    gsap.ticker.lagSmoothing(0)
 
     return () => {
-      cancelAnimationFrame(rafId)
+      gsap.ticker.remove(onTick)
       lenis.destroy()
     }
   }, [])
