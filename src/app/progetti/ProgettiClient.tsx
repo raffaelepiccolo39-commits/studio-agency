@@ -12,6 +12,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { Project } from '@/data/projects'
+import { coverFor } from '@/data/homeCovers'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -67,7 +68,7 @@ function ProjectCard({ project, fullWidth = false }: { project: Project; fullWid
         }}
       >
         <Image
-          src={project.immagini[0]}
+          src={coverFor(project)}
           alt={project.title}
           fill
           sizes={fullWidth ? '100vw' : '(max-width: 768px) 100vw, 50vw'}
@@ -133,7 +134,7 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
     .map(slug => projects.find(p => p.slug === slug))
     .filter((p): p is Project => Boolean(p && p.immagini.length > 0))
 
-  const trailImages = orderedProjects.map(p => p.immagini[0])
+  const trailImages = orderedProjects.map(p => coverFor(p))
 
   useGSAP(() => {
     const wraps = gridRef.current?.querySelectorAll<HTMLElement>('.progetti-grid-img-wrap')

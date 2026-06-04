@@ -7,6 +7,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { projects as mockProjects, type Project } from '@/data/projects'
+import { coverFor } from '@/data/homeCovers'
 import SectionLabel from '@/components/ui/SectionLabel'
 import Magnetic from '@/components/ui/Magnetic'
 
@@ -133,7 +134,7 @@ export default function ProjectsSection({ projects = mockProjects }: { projects?
               }}
             >
               <Image
-                src={p.immagini[0]}
+                src={coverFor(p)}
                 alt={p.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 80vw"
