@@ -1,6 +1,13 @@
 'use client'
 
-import { useInView } from 'react-intersection-observer'
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const Hl = ({ children }: { children: React.ReactNode }) => (
   <span style={{ color: 'var(--accent)' }}>{children}</span>
@@ -14,11 +21,11 @@ const steps: StepData[] = [
     name: 'Posizionamento',
     body: (
       <>
-        <p>
+        <p className="metodo-reveal">
           Analizziamo il <Hl>mercato</Hl>, mappiamo lo <Hl>scenario competitivo</Hl>, definiamo{' '}
           <Hl>posizionamento</Hl> e <Hl>KPI</Hl> di business.
         </p>
-        <p>
+        <p className="metodo-reveal">
           Da qui costruiamo la <Hl>strategia di marketing</Hl>: non un documento da archiviare, ma il
           riferimento operativo da cui ogni fase successiva trae direzione e coerenza.
         </p>
@@ -30,11 +37,11 @@ const steps: StepData[] = [
     name: 'Identità',
     body: (
       <>
-        <p>
+        <p className="metodo-reveal">
           Progettiamo l&rsquo;identità visiva, costruiamo il <Hl>tono di voce</Hl>, definiamo{' '}
           <Hl>piano editoriale</Hl> e <Hl>linee guida operative</Hl>.
         </p>
-        <p>
+        <p className="metodo-reveal">
           Così prende forma il <Hl>sistema brand</Hl>: non un esercizio estetico, ma il riferimento
           espressivo che dà a ogni post, campagna e email la stessa voce riconoscibile.
         </p>
@@ -46,8 +53,8 @@ const steps: StepData[] = [
     name: 'Realizzazione',
     body: (
       <>
-        <p>La realizzazione è la fase in cui la strategia diventa concreta.</p>
-        <p>
+        <p className="metodo-reveal">La realizzazione è la fase in cui la strategia diventa concreta.</p>
+        <p className="metodo-reveal">
           <Hl>Fotografiamo, giriamo, disegniamo, scriviamo, sviluppiamo</Hl>: ogni asset del progetto
           nasce sotto lo stesso tetto, con la stessa direzione e con la stessa cura del dettaglio.
         </p>
@@ -59,32 +66,89 @@ const steps: StepData[] = [
     name: 'Amplificazione',
     body: (
       <>
-        <p>L&rsquo;amplificazione è la fase in cui il brand incontra il mercato.</p>
-        <p>
+        <p className="metodo-reveal">L&rsquo;amplificazione è la fase in cui il brand incontra il mercato.</p>
+        <p className="metodo-reveal">
           <Hl>Pubblichiamo, investiamo, ottimizziamo.</Hl> Ogni canale (social, advertising, SEO, email)
           lavora dentro la stessa strategia. I dati non supportano le decisioni, bensì le guidano.
         </p>
-        <p>Ciò che porta valore si scala, ciò che non rende viene tagliato.</p>
+        <p className="metodo-reveal">Ciò che porta valore si scala, ciò che non rende viene tagliato.</p>
       </>
     ),
   },
 ]
 
 export default function MetodoSection() {
-  const { ref, inView } = useInView({ threshold: 0.12, triggerOnce: true })
+  const sectionRef = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      const root = sectionRef.current
+      if (!root) return
+
+      // Header reveal
+      const head = root.querySelectorAll<HTMLElement>('.metodo-head-reveal')
+      gsap.set(head, { y: 40, opacity: 0 })
+      gsap.to(head, {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'expo.out',
+        stagger: 0.1,
+        scrollTrigger: { trigger: root, start: 'top 72%', toggleActions: 'play none none reverse' },
+      })
+
+      // Progress line fill
+      const line = root.querySelector<HTMLElement>('.metodo-progress')
+      const list = root.querySelector<HTMLElement>('.metodo-list')
+      if (line && list) {
+        gsap.fromTo(
+          line,
+          { scaleY: 0 },
+          {
+            scaleY: 1,
+            ease: 'none',
+            scrollTrigger: { trigger: list, start: 'top 65%', end: 'bottom 75%', scrub: 0.6 },
+          }
+        )
+      }
+
+      // Per-step reveal
+      root.querySelectorAll<HTMLElement>('.metodo-step').forEach((step) => {
+        const giant = step.querySelector<HTMLElement>('.metodo-giant')
+        const name = step.querySelector<HTMLElement>('.metodo-name')
+        const dot = step.querySelector<HTMLElement>('.metodo-dot')
+        const paras = step.querySelectorAll<HTMLElement>('.metodo-reveal')
+
+        if (giant) gsap.set(giant, { y: 70, opacity: 0, scale: 0.94 })
+        if (name) gsap.set(name, { y: 30, opacity: 0 })
+        if (dot) gsap.set(dot, { scale: 0 })
+        gsap.set(paras, { y: 26, opacity: 0 })
+
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: step, start: 'top 76%', toggleActions: 'play none none reverse' },
+        })
+        if (dot) tl.to(dot, { scale: 1, duration: 0.5, ease: 'back.out(2)' }, 0)
+        if (giant) tl.to(giant, { y: 0, opacity: 1, scale: 1, duration: 1.2, ease: 'expo.out' }, 0)
+        if (name) tl.to(name, { y: 0, opacity: 1, duration: 1, ease: 'expo.out' }, 0.1)
+        tl.to(paras, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', stagger: 0.12 }, 0.25)
+      })
+    },
+    { scope: sectionRef }
+  )
 
   return (
     <section
-      ref={ref}
+      ref={sectionRef}
       id="metodo"
       style={{
         background: '#0a0a0a',
         borderTop: '0.5px solid #525252',
-        padding: 'clamp(56px, 8vw, 100px) clamp(24px, 5vw, 40px)',
+        padding: 'clamp(64px, 9vw, 120px) clamp(24px, 5vw, 40px)',
+        overflow: 'hidden',
       }}
     >
-      {/* Eyebrow */}
       <p
+        className="metodo-head-reveal"
         style={{
           fontFamily: 'var(--font-syne)',
           fontWeight: 500,
@@ -92,91 +156,40 @@ export default function MetodoSection() {
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
           color: '#b2b2b2',
-          margin: '0 0 clamp(24px, 3vw, 40px)',
+          margin: '0 0 clamp(20px, 2.5vw, 32px)',
         }}
       >
         Metodo
       </p>
 
-      {/* Title */}
       <h2
+        className="metodo-head-reveal"
         style={{
           fontFamily: 'var(--font-syne)',
           fontWeight: 600,
-          fontSize: 'clamp(26px, 3.6vw, 52px)',
-          lineHeight: 1.12,
+          fontSize: 'clamp(28px, 4vw, 60px)',
+          lineHeight: 1.08,
           letterSpacing: '-0.015em',
           color: '#ffffff',
-          margin: '0 0 clamp(40px, 6vw, 80px)',
-          maxWidth: '900px',
+          margin: '0 0 clamp(48px, 7vw, 96px)',
+          maxWidth: '960px',
         }}
       >
         Il metodo <Hl>PIRA</Hl>, un processo creativo guidato dalla strategia
       </h2>
 
-      {/* Steps timeline */}
-      <div
-        className="metodo-steps"
-        style={
-          {
-            '--pad': 'clamp(28px, 4vw, 60px)',
-            position: 'relative',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'clamp(40px, 5vw, 72px)',
-            paddingLeft: 'var(--pad)',
-            borderLeft: '1px solid rgba(255,255,255,0.16)',
-            maxWidth: '860px',
-            opacity: inView ? 1 : 0,
-            transform: inView ? 'translateY(0)' : 'translateY(24px)',
-            transition: 'opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)',
-          } as React.CSSProperties
-        }
-      >
+      <div className="metodo-list">
+        <span className="metodo-progress" aria-hidden />
         {steps.map((s) => (
-          <div key={s.letter} style={{ position: 'relative' }}>
-            {/* node */}
-            <span
-              aria-hidden
-              style={{
-                position: 'absolute',
-                left: 'calc(-1 * var(--pad))',
-                top: '0.35em',
-                width: '11px',
-                height: '11px',
-                borderRadius: '50%',
-                background: 'var(--accent)',
-                transform: 'translateX(-50%)',
-                boxShadow: '0 0 0 4px #0a0a0a',
-              }}
-            />
-            <h3
-              style={{
-                fontFamily: 'var(--font-bebas)',
-                fontSize: 'clamp(28px, 3.4vw, 46px)',
-                lineHeight: 1,
-                letterSpacing: '0.01em',
-                color: '#ffffff',
-                margin: '0 0 clamp(14px, 1.6vw, 22px)',
-              }}
-            >
-              <span style={{ color: 'var(--accent)' }}>{s.letter}</span> — {s.name.toUpperCase()}
-            </h3>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '14px',
-                maxWidth: '640px',
-                fontFamily: 'var(--font-syne)',
-                fontWeight: 400,
-                fontSize: 'clamp(14px, 1.05vw, 16px)',
-                lineHeight: 1.6,
-                color: 'rgba(255,255,255,0.7)',
-              }}
-            >
-              {s.body}
+          <div className="metodo-step" key={s.letter}>
+            <div className="metodo-step-head">
+              <span className="metodo-dot" aria-hidden />
+              <span className="metodo-giant" aria-hidden>
+                {s.letter}
+              </span>
+              <h3 className="metodo-name">{s.name.toUpperCase()}</h3>
             </div>
+            <div className="metodo-step-body">{s.body}</div>
           </div>
         ))}
       </div>
