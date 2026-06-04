@@ -24,27 +24,6 @@ export default function TikTokSection() {
         textAlign: 'center',
       }}
     >
-      <p
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          fontFamily: 'var(--font-syne)',
-          fontWeight: 600,
-          fontSize: '13px',
-          letterSpacing: '0.16em',
-          textTransform: 'uppercase',
-          color: '#6a6a6a',
-          margin: '0 0 clamp(18px, 2vw, 26px)',
-          opacity: inView ? 1 : 0,
-          transform: inView ? 'translateY(0)' : 'translateY(20px)',
-          transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)',
-        }}
-      >
-        <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--accent)' }} />
-        Risultati organici
-      </p>
-
       <h2
         style={{
           fontFamily: 'var(--font-bebas)',
