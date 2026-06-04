@@ -700,15 +700,25 @@ body {
 }
 .tiktok-card {
   flex: 0 0 auto;
-  width: 325px;
+  width: 300px;
   max-width: 100%;
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  background: #ffffff;
+  background: #000000;
   box-shadow: 0 20px 54px -22px rgba(0, 0, 0, 0.3), 0 4px 12px -6px rgba(0, 0, 0, 0.12);
 }
-.tiktok-card .tiktok-embed {
-  width: 100% !important;
+.tiktok-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+}
+.tiktok-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
 
 /* ─── METODO PIRA (scroll orizzontale) ─── */

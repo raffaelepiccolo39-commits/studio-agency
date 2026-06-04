@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 const videos = [
@@ -12,20 +11,6 @@ const videos = [
 
 export default function TikTokSection() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
-
-  useEffect(() => {
-    const w = window as unknown as { tiktokEmbed?: { lib?: { render?: () => void } } }
-    if (w.tiktokEmbed?.lib?.render) {
-      w.tiktokEmbed.lib.render()
-      return
-    }
-    const existing = document.querySelector<HTMLScriptElement>('script[src="https://www.tiktok.com/embed.js"]')
-    if (existing) return
-    const s = document.createElement('script')
-    s.src = 'https://www.tiktok.com/embed.js'
-    s.async = true
-    document.body.appendChild(s)
-  }, [])
 
   return (
     <section
@@ -99,14 +84,15 @@ export default function TikTokSection() {
       <div className="tiktok-grid">
         {videos.map((v) => (
           <div className="tiktok-card" key={v.id}>
-            <blockquote
-              className="tiktok-embed"
-              cite={`https://www.tiktok.com/@${v.user}/video/${v.id}`}
-              data-video-id={v.id}
-              style={{ maxWidth: '100%', minWidth: 0, margin: 0, width: '100%' }}
-            >
-              <section> </section>
-            </blockquote>
+            <div className="tiktok-frame">
+              <iframe
+                src={`https://www.tiktok.com/player/v1/${v.id}?music_info=0&description=0&rel=0`}
+                title={`Video TikTok @${v.user}`}
+                allow="encrypted-media; fullscreen; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
+            </div>
           </div>
         ))}
       </div>
