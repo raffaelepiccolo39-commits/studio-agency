@@ -75,8 +75,7 @@ function ProjectCard({ project, fullWidth = false }: { project: Project; fullWid
           className="project-img"
           style={{
             objectFit: 'cover',
-            transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease',
-            filter: 'grayscale(10%)',
+            transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1)',
             willChange: 'transform',
           }}
         />

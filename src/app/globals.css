@@ -223,7 +223,7 @@ body {
 .service-row:hover .service-arrow { transform: rotate(-45deg); color: var(--accent) !important; }
 
 /* Project cards */
-.project-card:hover .project-img { transform: scale(1.06); filter: grayscale(0%); }
+.project-card:hover .project-img { transform: scale(1.06); }
 .project-card:hover .project-info { transform: translateY(0) !important; }
 
 /* Nav links */
@@ -354,13 +354,11 @@ body {
 .projects-row::-webkit-scrollbar-thumb { background: #525252; border-radius: 2px; }
 .project-home-card .project-img,
 .progetti-grid-card .project-img {
-  transition: transform 1.2s cubic-bezier(0.16,1,0.3,1), filter 0.8s ease !important;
-  filter: grayscale(40%) brightness(0.85) !important;
+  transition: transform 1.2s cubic-bezier(0.16,1,0.3,1) !important;
 }
 .project-home-card:hover .project-img,
 .progetti-grid-card:hover .project-img {
   transform: scale(1.08) !important;
-  filter: grayscale(0%) brightness(1.05) !important;
 }
 .project-home-card:hover .project-home-title,
 .progetti-grid-card:hover .progetti-grid-title { color: var(--accent) !important; }
