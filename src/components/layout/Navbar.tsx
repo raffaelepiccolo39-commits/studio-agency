@@ -17,15 +17,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
   const [navHovered, setNavHovered] = useState(false)
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
 
   useEffect(() => {
     let lastY = window.scrollY
@@ -86,9 +78,8 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop links (centro) */}
-        {!isMobile && (
-          <ul style={{
-            display: 'flex', gap: '24px', listStyle: 'none',
+        <ul className="nav-desktop" style={{
+            gap: '24px', listStyle: 'none',
             margin: 0, padding: 0, flexWrap: 'nowrap', alignItems: 'center',
           }}>
             {links.map(l => {
@@ -112,20 +103,18 @@ export default function Navbar() {
               )
             })}
           </ul>
-        )}
 
         {/* CTA desktop (destra) */}
-        {!isMobile && (
-          <Link
-            href="/contatti"
-            style={{
+        <Link
+          className="nav-desktop nav-cta-desktop"
+          href="/contatti"
+          style={{
               background: 'var(--accent)', color: '#0a0a0a',
               border: 'none', padding: '10px 40px',
               fontFamily: 'var(--font-syne)',
               fontSize: '16px', fontWeight: 500, letterSpacing: 0,
               cursor: 'none',
               textDecoration: 'none',
-              display: 'inline-block',
               whiteSpace: 'nowrap',
               flexShrink: 0,
               transition: 'background 0.3s',
@@ -133,11 +122,9 @@ export default function Navbar() {
           >
             RICHIEDI UNA CONSULENZA
           </Link>
-        )}
 
         {/* Hamburger mobile */}
-        {isMobile && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="nav-mobile">
             <Link
               href="/contatti"
               style={{
@@ -178,12 +165,10 @@ export default function Navbar() {
               }} />
             </button>
           </div>
-        )}
       </nav>
 
       {/* Menu fullscreen mobile */}
-      {isMobile && (
-        <div style={{
+      <div className="nav-mobile-overlay" style={{
           position: 'fixed', inset: 0, zIndex: 150, background: 'var(--bg)',
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center', gap: '8px',
@@ -211,7 +196,6 @@ export default function Navbar() {
             info@piraweb.it
           </p>
         </div>
-      )}
 
     </>
   )

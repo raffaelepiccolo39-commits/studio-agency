@@ -689,6 +689,17 @@ body {
   opacity: 1;
 }
 
+/* ─── NAVBAR RESPONSIVE (no flash: switch via CSS) ─── */
+.nav-desktop { display: flex; }
+.nav-cta-desktop { display: inline-block; }
+.nav-mobile { display: none; align-items: center; gap: 12px; }
+.nav-mobile-overlay { display: none !important; }
+@media (max-width: 1023px) {
+  .nav-desktop { display: none !important; }
+  .nav-mobile { display: flex !important; }
+  .nav-mobile-overlay { display: flex !important; }
+}
+
 /* ─── TIKTOK VIDEOS ─── */
 .tiktok-grid {
   display: flex;
