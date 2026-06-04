@@ -67,7 +67,7 @@ export default function Navbar() {
         style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: `${scrolled ? '6px' : '10px'} clamp(20px,5vw,40px)`,
+          padding: `${scrolled ? '12px' : '20px'} clamp(20px,5vw,40px)`,
           background: navBg,
           backdropFilter: (scrolled || navHovered) ? 'blur(14px)' : 'none',
           WebkitBackdropFilter: (scrolled || navHovered) ? 'blur(14px)' : 'none',
