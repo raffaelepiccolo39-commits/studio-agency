@@ -7,6 +7,7 @@ const videos = [
   { user: 'svinati', id: '7611180256845663510' },
   { user: 'contexbiancheria', id: '7624172835149319446' },
   { user: 'pasticceriabluemoon', id: '7633342939099319574' },
+  { user: 'alma.studio.comme', id: '7619006303549033751' },
 ]
 
 export default function TikTokSection() {

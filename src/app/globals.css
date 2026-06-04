@@ -696,7 +696,7 @@ body {
   justify-content: center;
   gap: clamp(16px, 1.6vw, 24px);
   width: 100%;
-  max-width: 1380px;
+  max-width: 1640px;
 }
 .tiktok-card {
   flex: 0 0 auto;
