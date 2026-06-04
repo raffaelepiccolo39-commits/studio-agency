@@ -7,8 +7,6 @@ import gsap from 'gsap'
 const slides = [
   '/progetti/pasticceria-bluemoon/pasticcere.jpg',
   '/progetti/maestri-cotonieri/maestri-cotonieri-pira-01.jpg',
-  '/progetti/svinati/svinati-case-study-01.jpg',
-  '/progetti/alma-studio/alma-studio-case-study-01.jpg',
 ]
 
 const SLIDE_DURATION = 6000
@@ -66,7 +64,9 @@ export default function HeroSection() {
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
         padding: 'clamp(140px, 15vw, 200px) clamp(24px, 5vw, 40px) clamp(60px, 8vw, 85px)',
         borderBottom: '0.5px solid #525252',
         overflow: 'hidden',
@@ -121,27 +121,48 @@ export default function HeroSection() {
         })}
       </div>
 
-      {/* Title */}
-      <h1 style={{
+      {/* Title + subtitle */}
+      <div style={{
         position: 'relative',
         zIndex: 1,
-        fontFamily: 'var(--font-bebas)',
-        fontSize: 'clamp(72px, 11vw, 140px)',
-        lineHeight: 0.95,
-        color: '#ffffff',
-        letterSpacing: '-0.01em',
-        margin: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 'clamp(24px, 4vw, 48px)',
+        maxWidth: '1324px',
+        width: '100%',
       }}>
-        <div style={{ overflow: 'hidden' }}>
-          <div className="hero-line" data-text="GROWTH">GROWTH</div>
-        </div>
-        <div style={{ overflow: 'hidden' }}>
-          <div className="hero-line" data-text="FOCUSED">FOCUSED</div>
-        </div>
-        <div style={{ overflow: 'hidden' }}>
-          <div className="hero-line" data-text="AGENCY">AGENCY</div>
-        </div>
-      </h1>
+        <h1 style={{
+          fontFamily: 'var(--font-boldonse)',
+          fontSize: 'clamp(34px, 6.5vw, 96px)',
+          lineHeight: 1.25,
+          color: '#ffffff',
+          letterSpacing: '-0.01em',
+          margin: 0,
+        }}>
+          <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+            <div className="hero-line" data-text="GROWTH">GROWTH</div>
+          </div>
+          <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+            <div className="hero-line" data-text="FOCUSED">FOCUSED</div>
+          </div>
+          <div style={{ overflow: 'hidden', paddingBottom: '0.05em' }}>
+            <div className="hero-line" data-text="AGENCY">AGENCY</div>
+          </div>
+        </h1>
+
+        <p style={{
+          fontFamily: 'var(--font-syne)',
+          fontWeight: 400,
+          fontSize: 'clamp(16px, 2vw, 24px)',
+          lineHeight: 1.35,
+          color: 'rgba(255,255,255,0.85)',
+          maxWidth: '560px',
+          margin: 0,
+        }}>
+          Non solo creatività: siamo un&rsquo;agenzia focalizzata sulla crescita, sul posizionamento e sui risultati.
+        </p>
+      </div>
 
       {/* Slide indicators */}
       <div

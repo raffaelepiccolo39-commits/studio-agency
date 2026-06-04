@@ -33,3 +33,6 @@ Thumbs.db
 
 # Editor
 .vscode/extensions.json
+
+# Sanity dev runtime cache
+.sanity/

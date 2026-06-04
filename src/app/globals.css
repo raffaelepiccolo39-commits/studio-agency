@@ -29,6 +29,7 @@
   --muted: #555;
   --accent: #FFD108;
   --accent-red: #ff4d1c;
+  --font-boldonse: 'Boldonse', var(--font-bebas), sans-serif;
 }
 
 /* ─── BASE ─── */
