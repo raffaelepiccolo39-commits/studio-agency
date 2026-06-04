@@ -258,12 +258,12 @@ export default function ServicesSection() {
             </span>
           </div>
 
-          {/* Grid: 5 cards + description */}
+          {/* Grid: 4 cards */}
           <div
             className="services-evolve-grid"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr) 1.3fr',
+              gridTemplateColumns: 'repeat(4, 1fr)',
               gap: 'clamp(14px, 1.6vw, 24px)',
               alignItems: 'stretch',
             }}
@@ -337,7 +337,7 @@ export default function ServicesSection() {
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: '8px',
+                      gap: '10px',
                       opacity: isActive ? 0.95 : 0,
                       transform: isActive ? 'translateY(0)' : 'translateY(8px)',
                       transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)',
@@ -349,9 +349,9 @@ export default function ServicesSection() {
                         style={{
                           fontFamily: 'var(--font-syne)',
                           fontWeight: 400,
-                          fontSize: '12.5px',
+                          fontSize: 'clamp(14px, 1.05vw, 16px)',
                           color: '#ffffff',
-                          lineHeight: 1.5,
+                          lineHeight: 1.55,
                           letterSpacing: '0.005em',
                           margin: 0,
                         }}
@@ -364,52 +364,6 @@ export default function ServicesSection() {
               )
             })}
 
-            {/* Description column */}
-            <div
-              className="services-evolve-desc"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '14px',
-                paddingLeft: 'clamp(8px, 1.2vw, 18px)',
-                paddingTop: '4px',
-              }}
-            >
-              <p style={{
-                fontFamily: 'var(--font-syne)',
-                fontWeight: 500,
-                fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.55,
-                color: '#e5e5e5',
-                margin: 0,
-              }}>
-                Ogni brand è un organismo già in movimento. Persone, processi, decisioni. Il nostro
-                lavoro non è inserirci sopra. È <strong style={{ color: '#ffffff' }}>entrare dentro</strong>.
-              </p>
-              <p style={{
-                fontFamily: 'var(--font-syne)',
-                fontWeight: 500,
-                fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.55,
-                color: '#e5e5e5',
-                margin: 0,
-              }}>
-                Affianchiamo i team, leggiamo il business, capiamo dove l&apos;energia si disperde
-                e dove va amplificata. <strong style={{ color: '#ffffff' }}>Brand, tecnologia e marketing avanzano insieme</strong>:
-                solo così il sistema regge la crescita.
-              </p>
-              <p style={{
-                fontFamily: 'var(--font-syne)',
-                fontWeight: 500,
-                fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.55,
-                color: '#e5e5e5',
-                margin: 0,
-              }}>
-                Riduciamo passaggi, allineiamo scelte, trasformiamo complessità in struttura.
-                Non aggiungiamo rumore. <strong style={{ color: '#ffffff' }}>Portiamo direzione.</strong>
-              </p>
-            </div>
           </div>
         </div>
       </div>
