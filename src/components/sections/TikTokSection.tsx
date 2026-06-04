@@ -58,9 +58,9 @@ export default function TikTokSection() {
           transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.08s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.08s',
         }}
       >
-        VIDEO CHE{' '}
+        I NOSTRI{' '}
         <span style={{ background: 'var(--accent)', color: '#0a0a0a', padding: '0 0.14em', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>
-          SPACCANO
+          CONTENUTI
         </span>
       </h2>
 
@@ -78,7 +78,7 @@ export default function TikTokSection() {
           transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.16s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.16s',
         }}
       >
-        I nostri contenuti organici generano milioni di visualizzazioni e community reali.
+        Generano milioni di visualizzazioni e community reali.
       </p>
 
       <div className="tiktok-grid">
