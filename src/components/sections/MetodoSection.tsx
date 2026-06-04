@@ -111,7 +111,7 @@ export default function MetodoSection() {
         ScrollTrigger.create({
           trigger: section,
           start: 'top top',
-          end: () => '+=' + getAmount(),
+          end: () => '+=' + getAmount() * 0.62,
           pin: true,
           scrub: 1,
           anticipatePin: 1,
