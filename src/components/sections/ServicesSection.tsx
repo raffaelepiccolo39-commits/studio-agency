@@ -90,15 +90,45 @@ export default function ServicesSection() {
   const [activeId, setActiveId] = useState<string | null>(null)
 
   useGSAP(() => {
-    const lines = manifestoRef.current?.querySelectorAll<HTMLElement>('.manifesto-line')
-    if (!lines) return
+    const h2 = manifestoRef.current
+    if (!h2) return
 
-    gsap.set(lines, { yPercent: 110 })
-    gsap.to(lines, {
+    // Split dei nodi di testo in parole mascherate → wrapping naturale + reveal
+    // parola per parola (niente righe spezzate a mano).
+    const inners: HTMLElement[] = []
+    const textNodes = Array.from(h2.childNodes).filter((n) => n.nodeType === Node.TEXT_NODE)
+    textNodes.forEach((node) => {
+      const frag = document.createDocumentFragment()
+      ;(node.textContent || '').split(/(\s+)/).forEach((token) => {
+        if (token.trim() === '') {
+          frag.appendChild(document.createTextNode(token))
+          return
+        }
+        const mask = document.createElement('span')
+        mask.style.display = 'inline-block'
+        mask.style.overflow = 'hidden'
+        mask.style.verticalAlign = 'top'
+        mask.style.padding = '0 0.02em 0.14em'
+        mask.style.marginBottom = '-0.14em'
+        const inner = document.createElement('span')
+        inner.className = 'manifesto-word'
+        inner.style.display = 'inline-block'
+        inner.style.willChange = 'transform'
+        inner.textContent = token
+        mask.appendChild(inner)
+        frag.appendChild(mask)
+        inners.push(inner)
+      })
+      h2.replaceChild(frag, node)
+    })
+    if (!inners.length) return
+
+    gsap.set(inners, { yPercent: 120 })
+    gsap.to(inners, {
       yPercent: 0,
-      duration: 1.1,
+      duration: 1,
       ease: 'expo.out',
-      stagger: 0.08,
+      stagger: 0.022,
       scrollTrigger: {
         trigger: sectionRef.current,
         start: 'top 70%',
@@ -185,26 +215,8 @@ export default function ServicesSection() {
             textAlign: 'left',
           }}
         >
-          <span style={{ display: 'block', overflow: 'hidden' }}>
-            <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              <span aria-hidden style={{ display: 'inline-block', width: 'clamp(60px, 10vw, 200px)' }} />Creiamo ecosistemi digitali dove brand,
-            </span>
-          </span>
-          <span style={{ display: 'block', overflow: 'hidden' }}>
-            <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              tecnologia, performance e integrazione lavorano insieme.
-            </span>
-          </span>
-          <span style={{ display: 'block', overflow: 'hidden' }}>
-            <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              Una visione operativa unica, end-to-end, pensata per
-            </span>
-          </span>
-          <span style={{ display: 'block', overflow: 'hidden' }}>
-            <span className="manifesto-line" style={{ display: 'inline-block', willChange: 'transform' }}>
-              accompagnare la crescita e renderla scalabile nel tempo.
-            </span>
-          </span>
+          <span aria-hidden style={{ display: 'inline-block', width: 'clamp(60px, 10vw, 200px)' }} />
+          Creiamo ecosistemi digitali dove brand, tecnologia, performance e integrazione lavorano insieme. Una visione operativa unica, end-to-end, pensata per accompagnare la crescita e renderla scalabile nel tempo.
         </h2>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(20px, 2.5vw, 36px)' }}>
