@@ -331,37 +331,35 @@ export default function ServicesSection() {
                     </span>
                   </div>
 
-                  {/* Bottom: features list */}
-                  <ul
+                  {/* Bottom: descrizione */}
+                  <div
                     className="service-card-features"
                     style={{
-                      listStyle: 'none',
-                      padding: 0,
-                      margin: 0,
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: '2px',
+                      gap: '8px',
                       opacity: isActive ? 0.95 : 0,
                       transform: isActive ? 'translateY(0)' : 'translateY(8px)',
                       transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)',
                     }}
                   >
-                    {s.features.map((f) => (
-                      <li
-                        key={f}
+                    {s.description.map((para, i) => (
+                      <p
+                        key={i}
                         style={{
                           fontFamily: 'var(--font-syne)',
                           fontWeight: 400,
                           fontSize: '12.5px',
                           color: '#ffffff',
-                          lineHeight: 1.55,
+                          lineHeight: 1.5,
                           letterSpacing: '0.005em',
+                          margin: 0,
                         }}
                       >
-                        {f}
-                      </li>
+                        {para}
+                      </p>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               )
             })}
@@ -377,21 +375,40 @@ export default function ServicesSection() {
                 paddingTop: '4px',
               }}
             >
-              {(services.find((s) => s.id === activeId) ?? services[0]).description.map((para, i) => (
-                <p
-                  key={`${activeId ?? 'a'}-${i}`}
-                  style={{
-                    fontFamily: 'var(--font-syne)',
-                    fontWeight: 500,
-                    fontSize: 'clamp(13px, 1vw, 15px)',
-                    lineHeight: 1.55,
-                    color: '#e5e5e5',
-                    margin: 0,
-                  }}
-                >
-                  {para}
-                </p>
-              ))}
+              <p style={{
+                fontFamily: 'var(--font-syne)',
+                fontWeight: 500,
+                fontSize: 'clamp(13px, 1vw, 15px)',
+                lineHeight: 1.55,
+                color: '#e5e5e5',
+                margin: 0,
+              }}>
+                Ogni brand è un organismo già in movimento. Persone, processi, decisioni. Il nostro
+                lavoro non è inserirci sopra. È <strong style={{ color: '#ffffff' }}>entrare dentro</strong>.
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-syne)',
+                fontWeight: 500,
+                fontSize: 'clamp(13px, 1vw, 15px)',
+                lineHeight: 1.55,
+                color: '#e5e5e5',
+                margin: 0,
+              }}>
+                Affianchiamo i team, leggiamo il business, capiamo dove l&apos;energia si disperde
+                e dove va amplificata. <strong style={{ color: '#ffffff' }}>Brand, tecnologia e marketing avanzano insieme</strong>:
+                solo così il sistema regge la crescita.
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-syne)',
+                fontWeight: 500,
+                fontSize: 'clamp(13px, 1vw, 15px)',
+                lineHeight: 1.55,
+                color: '#e5e5e5',
+                margin: 0,
+              }}>
+                Riduciamo passaggi, allineiamo scelte, trasformiamo complessità in struttura.
+                Non aggiungiamo rumore. <strong style={{ color: '#ffffff' }}>Portiamo direzione.</strong>
+              </p>
             </div>
           </div>
         </div>
