@@ -135,8 +135,8 @@ export default function HeroSection() {
       }}>
         <h1 style={{
           fontFamily: 'var(--font-boldonse)',
-          fontSize: 'clamp(28px, 5.6vw, 80px)',
-          lineHeight: 1.35,
+          fontSize: 'clamp(34px, 7vw, 112px)',
+          lineHeight: 1.32,
           color: '#ffffff',
           letterSpacing: '-0.01em',
           margin: 0,
