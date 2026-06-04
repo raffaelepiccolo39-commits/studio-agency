@@ -721,7 +721,11 @@ body {
 .metodo-panel-content {
   position: relative;
   z-index: 1;
-  max-width: 580px;
+  max-width: 680px;
+}
+.metodo-panel-step .metodo-panel-content {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .metodo-eyebrow {
   display: flex;
@@ -738,12 +742,12 @@ body {
 .metodo-title {
   font-family: var(--font-syne);
   font-weight: 600;
-  font-size: clamp(30px, 4.4vw, 66px);
-  line-height: 1.06;
+  font-size: clamp(32px, 4.9vw, 76px);
+  line-height: 1.05;
   letter-spacing: -0.015em;
   color: #ffffff;
   margin: 0;
-  max-width: 920px;
+  max-width: 1000px;
 }
 .metodo-hint {
   display: flex;
@@ -765,10 +769,10 @@ body {
 .metodo-index {
   font-family: var(--font-syne);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.14em;
   color: var(--accent);
-  margin: 0 0 16px;
+  margin: 0 0 18px;
 }
 .metodo-index-sep {
   color: rgba(255, 255, 255, 0.3);
@@ -785,12 +789,12 @@ body {
 .metodo-step-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
   font-family: var(--font-syne);
   font-weight: 400;
-  font-size: clamp(14px, 1.05vw, 16.5px);
-  line-height: 1.62;
-  color: rgba(255, 255, 255, 0.74);
+  font-size: clamp(16px, 1.45vw, 23px);
+  line-height: 1.58;
+  color: rgba(255, 255, 255, 0.78);
 }
 .metodo-step-body p {
   margin: 0;
