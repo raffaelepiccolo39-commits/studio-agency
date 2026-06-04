@@ -689,6 +689,24 @@ body {
   opacity: 1;
 }
 
+/* ─── TIKTOK VIDEOS ─── */
+.tiktok-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(16px, 1.6vw, 24px);
+  width: 100%;
+  max-width: 1380px;
+}
+.tiktok-card {
+  flex: 0 0 auto;
+  width: 325px;
+  max-width: 100%;
+}
+.tiktok-card .tiktok-embed {
+  width: 100% !important;
+}
+
 /* ─── METODO PIRA (scroll orizzontale) ─── */
 .metodo-h {
   position: relative;

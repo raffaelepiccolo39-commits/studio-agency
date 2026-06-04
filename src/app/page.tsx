@@ -9,7 +9,7 @@ import ProjectsSection from '@/components/sections/ProjectsSection'
 import ServicesSection from '@/components/sections/ServicesSection'
 import SponsorsSection from '@/components/sections/SponsorsSection'
 import MetodoSection from '@/components/sections/MetodoSection'
-import GallerySection from '@/components/sections/GallerySection'
+import TikTokSection from '@/components/sections/TikTokSection'
 import { getProjects } from '@/lib/sanity/queries'
 
 import type { Metadata } from 'next'
@@ -51,7 +51,7 @@ export default async function Home() {
         <ServicesSection />
         <SponsorsSection />
         <MetodoSection />
-        <GallerySection />
+        <TikTokSection />
       </main>
       <Footer />
     </>
