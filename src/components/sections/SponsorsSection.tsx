@@ -29,7 +29,7 @@ export default function SponsorsSection() {
       }}
     >
       <div style={{ padding: '0 clamp(24px, 3vw, 40px)' }}>
-        <SectionLabel number="03" text="I NOSTRI SPONSOR" />
+        <SectionLabel number="03" text="I NOSTRI PARTNER" />
       </div>
 
       <div
