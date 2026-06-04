@@ -5,8 +5,9 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 
 const slides = [
-  '/progetti/pasticceria-bluemoon/pasticcere.jpg',
-  '/progetti/maestri-cotonieri/maestri-cotonieri-pira-01.jpg',
+  '/hero/hero-1.jpg',
+  '/hero/hero-2.jpg',
+  '/hero/hero-3.jpg',
 ]
 
 const SLIDE_DURATION = 6000
