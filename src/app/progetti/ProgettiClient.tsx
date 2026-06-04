@@ -3,7 +3,6 @@
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
-import ImageTrail from '@/components/ui/ImageTrail'
 import Magnetic from '@/components/ui/Magnetic'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -46,8 +45,6 @@ function ProjectCard({ project, fullWidth = false }: { project: Project; fullWid
   return (
     <Link
       href={`/progetti/${project.slug}`}
-      data-cursor="VEDI"
-      data-trail
       className="project-card progetti-grid-card"
       style={{
         gridColumn: fullWidth ? '1 / -1' : undefined,
@@ -133,7 +130,6 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
     .map(slug => projects.find(p => p.slug === slug))
     .filter((p): p is Project => Boolean(p && p.immagini.length > 0))
 
-  const trailImages = orderedProjects.map(p => coverFor(p))
 
   useGSAP(() => {
     const wraps = gridRef.current?.querySelectorAll<HTMLElement>('.progetti-grid-img-wrap')
@@ -173,7 +169,6 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
   return (
     <>
       <Cursor />
-      <ImageTrail images={trailImages} selector="[data-trail]" size={200} trailLength={6} threshold={80} />
       <Navbar />
       <main>
         <section style={{

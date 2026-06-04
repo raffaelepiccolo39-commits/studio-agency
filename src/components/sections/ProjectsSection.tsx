@@ -112,7 +112,6 @@ export default function ProjectsSection({ projects = mockProjects }: { projects?
           <Link
             key={p.slug}
             href={`/progetti/${p.slug}`}
-            data-cursor="VEDI"
             className="project-card project-home-card"
             style={{
               flex: '0 0 500px',

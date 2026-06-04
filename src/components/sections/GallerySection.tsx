@@ -111,7 +111,6 @@ export default function GallerySection() {
             <Link
               key={src}
               href="/progetti"
-              data-cursor="VEDI"
               className="gallery-tile"
               style={{
                 position: 'relative',
