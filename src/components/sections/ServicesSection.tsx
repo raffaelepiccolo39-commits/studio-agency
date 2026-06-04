@@ -14,6 +14,7 @@ type Service = {
   tag: string
   title: [string, string]
   features: string[]
+  description: string[]
   image: string
 }
 
@@ -32,6 +33,11 @@ const services: Service[] = [
       'Editorial Design',
       'Style Guide',
     ],
+    description: [
+      'Un brand non deve limitarsi a essere presente, deve essere riconoscibile e impossibile da confondere.',
+      'Costruiamo identità visive capaci di dare coerenza e personalità alla tua azienda.',
+      'Partiamo dal posizionamento, analizziamo il mercato e traduciamo i valori del brand in un sistema visivo coordinato: logo, colori, tipografia, stile grafico, tono di voce e percezione.',
+    ],
     image: '/servizi/servizi-01.jpg',
   },
   {
@@ -47,6 +53,11 @@ const services: Service[] = [
       'Performance Optimization',
       'CMS Integration',
       'Analytics & Tracking',
+    ],
+    description: [
+      'Progettiamo ecosistemi digitali pensati per valorizzare il brand e generare risultati concreti.',
+      'Dai siti corporate agli e-commerce più strutturati: velocità di caricamento, navigazione intuitiva e percorsi pensati per guidare l’utente all’azione.',
+      'Costruiamo asset digitali che lavorano ogni giorno per la crescita della tua azienda.',
     ],
     image: '/servizi/servizi-02.jpg',
   },
@@ -64,6 +75,11 @@ const services: Service[] = [
       'Paid Media',
       'Reporting & Insights',
     ],
+    description: [
+      'Gestiamo la presenza social del tuo brand con una strategia pensata per attirare l’attenzione giusta e trasformare i contenuti in leve di crescita.',
+      'Non pubblichiamo “tanto per farlo”: studiamo il target, definiamo format riconoscibili e sviluppiamo contenuti pensati per generare continuità e relazione.',
+      'L’obiettivo è costruire una community che percepisce il tuo valore e sceglie di avvicinarsi alla tua azienda.',
+    ],
     image: '/servizi/servizi-03.jpg',
   },
   {
@@ -79,6 +95,11 @@ const services: Service[] = [
       'Editorial Content',
       'Motion Graphics',
       'Storyboarding',
+    ],
+    description: [
+      'Creiamo contenuti pensati per lasciare il segno.',
+      'In un mercato pieno di messaggi tutti uguali, la differenza la fa chi comunica con identità, strategia e qualità.',
+      'Per questo sviluppiamo contenuti originali, dal copywriting alla produzione visual, capaci di parlare al pubblico giusto e rafforzare la percezione del brand.',
     ],
     image: '/servizi/servizi-04.jpg',
   },
@@ -356,40 +377,21 @@ export default function ServicesSection() {
                 paddingTop: '4px',
               }}
             >
-              <p style={{
-                fontFamily: 'var(--font-syne)',
-                fontWeight: 500,
-                fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.55,
-                color: '#e5e5e5',
-                margin: 0,
-              }}>
-                Ogni brand è un organismo già in movimento. Persone, processi, decisioni. Il nostro
-                lavoro non è inserirci sopra. È <strong style={{ color: '#ffffff' }}>entrare dentro</strong>.
-              </p>
-              <p style={{
-                fontFamily: 'var(--font-syne)',
-                fontWeight: 500,
-                fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.55,
-                color: '#e5e5e5',
-                margin: 0,
-              }}>
-                Affianchiamo i team, leggiamo il business, capiamo dove l&apos;energia si disperde
-                e dove va amplificata. <strong style={{ color: '#ffffff' }}>Brand, tecnologia e marketing avanzano insieme</strong>:
-                solo così il sistema regge la crescita.
-              </p>
-              <p style={{
-                fontFamily: 'var(--font-syne)',
-                fontWeight: 500,
-                fontSize: 'clamp(13px, 1vw, 15px)',
-                lineHeight: 1.55,
-                color: '#e5e5e5',
-                margin: 0,
-              }}>
-                Riduciamo passaggi, allineiamo scelte, trasformiamo complessità in struttura.
-                Non aggiungiamo rumore. <strong style={{ color: '#ffffff' }}>Portiamo direzione.</strong>
-              </p>
+              {(services.find((s) => s.id === activeId) ?? services[0]).description.map((para, i) => (
+                <p
+                  key={`${activeId ?? 'a'}-${i}`}
+                  style={{
+                    fontFamily: 'var(--font-syne)',
+                    fontWeight: 500,
+                    fontSize: 'clamp(13px, 1vw, 15px)',
+                    lineHeight: 1.55,
+                    color: '#e5e5e5',
+                    margin: 0,
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
             </div>
           </div>
         </div>
