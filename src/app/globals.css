@@ -689,6 +689,9 @@ body {
   opacity: 1;
 }
 
+/* ─── METODO PIRA ─── */
+.metodo-steps p { margin: 0; }
+
 /* ─── SECTION LABEL (numerini + linea animata) ─── */
 .section-label {
   display: flex;

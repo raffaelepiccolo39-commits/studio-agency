@@ -8,6 +8,7 @@ import StatsSection from '@/components/sections/StatsSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
 import ServicesSection from '@/components/sections/ServicesSection'
 import SponsorsSection from '@/components/sections/SponsorsSection'
+import MetodoSection from '@/components/sections/MetodoSection'
 import GallerySection from '@/components/sections/GallerySection'
 import { getProjects } from '@/lib/sanity/queries'
 
@@ -49,6 +50,7 @@ export default async function Home() {
         <ProjectsSection projects={projects} />
         <ServicesSection />
         <SponsorsSection />
+        <MetodoSection />
         <GallerySection />
       </main>
       <Footer />
