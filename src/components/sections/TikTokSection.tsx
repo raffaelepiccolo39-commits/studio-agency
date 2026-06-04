@@ -6,7 +6,7 @@ const videos = [
   { user: 'maestri_cotonieri_home', id: '7616016157396569366' },
   { user: 'svinati', id: '7611180256845663510' },
   { user: 'contexbiancheria', id: '7624172835149319446' },
-  { user: 'ladeliziapasticcerie', id: '7549236385270615318' },
+  { user: 'pasticceriabluemoon', id: '7633342939099319574' },
 ]
 
 export default function TikTokSection() {
