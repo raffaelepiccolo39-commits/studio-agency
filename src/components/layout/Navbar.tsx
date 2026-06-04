@@ -82,10 +82,10 @@ export default function Navbar() {
           position: 'relative', zIndex: 210,
           textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0,
         }}>
-          <Image src="/logo.png" alt="Pira Web" width={97} height={46} priority style={{ height: '46px', width: 'auto', transition: 'height 0.3s ease' }} />
+          <Image src="/logo.png" alt="Pira Web" width={82} height={41} priority style={{ height: '41px', width: 'auto', transition: 'height 0.3s ease' }} />
         </Link>
 
-        {/* Desktop links */}
+        {/* Desktop links (centro) */}
         {!isMobile && (
           <ul style={{
             display: 'flex', gap: '24px', listStyle: 'none',
@@ -102,6 +102,8 @@ export default function Navbar() {
                       fontFamily: 'var(--font-syne)',
                       fontSize: '16px', fontWeight: 500, letterSpacing: 0,
                       color: active ? 'var(--accent)' : 'var(--text)',
+                      textDecoration: active ? 'underline' : 'none',
+                      textUnderlineOffset: '4px',
                     }}
                   >
                     {l.label}
@@ -109,25 +111,28 @@ export default function Navbar() {
                 </li>
               )
             })}
-
-            <li style={{ whiteSpace: 'nowrap' }}>
-              <Link
-                href="/contatti"
-                style={{
-                  background: 'var(--accent)', color: '#0a0a0a',
-                  border: 'none', padding: '10px 40px',
-                  fontFamily: 'var(--font-syne)',
-                  fontSize: '16px', fontWeight: 500, letterSpacing: 0,
-                  cursor: 'none',
-                  textDecoration: 'none',
-                  display: 'inline-block',
-                  transition: 'background 0.3s',
-                }}
-              >
-                RICHIEDI UNA CONSULENZA
-              </Link>
-            </li>
           </ul>
+        )}
+
+        {/* CTA desktop (destra) */}
+        {!isMobile && (
+          <Link
+            href="/contatti"
+            style={{
+              background: 'var(--accent)', color: '#0a0a0a',
+              border: 'none', padding: '10px 40px',
+              fontFamily: 'var(--font-syne)',
+              fontSize: '16px', fontWeight: 500, letterSpacing: 0,
+              cursor: 'none',
+              textDecoration: 'none',
+              display: 'inline-block',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              transition: 'background 0.3s',
+            }}
+          >
+            RICHIEDI UNA CONSULENZA
+          </Link>
         )}
 
         {/* Hamburger mobile */}
