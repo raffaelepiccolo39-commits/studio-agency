@@ -795,20 +795,21 @@ body {
 .metodo-step-body p {
   margin: 0;
 }
+.metodo-panel-step {
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(36px, 6vw, 130px);
+}
 .metodo-giant {
-  position: absolute;
-  right: clamp(-30px, 1vw, 60px);
-  top: 50%;
-  transform: translateY(-50%);
+  flex: 0 0 auto;
   font-family: var(--font-bebas);
-  font-size: 92vh;
-  line-height: 0.78;
+  font-size: clamp(180px, min(34vw, 60vh), 520px);
+  line-height: 0.74;
   color: transparent;
-  -webkit-text-stroke: 2px rgba(255, 209, 8, 0.4);
+  -webkit-text-stroke: 2px var(--accent);
   letter-spacing: 0;
   pointer-events: none;
   user-select: none;
-  z-index: 0;
   will-change: transform;
 }
 .metodo-progress-track {
@@ -850,11 +851,15 @@ body {
   .metodo-panel:first-child {
     border-top: none;
   }
+  .metodo-panel-step {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
   .metodo-panel-content {
     max-width: none;
   }
   .metodo-giant {
-    position: static;
     transform: none !important;
     display: block;
     font-size: clamp(120px, 36vw, 220px);

@@ -122,13 +122,13 @@ export default function MetodoSection() {
           },
         })
 
-        // Parallasse lettere giganti
+        // Parallasse verticale delle lettere giganti
         gsap.utils.toArray<HTMLElement>('.metodo-giant').forEach((g) => {
           gsap.fromTo(
             g,
-            { xPercent: 16 },
+            { yPercent: 10 },
             {
-              xPercent: -16,
+              yPercent: -10,
               ease: 'none',
               scrollTrigger: { trigger: g, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true },
             }
