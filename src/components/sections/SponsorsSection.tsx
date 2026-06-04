@@ -5,13 +5,13 @@ import { useInView } from 'react-intersection-observer'
 import SectionLabel from '@/components/ui/SectionLabel'
 
 const sponsors = [
-  { src: '/partners/shopify.png', alt: 'Shopify Partners', height: 74 },
-  { src: '/partners/google.png', alt: 'Google Partner', height: 66 },
-  { src: '/partners/tiktok.png', alt: 'TikTok Marketing Partner', height: 59 },
-  { src: '/partners/trustpilot.png', alt: 'Trustpilot', height: 39 },
-  { src: '/partners/meta.png', alt: 'Meta Business Partner', height: 36 },
-  { src: '/partners/spoki.png', alt: 'Spoki', height: 55 },
-  { src: '/partners/klavyo.png', alt: 'Klaviyo', height: 26 },
+  { src: '/partners/shopify.png', alt: 'Shopify Partners' },
+  { src: '/partners/google.png', alt: 'Google Partner' },
+  { src: '/partners/tiktok.png', alt: 'TikTok Marketing Partner' },
+  { src: '/partners/trustpilot.png', alt: 'Trustpilot' },
+  { src: '/partners/meta.png', alt: 'Meta Business Partner' },
+  { src: '/partners/spoki.png', alt: 'Spoki' },
+  { src: '/partners/klavyo.png', alt: 'Klaviyo' },
 ]
 
 export default function SponsorsSection() {
@@ -62,12 +62,12 @@ export default function SponsorsSection() {
               key={s.src}
               src={s.src}
               alt={s.alt}
-              width={s.height * 3}
-              height={s.height}
+              width={240}
+              height={80}
               sizes="200px"
               className="sponsor-logo"
               style={{
-                height: `clamp(14px, ${(s.height / 18).toFixed(2)}vw, ${s.height}px)`,
+                height: 'clamp(40px, 5vw, 64px)',
                 width: 'auto',
                 objectFit: 'contain',
                 flexShrink: 1,
