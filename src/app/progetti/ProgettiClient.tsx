@@ -18,6 +18,8 @@ if (typeof window !== 'undefined') {
 
 const FILTERS = ['Tutti', 'Brand Identity', 'E-commerce', 'Social Media', 'Content Creation'] as const
 
+const Hl = ({ children }: { children: React.ReactNode }) => <span className="evo-hl">{children}</span>
+
 function tagsArr(p: Project): string[] {
   const hasEcom = /e-commerce/i.test(p.platform) || p.services.some((s) => /e-commerce/i.test(s))
   const hasBrand = p.services.some((s) => /brand/i.test(s) || /logo/i.test(s))
@@ -31,23 +33,30 @@ function tagsArr(p: Project): string[] {
   return tags
 }
 
-function ProjectCard({ project }: { project: Project }) {
+// Pattern asimmetrico: alterna card piccole verticali (4 col) e grandi orizzontali (8 col)
+const PATTERN = [
+  { span: 4, ratio: '3 / 4' },
+  { span: 8, ratio: '3 / 2' },
+  { span: 8, ratio: '3 / 2' },
+  { span: 4, ratio: '3 / 4' },
+]
+
+function ProjectCard({ project, span, ratio }: { project: Project; span: number; ratio: string }) {
   return (
-    <Link href={`/progetti/${project.slug}`} className="evo-card">
-      <div className="evo-card-img">
+    <Link href={`/progetti/${project.slug}`} className="evo-card" style={{ gridColumn: `span ${span}` }}>
+      <div className="evo-card-img" style={{ aspectRatio: ratio }}>
         <Image
           src={coverFor(project)}
           alt={project.title}
           fill
-          sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+          sizes={span >= 8 ? '(max-width: 700px) 100vw, 66vw' : '(max-width: 700px) 100vw, 33vw'}
           className="evo-img"
           style={{ objectFit: 'cover' }}
         />
-        <span className="evo-card-year">{project.year}</span>
       </div>
       <div className="evo-card-meta">
-        <p className="evo-card-services">{tagsArr(project).join(' • ').toUpperCase()}</p>
         <h3 className="evo-card-title">{project.title}</h3>
+        <p className="evo-card-services">{tagsArr(project).join(' • ')}</p>
       </div>
     </Link>
   )
@@ -61,18 +70,16 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
   const withCover = projects.filter((p) => p.immagini.length > 0)
   const filtered = withCover.filter((p) => filter === 'Tutti' || tagsArr(p).includes(filter))
 
-  // Reveal header (al load)
   useGSAP(
     () => {
       const els = headRef.current?.querySelectorAll<HTMLElement>('.evo-anim')
       if (els?.length) {
-        gsap.from(els, { y: 36, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.1, delay: 0.15 })
+        gsap.from(els, { y: 30, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08, delay: 0.15 })
       }
     },
     { scope: headRef }
   )
 
-  // Reveal griglia (anche al cambio filtro)
   useGSAP(
     () => {
       const cards = gridRef.current?.querySelectorAll<HTMLElement>('.evo-card')
@@ -80,7 +87,7 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
         gsap.fromTo(
           cards,
           { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out', stagger: 0.06, overwrite: true }
+          { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out', stagger: 0.05, overwrite: true }
         )
       }
     },
@@ -92,17 +99,18 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
       <Cursor />
       <Navbar />
       <main className="evo-projects">
-        {/* Header */}
         <section className="evo-head" ref={headRef}>
-          <p className="evo-eyebrow evo-anim">
-            <span className="evo-dot" /> Portfolio
-          </p>
-          <h1 className="evo-h1 evo-anim">
-            I nostri <span className="evo-acc">progetti</span>
-          </h1>
-          <p className="evo-sub evo-anim">
-            Brand, e-commerce, social e contenuti per aziende che vogliono distinguersi. Ogni progetto è un
-            sistema costruito su misura.
+          {/* Etichette servizi fluttuanti */}
+          <div className="evo-toplabels evo-anim">
+            <span>Brand Identity</span>
+            <span>Social Media</span>
+            <span>E-commerce</span>
+          </div>
+
+          {/* Statement */}
+          <p className="evo-statement evo-anim">
+            Diamo forma a brand e business con <Hl>branding</Hl>, <Hl>web &amp; e-commerce</Hl>,{' '}
+            <Hl>social media</Hl>, <Hl>content creation</Hl> e tutto ciò che serve per far crescere la tua azienda.
           </p>
 
           {/* Filtri */}
@@ -114,17 +122,17 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
                 className={`evo-filter${filter === f ? ' is-active' : ''}`}
                 onClick={() => setFilter(f)}
               >
-                {f}
+                {f === 'Tutti' ? '[ Tutti ]' : f}
               </button>
             ))}
           </div>
         </section>
 
-        {/* Griglia */}
         <div className="evo-grid" ref={gridRef}>
-          {filtered.map((p) => (
-            <ProjectCard key={p.slug} project={p} />
-          ))}
+          {filtered.map((p, i) => {
+            const { span, ratio } = PATTERN[i % PATTERN.length]
+            return <ProjectCard key={p.slug} project={p} span={span} ratio={ratio} />
+          })}
         </div>
       </main>
       <Footer />
