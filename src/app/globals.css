@@ -719,8 +719,23 @@ body {
   box-shadow: 0 20px 54px -22px rgba(0, 0, 0, 0.3), 0 4px 12px -6px rgba(0, 0, 0, 0.12);
 }
 @media (max-width: 920px) {
-  .tiktok-grid { flex-wrap: wrap; }
-  .tiktok-card { flex: 0 0 auto; width: min(300px, 82vw); max-width: 100%; }
+  .tiktok-grid {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding-bottom: 10px;
+    scroll-padding-left: 4px;
+  }
+  .tiktok-grid::-webkit-scrollbar { height: 0; display: none; }
+  .tiktok-card {
+    flex: 0 0 auto;
+    width: min(270px, 76vw);
+    max-width: none;
+    scroll-snap-align: center;
+  }
 }
 .tiktok-frame {
   position: relative;
