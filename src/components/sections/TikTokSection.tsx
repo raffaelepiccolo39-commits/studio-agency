@@ -76,6 +76,12 @@ export default function TikTokSection() {
           </div>
         ))}
       </div>
+
+      <p className="tiktok-hint" aria-hidden>
+        <span className="tiktok-hint-line" />
+        Scorri per vedere tutti i video
+        <span className="tiktok-hint-arrow">→</span>
+      </p>
     </section>
   )
 }

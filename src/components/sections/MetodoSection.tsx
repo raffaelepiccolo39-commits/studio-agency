@@ -102,8 +102,8 @@ export default function MetodoSection() {
 
       const mm = gsap.matchMedia()
 
-      // ── Desktop: scroll orizzontale con pin ──
-      mm.add('(min-width: 821px)', () => {
+      // ── Scroll orizzontale con pin (desktop e mobile) ──
+      mm.add('(min-width: 1px)', () => {
         const getAmount = () => Math.max(0, track.scrollWidth - window.innerWidth)
 
         const tween = gsap.to(track, { x: () => -getAmount(), ease: 'none' })
