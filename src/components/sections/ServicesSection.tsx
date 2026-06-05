@@ -275,7 +275,8 @@ export default function ServicesSection() {
                 <div
                   key={s.id}
                   data-service={s.id}
-                  className="service-card"
+                  className={`service-card ${isActive ? 'is-active' : ''}`}
+                  onClick={() => setActiveId(prev => (prev === s.id ? null : s.id))}
                   style={{
                     position: 'relative',
                     minHeight: 'clamp(380px, 38vw, 500px)',
