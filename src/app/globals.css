@@ -416,13 +416,25 @@ body {
   .services-evolve .service-card-features { opacity: 0.92 !important; }
 }
 @media (max-width: 600px) {
+  /* Servizi a griglia 2x2 stile Evolve: solo titoli, linee divisorie dai bordi */
   .services-evolve-grid {
-    grid-template-columns: 1fr !important;
-    gap: 14px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0 !important;
   }
   .services-evolve .service-card {
-    min-height: 280px !important;
+    min-height: 168px !important;
+    padding: 18px 16px !important;
+    background: rgba(15, 15, 15, 0.55) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    justify-content: flex-start !important;
   }
+  .services-evolve .service-card h3 {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+  }
+  .services-evolve .service-card-features { display: none !important; }
+  .services-evolve .service-card-tag { display: none !important; }
   .services-evolve-desc {
     flex-direction: column !important;
   }
