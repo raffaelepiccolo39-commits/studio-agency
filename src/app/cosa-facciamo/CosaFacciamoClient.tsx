@@ -159,6 +159,12 @@ export default function CosaFacciamoPage() {
     () => {
       const els = rootRef.current?.querySelectorAll<HTMLElement>('.cosa-anim')
       if (!els || !els.length) return
+      // Intro impattante: parole che salgono da una maschera (al load)
+      const introWords = rootRef.current?.querySelectorAll<HTMLElement>('.cosa-intro-word')
+      if (introWords && introWords.length) {
+        gsap.from(introWords, { yPercent: 118, duration: 1.1, ease: 'expo.out', stagger: 0.07, delay: 0.25 })
+      }
+
       gsap.set(els, { opacity: 0, y: 34 })
       ScrollTrigger.batch(Array.from(els), {
         start: 'top 90%',
@@ -207,7 +213,14 @@ export default function CosaFacciamoPage() {
       <main ref={rootRef} style={{ background: '#0a0a0a' }}>
         {/* Intro */}
         <section className="cosa-intro">
-          <p className="cosa-intro-text cosa-anim">Diamo forma al tuo brand.</p>
+          <p className="cosa-intro-text">
+            {'Diamo forma al tuo brand.'.split(' ').flatMap((w, i) => [
+              <span className="cosa-intro-mask" key={`w${i}`}>
+                <span className="cosa-intro-word">{w}</span>
+              </span>,
+              ' ',
+            ])}
+          </p>
         </section>
 
         {/* I nostri servizi */}
