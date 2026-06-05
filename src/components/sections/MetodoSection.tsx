@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -80,6 +80,23 @@ const steps: StepData[] = [
 export default function MetodoSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Mobile: la timeline cresce con lo scroll orizzontale del carosello
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.matchMedia('(min-width: 821px)').matches) return
+    const sc = scrollRef.current
+    const bar = sectionRef.current?.querySelector<HTMLElement>('.metodo-progress-bar')
+    if (!sc || !bar) return
+    const onScroll = () => {
+      const max = sc.scrollWidth - sc.clientWidth
+      const p = max > 0 ? sc.scrollLeft / max : 0
+      bar.style.transform = `scaleX(${p})`
+    }
+    sc.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => sc.removeEventListener('scroll', onScroll)
+  }, [])
 
   useGSAP(
     () => {
@@ -161,6 +178,7 @@ export default function MetodoSection() {
 
   return (
     <section ref={sectionRef} id="metodo" className="metodo-h">
+      <div ref={scrollRef} className="metodo-viewport">
       <div ref={trackRef} className="metodo-h-track">
         {/* Intro */}
         <div className="metodo-panel metodo-panel-intro">
@@ -191,8 +209,9 @@ export default function MetodoSection() {
           </div>
         ))}
       </div>
+      </div>
 
-      {/* Barra di avanzamento (desktop) */}
+      {/* Timeline di avanzamento (desktop: scrub pin · mobile: scroll carosello) */}
       <div className="metodo-progress-track" aria-hidden>
         <span className="metodo-progress-bar" />
       </div>
