@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -15,8 +15,6 @@ import { coverFor } from '@/data/homeCovers'
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
-
-const FILTERS = ['Tutti', 'Brand Identity', 'E-commerce', 'Social Media', 'Content Creation'] as const
 
 const Hl = ({ children }: { children: React.ReactNode }) => <span className="evo-hl">{children}</span>
 
@@ -42,17 +40,55 @@ const PATTERN = [
 ]
 
 function ProjectCard({ project, span, ratio }: { project: Project; span: number; ratio: string }) {
+  // Lista immagini: cover + tutta la gallery (dedup)
+  const imgs = [coverFor(project), ...project.immagini].filter((v, i, a) => a.indexOf(v) === i)
+  const [idx, setIdx] = useState(0)
+  const [active, setActive] = useState(false) // monta la gallery solo dopo il primo hover
+  const timer = useRef<number | undefined>(undefined)
+
+  const enter = () => {
+    setActive(true)
+    if (imgs.length < 2) return
+    let i = 0
+    timer.current = window.setInterval(() => {
+      i = (i + 1) % imgs.length
+      setIdx(i)
+    }, 700)
+  }
+  const leave = () => {
+    if (timer.current) window.clearInterval(timer.current)
+    setIdx(0)
+  }
+  useEffect(() => () => { if (timer.current) window.clearInterval(timer.current) }, [])
+
   return (
-    <Link href={`/progetti/${project.slug}`} className="evo-card" style={{ gridColumn: `span ${span}` }}>
+    <Link
+      href={`/progetti/${project.slug}`}
+      className="evo-card"
+      style={{ gridColumn: `span ${span}` }}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+    >
       <div className="evo-card-img" style={{ aspectRatio: ratio }}>
-        <Image
-          src={coverFor(project)}
-          alt={project.title}
-          fill
-          sizes={span >= 8 ? '(max-width: 700px) 100vw, 66vw' : '(max-width: 700px) 100vw, 33vw'}
-          className="evo-img"
-          style={{ objectFit: 'cover' }}
-        />
+        {imgs.map((src, i) =>
+          i === 0 || active ? (
+            <Image
+              key={src}
+              src={src}
+              alt={project.title}
+              fill
+              sizes={span >= 8 ? '(max-width: 900px) 100vw, 66vw' : '(max-width: 900px) 100vw, 33vw'}
+              className="evo-img"
+              style={{ objectFit: 'cover', opacity: i === idx ? 1 : 0 }}
+            />
+          ) : null
+        )}
+        {imgs.length > 1 && (
+          <div className="evo-card-count">
+            <span className="evo-count-dot" />
+            {imgs.length}
+          </div>
+        )}
       </div>
       <div className="evo-card-meta">
         <h3 className="evo-card-title">{project.title}</h3>
@@ -63,12 +99,10 @@ function ProjectCard({ project, span, ratio }: { project: Project; span: number;
 }
 
 export default function ProgettiPage({ projects }: { projects: Project[] }) {
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>('Tutti')
   const gridRef = useRef<HTMLDivElement>(null)
   const headRef = useRef<HTMLElement>(null)
 
   const withCover = projects.filter((p) => p.immagini.length > 0)
-  const filtered = withCover.filter((p) => filter === 'Tutti' || tagsArr(p).includes(filter))
 
   useGSAP(
     () => {
@@ -83,15 +117,18 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
   useGSAP(
     () => {
       const cards = gridRef.current?.querySelectorAll<HTMLElement>('.evo-card')
-      if (cards?.length) {
-        gsap.fromTo(
-          cards,
-          { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out', stagger: 0.05, overwrite: true }
-        )
-      }
+      if (!cards?.length) return
+      cards.forEach((card) => {
+        gsap.from(card, {
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          ease: 'expo.out',
+          scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none reverse' },
+        })
+      })
     },
-    { scope: gridRef, dependencies: [filter] }
+    { scope: gridRef }
   )
 
   return (
@@ -100,36 +137,19 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
       <Navbar />
       <main className="evo-projects">
         <section className="evo-head" ref={headRef}>
-          {/* Etichette servizi fluttuanti */}
           <div className="evo-toplabels evo-anim">
             <span>Brand Identity</span>
             <span>Social Media</span>
             <span>E-commerce</span>
           </div>
-
-          {/* Statement */}
           <p className="evo-statement evo-anim">
             Diamo forma a brand e business con <Hl>branding</Hl>, <Hl>web &amp; e-commerce</Hl>,{' '}
             <Hl>social media</Hl>, <Hl>content creation</Hl> e tutto ciò che serve per far crescere la tua azienda.
           </p>
-
-          {/* Filtri */}
-          <div className="evo-filters evo-anim">
-            {FILTERS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                className={`evo-filter${filter === f ? ' is-active' : ''}`}
-                onClick={() => setFilter(f)}
-              >
-                {f === 'Tutti' ? '[ Tutti ]' : f}
-              </button>
-            ))}
-          </div>
         </section>
 
         <div className="evo-grid" ref={gridRef}>
-          {filtered.map((p, i) => {
+          {withCover.map((p, i) => {
             const { span, ratio } = PATTERN[i % PATTERN.length]
             return <ProjectCard key={p.slug} project={p} span={span} ratio={ratio} />
           })}
