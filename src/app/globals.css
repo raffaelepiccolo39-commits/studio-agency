@@ -1018,12 +1018,12 @@ body {
 .evo-statement {
   font-family: var(--font-syne);
   font-weight: 500;
-  font-size: clamp(30px, 4.6vw, 76px);
-  line-height: 1.08;
+  font-size: clamp(26px, 3.4vw, 58px);
+  line-height: 1.1;
   letter-spacing: -0.01em;
   color: #ffffff;
   margin: 0;
-  max-width: 18ch;
+  max-width: none;
 }
 .evo-hl { color: var(--accent); }
 /* Filtri */
