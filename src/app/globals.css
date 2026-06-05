@@ -700,6 +700,24 @@ body {
   .nav-mobile-overlay { display: flex !important; }
 }
 
+/* ─── RESPONSIVE PAGINE PROGETTI ─── */
+@media (max-width: 760px) {
+  .progetti-grid-2col { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .progetti-grid-card { grid-column: auto !important; }
+}
+@media (max-width: 980px) {
+  .case-other-projects { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 600px) {
+  .case-other-projects { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 860px) {
+  .case-gallery-pair { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 600px) {
+  .case-content-row { flex-direction: column !important; gap: 12px !important; padding: 20px 24px !important; }
+}
+
 /* ─── TIKTOK VIDEOS ─── */
 .tiktok-grid {
   display: flex;

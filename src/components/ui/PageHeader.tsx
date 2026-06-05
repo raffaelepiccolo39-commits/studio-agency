@@ -98,7 +98,7 @@ export default function PageHeader({ tag, title, titleAccent, titleAfter, subtit
               data-text={title}
               style={{
                 fontFamily: 'var(--font-bebas)',
-                fontSize: 'clamp(56px, 9vw, 140px)',
+                fontSize: 'clamp(34px, 8vw, 140px)',
                 letterSpacing: '-0.01em',
                 display: 'block',
               }}
@@ -114,7 +114,7 @@ export default function PageHeader({ tag, title, titleAccent, titleAfter, subtit
                 style={{
                   fontFamily: 'var(--font-dm-serif)',
                   fontStyle: 'italic',
-                  fontSize: 'clamp(56px, 9vw, 140px)',
+                  fontSize: 'clamp(34px, 8vw, 140px)',
                   color: 'var(--accent)',
                   display: 'block',
                 }}
@@ -130,7 +130,7 @@ export default function PageHeader({ tag, title, titleAccent, titleAfter, subtit
                 data-text={titleAfter}
                 style={{
                   fontFamily: 'var(--font-bebas)',
-                  fontSize: 'clamp(56px, 9vw, 140px)',
+                  fontSize: 'clamp(34px, 8vw, 140px)',
                   letterSpacing: '-0.01em',
                   display: 'block',
                 }}
