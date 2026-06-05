@@ -802,12 +802,12 @@ body {
 .cosa-intro-text {
   font-family: var(--font-syne);
   font-weight: 500;
-  font-size: clamp(28px, 5.2vw, 64px);
+  font-size: clamp(36px, 6.2vw, 104px);
   line-height: 1;
   color: #ffffff;
   text-align: right;
-  max-width: 995px;
-  margin: 0 0 0 auto;
+  max-width: none;
+  margin: 0;
 }
 .cosa-intro-mask {
   display: inline-block;
@@ -862,6 +862,12 @@ body {
   flex-shrink: 0;
   padding-top: 6px;
 }
+.cosa-title-display {
+  font-family: var(--font-bebas) !important;
+  font-size: clamp(72px, 11vw, 200px) !important;
+  line-height: 0.82 !important;
+  letter-spacing: 0.01em !important;
+}
 .cosa-service-desc {
   display: flex;
   flex-direction: column;
@@ -902,7 +908,9 @@ body {
   max-width: 720px;
 }
 .cosa-big-heading-full {
-  max-width: 1006px;
+  max-width: none;
+  font-size: clamp(32px, 5vw, 90px);
+  line-height: 1;
 }
 .csw-word {
   will-change: opacity;

@@ -113,11 +113,16 @@ function ColorScrollText({ text, full = false }: { text: string; full?: boolean 
   )
 }
 
-function ServiceBlock({ s }: { s: Svc }) {
+function ServiceBlock({ s, display = false }: { s: Svc; display?: boolean }) {
   return (
     <div className="cosa-service">
       <div className="cosa-service-head">
-        <h2 className="cosa-service-title cosa-anim" style={{ whiteSpace: 'pre-line' }}>{s.title}</h2>
+        <h2
+          className={`cosa-service-title cosa-anim${display ? ' cosa-title-display' : ''}`}
+          style={{ whiteSpace: 'pre-line' }}
+        >
+          {s.title}
+        </h2>
         <span className="cosa-service-letter cosa-anim">({s.id})</span>
       </div>
       <div className="cosa-service-desc">
@@ -235,7 +240,7 @@ export default function CosaFacciamoPage() {
 
         {/* Photo studio (e) */}
         <section className="cosa-section">
-          <ColorScrollText text="Uno spazio attrezzato per realizzare contenuti in autonomia" />
+          <ColorScrollText text="Uno spazio attrezzato per realizzare contenuti in autonomia" full />
           <div className="cosa-2col" style={{ marginTop: 'clamp(36px, 5vw, 72px)' }}>
             <div className="cosa-row-img cosa-anim">
               <Image
@@ -259,7 +264,7 @@ export default function CosaFacciamoPage() {
         {/* SCP (f) */}
         <section className="cosa-section" style={{ paddingTop: 0 }}>
           <div className="cosa-2col cosa-2col-scp">
-            <ServiceBlock s={scp} />
+            <ServiceBlock s={scp} display />
             <div className="cosa-scp-img cosa-anim">
               <Image
                 src="/servizi/scp-mockup.jpg"
