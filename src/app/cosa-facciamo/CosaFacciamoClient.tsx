@@ -255,10 +255,9 @@ export default function CosaFacciamoPage() {
                 <Image
                   src="/servizi/scp-mockup.jpg"
                   alt="SCP — Smart Company Profile"
-                  width={420}
-                  height={746}
-                  sizes="(max-width: 820px) 40vw, 200px"
-                  style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+                  fill
+                  sizes="(max-width: 820px) 42vw, 300px"
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
                 />
               </div>
             </div>
