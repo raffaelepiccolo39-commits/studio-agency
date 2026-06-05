@@ -247,15 +247,20 @@ export default function CosaFacciamoPage() {
         <section className="cosa-section" style={{ paddingTop: 0 }}>
           <div className="cosa-2col cosa-2col-scp">
             <ServiceBlock s={scp} display />
-            <div className="cosa-scp-img cosa-anim">
-              <Image
-                src="/servizi/scp-mockup.jpg"
-                alt="SCP — Smart Company Profile"
-                width={420}
-                height={746}
-                sizes="(max-width: 820px) 80vw, 420px"
-                style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
-              />
+            <div className="cosa-scp-media cosa-anim">
+              <video className="cosa-scp-video" controls preload="metadata" playsInline>
+                <source src="/servizi/scp-video.mp4" type="video/mp4" />
+              </video>
+              <div className="cosa-scp-img">
+                <Image
+                  src="/servizi/scp-mockup.jpg"
+                  alt="SCP — Smart Company Profile"
+                  width={420}
+                  height={746}
+                  sizes="(max-width: 820px) 40vw, 200px"
+                  style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+                />
+              </div>
             </div>
           </div>
         </section>

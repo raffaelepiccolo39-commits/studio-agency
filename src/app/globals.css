@@ -956,6 +956,30 @@ body {
   max-width: 420px;
   margin-left: auto;
 }
+.cosa-scp-media {
+  display: flex;
+  gap: clamp(16px, 2vw, 28px);
+  align-items: center;
+  justify-content: flex-end;
+}
+.cosa-scp-video {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: 14px;
+  background: #000;
+  display: block;
+}
+.cosa-scp-media .cosa-scp-img {
+  max-width: 220px;
+  margin: 0;
+}
+@media (max-width: 820px) {
+  .cosa-scp-media { justify-content: flex-start; }
+  .cosa-scp-video { max-width: 220px; }
+  .cosa-scp-media .cosa-scp-img { max-width: 150px; }
+}
 @media (max-width: 820px) {
   .cosa-intro-text { text-align: left; }
   .cosa-grid { grid-template-columns: 1fr; gap: clamp(40px, 8vw, 56px); }
