@@ -16,12 +16,13 @@ if (typeof window !== 'undefined') {
 
 const ACCENT = 'var(--accent)'
 
-type Svc = { id: string; title: string; paras: React.ReactNode[] }
+type Svc = { id: string; title: string; paras: React.ReactNode[]; image?: string }
 
 const services: Svc[] = [
   {
     id: 'a',
     title: 'BRANDING &\nGRAPHIC DESIGN',
+    image: '/servizi/creative-1.jpg',
     paras: [
       'Un brand non deve limitarsi a essere presente, deve essere riconoscibile e impossibile da confondere.',
       'Costruiamo identità visive capaci di dare coerenza e personalità alla tua azienda.',
@@ -31,6 +32,7 @@ const services: Svc[] = [
   {
     id: 'b',
     title: 'WEBSITE &\nE-COMMERCE',
+    image: '/servizi/creative-2.jpg',
     paras: [
       'Progettiamo ecosistemi digitali pensati per valorizzare il brand e generare risultati concreti.',
       'Dai siti corporate agli e-commerce più strutturati: velocità di caricamento, navigazione intuitiva e percorsi pensati per guidare l’utente all’azione.',
@@ -40,6 +42,7 @@ const services: Svc[] = [
   {
     id: 'c',
     title: 'SOCIAL MEDIA\nMANAGEMENT',
+    image: '/servizi/creative-4.jpg',
     paras: [
       'Gestiamo la presenza social del tuo brand con una strategia pensata per attirare l’attenzione giusta e trasformare i contenuti in leve di crescita.',
       'Non pubblichiamo “tanto per farlo”: studiamo il target, definiamo format riconoscibili e sviluppiamo contenuti pensati per generare continuità e relazione.',
@@ -49,6 +52,7 @@ const services: Svc[] = [
   {
     id: 'd',
     title: 'CONTENT\nCREATION',
+    image: '/servizi/creative-3.jpg',
     paras: [
       'Creiamo contenuti pensati per lasciare il segno. In un mercato pieno di messaggi tutti uguali, la differenza la fa chi comunica con identità, strategia e qualità.',
       'Per questo sviluppiamo contenuti originali, dal copywriting alla produzione visual, capaci di parlare al pubblico giusto e rafforzare la percezione del brand.',
@@ -125,6 +129,29 @@ function ServiceBlock({ s }: { s: Svc }) {
   )
 }
 
+function ServiceRow({ s, index }: { s: Svc; index: number }) {
+  const reversed = index % 2 === 1
+  return (
+    <div className={`cosa-row${reversed ? ' cosa-row-rev' : ''}`}>
+      <div className="cosa-row-text">
+        <ServiceBlock s={s} />
+      </div>
+      {s.image && (
+        <div className="cosa-row-img cosa-anim">
+          <Image
+            className="cosa-par-img"
+            src={s.image}
+            alt=""
+            fill
+            sizes="(max-width: 820px) 100vw, 45vw"
+            style={{ objectFit: 'cover' }}
+          />
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function CosaFacciamoPage() {
   const rootRef = useRef<HTMLElement>(null)
 
@@ -186,27 +213,9 @@ export default function CosaFacciamoPage() {
         {/* I nostri servizi */}
         <section style={{ paddingTop: 'clamp(20px, 3vw, 40px)', paddingBottom: 'clamp(40px, 5vw, 60px)' }}>
           <p className="cosa-label cosa-anim">I NOSTRI SERVIZI</p>
-          <div className="cosa-grid">
-            {services.map((s) => (
-              <ServiceBlock key={s.id} s={s} />
-            ))}
-          </div>
-        </section>
-
-        {/* Trittico creativo (parallasse) */}
-        <section className="cosa-gallery">
-          <div className="cosa-gallery-grid">
-            {['creative-1', 'creative-2', 'creative-3', 'creative-4', 'creative-5'].map((img) => (
-              <div className="cosa-gallery-item cosa-anim" key={img}>
-                <Image
-                  className="cosa-par-img"
-                  src={`/servizi/${img}.jpg`}
-                  alt=""
-                  fill
-                  sizes="(max-width: 820px) 88vw, 33vw"
-                  style={{ objectFit: 'cover' }}
-                />
-              </div>
+          <div className="cosa-rows">
+            {services.map((s, i) => (
+              <ServiceRow key={s.id} s={s} index={i} />
             ))}
           </div>
         </section>
