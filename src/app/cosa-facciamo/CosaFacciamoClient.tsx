@@ -233,21 +233,20 @@ export default function CosaFacciamoPage() {
           </div>
         </section>
 
-        {/* Foto sala posa */}
-        <div className="cosa-studio-img cosa-anim">
-          <Image
-            src="/servizi/photo-studio.jpg"
-            alt="La nostra sala posa / photo studio"
-            fill
-            sizes="100vw"
-            style={{ objectFit: 'cover', objectPosition: 'center' }}
-          />
-        </div>
-
         {/* Photo studio (e) */}
         <section className="cosa-section">
-          <div className="cosa-2col">
-            <ColorScrollText text="Uno spazio attrezzato per realizzare contenuti in autonomia" />
+          <ColorScrollText text="Uno spazio attrezzato per realizzare contenuti in autonomia" />
+          <div className="cosa-2col" style={{ marginTop: 'clamp(36px, 5vw, 72px)' }}>
+            <div className="cosa-row-img cosa-anim">
+              <Image
+                className="cosa-par-img"
+                src="/servizi/photo-studio.jpg"
+                alt="La nostra sala posa / photo studio"
+                fill
+                sizes="(max-width: 820px) 100vw, 45vw"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+              />
+            </div>
             <ServiceBlock s={photoStudio} />
           </div>
         </section>
