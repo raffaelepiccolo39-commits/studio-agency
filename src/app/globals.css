@@ -892,6 +892,40 @@ body {
 .csw-word {
   will-change: opacity;
 }
+.cosa-gallery {
+  padding: clamp(34px, 5vw, 80px) clamp(24px, 5vw, 40px);
+}
+.cosa-gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(16px, 2vw, 30px);
+}
+.cosa-gallery-item {
+  position: relative;
+  width: calc((100% - 2 * clamp(16px, 2vw, 30px)) / 3);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+/* stagger editoriale */
+.cosa-gallery-item:nth-child(2),
+.cosa-gallery-item:nth-child(5) {
+  margin-top: clamp(24px, 4vw, 64px);
+}
+.cosa-par-img {
+  will-change: transform;
+}
+@media (max-width: 820px) {
+  .cosa-gallery-item {
+    width: calc((100% - clamp(12px, 3vw, 16px)) / 2);
+  }
+  .cosa-gallery-item:nth-child(2),
+  .cosa-gallery-item:nth-child(5) {
+    margin-top: 0;
+  }
+  .cosa-gallery-grid { gap: clamp(12px, 3vw, 16px); }
+}
 .cosa-scp-img {
   width: 100%;
   max-width: 420px;

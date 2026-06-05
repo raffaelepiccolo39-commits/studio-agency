@@ -138,6 +138,21 @@ export default function CosaFacciamoPage() {
         onEnter: (batch) =>
           gsap.to(batch, { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.09, overwrite: true }),
       })
+
+      // Parallasse trittico creativo
+      rootRef.current?.querySelectorAll<HTMLElement>('.cosa-par-img').forEach((img, i) => {
+        const amt = [9, -8, 6][i % 3]
+        gsap.fromTo(
+          img,
+          { yPercent: -amt, scale: 1.14 },
+          {
+            yPercent: amt,
+            scale: 1.14,
+            ease: 'none',
+            scrollTrigger: { trigger: img, start: 'top bottom', end: 'bottom top', scrub: true },
+          }
+        )
+      })
     },
     { scope: rootRef }
   )
@@ -174,6 +189,24 @@ export default function CosaFacciamoPage() {
           <div className="cosa-grid">
             {services.map((s) => (
               <ServiceBlock key={s.id} s={s} />
+            ))}
+          </div>
+        </section>
+
+        {/* Trittico creativo (parallasse) */}
+        <section className="cosa-gallery">
+          <div className="cosa-gallery-grid">
+            {['creative-1', 'creative-2', 'creative-3', 'creative-4', 'creative-5'].map((img) => (
+              <div className="cosa-gallery-item cosa-anim" key={img}>
+                <Image
+                  className="cosa-par-img"
+                  src={`/servizi/${img}.jpg`}
+                  alt=""
+                  fill
+                  sizes="(max-width: 820px) 88vw, 33vw"
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
             ))}
           </div>
         </section>
