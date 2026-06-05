@@ -33,10 +33,9 @@ export default function SponsorsSection() {
       </div>
 
       <div
-        className="sponsor-row-wrap"
+        className="sponsor-row-wrap partners-static"
         style={{
           padding: '0 clamp(16px, 2.5vw, 40px)',
-          display: 'flex',
           justifyContent: 'center',
           width: '100%',
           overflow: 'hidden',
@@ -73,6 +72,23 @@ export default function SponsorsSection() {
                 flexShrink: 1,
                 minWidth: 0,
               }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile: marquee auto-scroll */}
+      <div className="partners-marquee" aria-hidden>
+        <div className="partners-marquee-track">
+          {[...sponsors, ...sponsors].map((s, i) => (
+            <Image
+              key={`${s.src}-${i}`}
+              src={s.src}
+              alt={s.alt}
+              width={240}
+              height={80}
+              sizes="200px"
+              className="sponsor-logo-m"
             />
           ))}
         </div>

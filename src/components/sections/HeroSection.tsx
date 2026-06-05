@@ -59,6 +59,7 @@ export default function HeroSection() {
   return (
     <section
       ref={heroRef}
+      className="hero-section"
       style={{
         position: 'relative',
         width: '100%',

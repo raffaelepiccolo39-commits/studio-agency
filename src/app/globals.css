@@ -718,13 +718,47 @@ body {
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
 @media (max-width: 480px) {
-  .stats-grid { grid-template-columns: 1fr !important; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 28px 16px !important; }
+}
+
+/* Hero più corto su smartphone */
+@media (max-width: 600px) {
+  .hero-section {
+    min-height: 82vh !important;
+    padding-top: clamp(104px, 24vw, 150px) !important;
+    padding-bottom: 44px !important;
+  }
 }
 
 /* ─── PARTNER LOGOS ─── */
 .sponsor-logo {
   filter: none;
   opacity: 1;
+}
+.partners-static { display: flex; }
+.partners-marquee { display: none; }
+.partners-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: max-content;
+  animation: marquee 16s linear infinite;
+}
+.sponsor-logo-m {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+@media (max-width: 600px) {
+  .partners-static { display: none; }
+  .partners-marquee {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
 }
 
 /* ─── NAVBAR RESPONSIVE (no flash: switch via CSS) ─── */

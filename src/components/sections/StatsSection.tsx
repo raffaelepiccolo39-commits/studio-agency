@@ -85,7 +85,7 @@ export default function StatsSection() {
             <span
               style={{
                 fontFamily: 'var(--font-bebas)',
-                fontSize: 'clamp(72px, 9vw, 140px)',
+                fontSize: 'clamp(52px, 11vw, 140px)',
                 lineHeight: 0.95,
                 color: 'var(--accent)',
                 letterSpacing: '-0.01em',
