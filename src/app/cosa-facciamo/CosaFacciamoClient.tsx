@@ -246,7 +246,7 @@ export default function CosaFacciamoPage() {
         {/* SCP (f) */}
         <section className="cosa-section" style={{ paddingTop: 0 }}>
           <div className="cosa-2col cosa-2col-scp">
-            <ServiceBlock s={scp} display />
+            <ServiceBlock s={scp} />
             <div className="cosa-scp-media cosa-anim">
               <video className="cosa-scp-video" controls preload="metadata" playsInline>
                 <source src="/servizi/scp-video.mp4" type="video/mp4" />
