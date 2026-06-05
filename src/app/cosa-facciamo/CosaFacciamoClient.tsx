@@ -238,26 +238,8 @@ export default function CosaFacciamoPage() {
           </div>
         </section>
 
-        {/* Photo studio (e) */}
-        <section className="cosa-section">
-          <ColorScrollText text="Uno spazio attrezzato per realizzare contenuti in autonomia" full />
-          <div className="cosa-2col" style={{ marginTop: 'clamp(36px, 5vw, 72px)' }}>
-            <div className="cosa-row-img cosa-anim">
-              <Image
-                className="cosa-par-img"
-                src="/servizi/photo-studio.jpg"
-                alt="La nostra sala posa / photo studio"
-                fill
-                sizes="(max-width: 820px) 100vw, 45vw"
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
-              />
-            </div>
-            <ServiceBlock s={photoStudio} />
-          </div>
-        </section>
-
         {/* Domanda SCP */}
-        <section className="cosa-section" style={{ paddingTop: 0 }}>
+        <section className="cosa-section">
           <ColorScrollText text="E se la presentazione aziendale diventasse uno strumento sempre a portata di mano?" full />
         </section>
 
@@ -275,6 +257,24 @@ export default function CosaFacciamoPage() {
                 style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
               />
             </div>
+          </div>
+        </section>
+
+        {/* Photo studio (e) */}
+        <section className="cosa-section">
+          <ColorScrollText text="Uno spazio attrezzato per realizzare contenuti in autonomia" full />
+          <div className="cosa-2col" style={{ marginTop: 'clamp(36px, 5vw, 72px)' }}>
+            <div className="cosa-row-img cosa-anim">
+              <Image
+                className="cosa-par-img"
+                src="/servizi/photo-studio.jpg"
+                alt="La nostra sala posa / photo studio"
+                fill
+                sizes="(max-width: 820px) 100vw, 45vw"
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
+              />
+            </div>
+            <ServiceBlock s={photoStudio} />
           </div>
         </section>
 

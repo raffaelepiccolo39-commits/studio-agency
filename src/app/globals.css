@@ -863,10 +863,10 @@ body {
   padding-top: 6px;
 }
 .cosa-title-display {
-  font-family: var(--font-bebas) !important;
-  font-size: clamp(72px, 11vw, 200px) !important;
-  line-height: 0.82 !important;
-  letter-spacing: 0.01em !important;
+  font-family: var(--font-boldonse) !important;
+  font-size: clamp(48px, 8vw, 132px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0 !important;
 }
 .cosa-service-desc {
   display: flex;
