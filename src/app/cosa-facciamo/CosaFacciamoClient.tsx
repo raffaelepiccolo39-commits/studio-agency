@@ -4,104 +4,100 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import ProjectsSection from '@/components/sections/ProjectsSection'
+import Image from 'next/image'
 import { useInView } from 'react-intersection-observer'
 
-type Service = {
-  id: string
-  name: string
-  desc: string
-}
+const ACCENT = 'var(--accent)'
 
-const services: Service[] = [
+type Svc = { id: string; title: string; paras: React.ReactNode[] }
+
+const services: Svc[] = [
   {
     id: 'a',
-    name: 'BRANDING & GRAPHIC DESIGN',
-    desc: 'Un brand non deve limitarsi a essere presente, deve essere riconoscibile e impossibile da confondere. Costruiamo identità visive capaci di dare coerenza e personalità alla tua azienda. Partiamo dal posizionamento, analizziamo il mercato e traduciamo i valori del brand in un sistema visivo coordinato: logo, colori, tipografia, stile grafico, tono di voce e percezione.',
+    title: 'BRANDING &\nGRAPHIC DESIGN',
+    paras: [
+      'Un brand non deve limitarsi a essere presente, deve essere riconoscibile e impossibile da confondere.',
+      'Costruiamo identità visive capaci di dare coerenza e personalità alla tua azienda.',
+      'Partiamo dal posizionamento, analizziamo il mercato e traduciamo i valori del brand in un sistema visivo coordinato: logo, colori, tipografia, stile grafico, tono di voce e percezione.',
+    ],
   },
   {
     id: 'b',
-    name: 'WEBSITE & E-COMMERCE',
-    desc: 'Progettiamo ecosistemi digitali pensati per valorizzare il brand e generare risultati concreti. Dai siti corporate agli e-commerce più strutturati: velocità di caricamento, navigazione intuitiva e percorsi pensati per guidare l’utente all’azione. Costruiamo asset digitali che lavorano ogni giorno per la crescita della tua azienda.',
+    title: 'WEBSITE &\nE-COMMERCE',
+    paras: [
+      'Progettiamo ecosistemi digitali pensati per valorizzare il brand e generare risultati concreti.',
+      'Dai siti corporate agli e-commerce più strutturati: velocità di caricamento, navigazione intuitiva e percorsi pensati per guidare l’utente all’azione.',
+      'Costruiamo asset digitali che lavorano ogni giorno per la crescita della tua azienda.',
+    ],
   },
   {
     id: 'c',
-    name: 'SOCIAL MEDIA MANAGEMENT',
-    desc: 'Gestiamo la presenza social del tuo brand con una strategia pensata per attirare l’attenzione giusta e trasformare i contenuti in leve di crescita. Non pubblichiamo "tanto per farlo": studiamo il target, definiamo format riconoscibili e sviluppiamo contenuti pensati per generare continuità e relazione. L’obiettivo è costruire una community che percepisce il tuo valore e sceglie di avvicinarsi alla tua azienda.',
+    title: 'SOCIAL MEDIA\nMANAGEMENT',
+    paras: [
+      'Gestiamo la presenza social del tuo brand con una strategia pensata per attirare l’attenzione giusta e trasformare i contenuti in leve di crescita.',
+      'Non pubblichiamo “tanto per farlo”: studiamo il target, definiamo format riconoscibili e sviluppiamo contenuti pensati per generare continuità e relazione.',
+      'L’obiettivo è costruire una community che percepisce il tuo valore e sceglie di avvicinarsi alla tua azienda.',
+    ],
   },
   {
     id: 'd',
-    name: 'CONTENT CREATION',
-    desc: 'Creiamo contenuti pensati per lasciare il segno. In un mercato pieno di messaggi tutti uguali, la differenza la fa chi comunica con identità, strategia e qualità. Per questo sviluppiamo contenuti originali, dal copywriting alla produzione visual, capaci di parlare al pubblico giusto e rafforzare la percezione del brand.',
-  },
-  {
-    id: 'e',
-    name: 'PHOTO STUDIO',
-    desc: 'Mettiamo a disposizione una sala posa professionale all’interno dei nostri uffici, pensata per brand, aziende e creator che hanno bisogno di uno spazio curato e attrezzato per realizzare contenuti di qualità. Uno studio versatile, ideale per servizi fotografici professionali, shooting prodotto, produzioni video e contenuti social.',
+    title: 'CONTENT\nCREATION',
+    paras: [
+      'Creiamo contenuti pensati per lasciare il segno. In un mercato pieno di messaggi tutti uguali, la differenza la fa chi comunica con identità, strategia e qualità.',
+      'Per questo sviluppiamo contenuti originali, dal copywriting alla produzione visual, capaci di parlare al pubblico giusto e rafforzare la percezione del brand.',
+    ],
   },
 ]
 
-function Arrow() {
-  return (
-    <svg width="37" height="37" viewBox="0 0 37 37" fill="none" aria-hidden style={{ color: 'var(--accent)' }}>
-      <path d="M9 28L28 9M28 9H12M28 9V25" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" />
-    </svg>
-  )
+const photoStudio: Svc = {
+  id: 'e',
+  title: 'PHOTO\nSTUDIO',
+  paras: [
+    'Mettiamo a disposizione una sala posa professionale all’interno dei nostri uffici, pensata per brand, aziende e creator che hanno bisogno di uno spazio curato e attrezzato per realizzare contenuti di qualità.',
+    'Uno studio versatile, ideale per servizi fotografici professionali, shooting prodotto, produzioni video e contenuti social.',
+  ],
 }
 
-function ServiceItem({ service, index }: { service: Service; index: number }) {
-  const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true })
+const scp: Svc = {
+  id: 'f',
+  title: 'SCP',
+  paras: [
+    <>
+      SCP è uno <span style={{ color: ACCENT }}>Smart Company Profile</span>: una presentazione aziendale digitale,
+      interattiva e facilmente consultabile.
+    </>,
+    'A differenza di un normale PDF statico, permette di raccontare l’azienda in modo più immediato, organizzando informazioni e link utili in un unico strumento navigabile.',
+    'Aiuta l’azienda a presentarsi in modo più professionale durante incontri o invii digitali, dove il cliente può esplorare i contenuti con facilità e avere sempre una panoramica chiara e completa del valore dell’impresa.',
+  ],
+}
 
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const { ref, inView } = useInView({ threshold: 0.12, triggerOnce: true })
   return (
     <div
       ref={ref}
-      className="service-row-cosa"
       style={{
-        display: 'grid',
-        gridTemplateColumns: '60px 457px 1fr 50px',
-        gap: '40px',
-        alignItems: 'flex-start',
-        padding: '0 40px',
         opacity: inView ? 1 : 0,
-        transform: inView ? 'translateY(0)' : 'translateY(24px)',
-        transition: `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.05}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.05}s`,
+        transform: inView ? 'translateY(0)' : 'translateY(28px)',
+        transition: `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
       }}
     >
-      <span style={{
-        fontFamily: 'var(--font-syne)',
-        fontWeight: 400,
-        fontSize: '16px',
-        color: '#b2b2b2',
-        paddingTop: '8px',
-      }}>
-        ({service.id})
-      </span>
+      {children}
+    </div>
+  )
+}
 
-      <h2 style={{
-        fontFamily: 'var(--font-syne)',
-        fontWeight: 500,
-        fontSize: 'clamp(32px, 3.6vw, 50px)',
-        lineHeight: 0.85,
-        color: 'var(--accent)',
-        margin: 0,
-        whiteSpace: 'pre-line',
-      }}>
-        {service.name}
-      </h2>
-
-      <p style={{
-        fontFamily: 'var(--font-syne)',
-        fontWeight: 400,
-        fontSize: '16px',
-        color: '#ffffff',
-        lineHeight: 1.5,
-        margin: 0,
-        whiteSpace: 'pre-line',
-      }}>
-        {service.desc}
-      </p>
-
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Arrow />
+function ServiceBlock({ s }: { s: Svc }) {
+  return (
+    <div className="cosa-service">
+      <div className="cosa-service-head">
+        <h2 className="cosa-service-title" style={{ whiteSpace: 'pre-line' }}>{s.title}</h2>
+        <span className="cosa-service-letter">({s.id})</span>
+      </div>
+      <div className="cosa-service-desc">
+        {s.paras.map((p, i) => (
+          <p key={i}>{p}</p>
+        ))}
       </div>
     </div>
   )
@@ -111,18 +107,14 @@ export default function CosaFacciamoPage() {
   const serviceJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    provider: {
-      '@type': 'Organization',
-      name: 'Pira Web Creative Agency',
-      url: 'https://www.piraweb.it',
-    },
+    provider: { '@type': 'Organization', name: 'Pira Web Creative Agency', url: 'https://www.piraweb.it' },
     serviceType: 'Digital Agency Services',
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'I nostri servizi',
-      itemListElement: services.map(s => ({
+      itemListElement: [...services, photoStudio, scp].map((s) => ({
         '@type': 'Offer',
-        itemOffered: { '@type': 'Service', name: s.name },
+        itemOffered: { '@type': 'Service', name: s.title.replace(/\n/g, ' ') },
       })),
     },
   }
@@ -132,32 +124,71 @@ export default function CosaFacciamoPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <Cursor />
       <Navbar />
-      <main>
-        {/* Services section */}
-        <section style={{
-          background: '#0a0a0a',
-          padding: '60px 0',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '30px',
-        }}>
-          <div style={{ padding: '40px 40px 0' }}>
-            <p style={{
-              fontFamily: 'var(--font-syne)',
-              fontWeight: 500,
-              fontSize: '16px',
-              color: '#ffffff',
-              margin: 0,
-            }}>
-              I NOSTRI SERVIZI
-            </p>
-          </div>
+      <main style={{ background: '#0a0a0a' }}>
+        {/* Intro */}
+        <section className="cosa-intro">
+          <p className="cosa-intro-text">Diamo forma al tuo brand.</p>
+        </section>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '60px', paddingTop: '30px' }}>
-            {services.map((s, i) => (
-              <ServiceItem key={s.id} service={s} index={i} />
-            ))}
-          </div>
+        {/* I nostri servizi */}
+        <section style={{ paddingTop: 'clamp(20px, 3vw, 40px)', paddingBottom: 'clamp(40px, 5vw, 60px)' }}>
+          <p className="cosa-label">I NOSTRI SERVIZI</p>
+          <Reveal>
+            <div className="cosa-grid">
+              {services.map((s) => (
+                <ServiceBlock key={s.id} s={s} />
+              ))}
+            </div>
+          </Reveal>
+        </section>
+
+        {/* Foto sala posa */}
+        <div className="cosa-studio-img">
+          <Image
+            src="/servizi/photo-studio.jpg"
+            alt="La nostra sala posa / photo studio"
+            fill
+            sizes="100vw"
+            style={{ objectFit: 'cover', objectPosition: 'center' }}
+          />
+        </div>
+
+        {/* Photo studio (e) */}
+        <section className="cosa-section">
+          <Reveal>
+            <div className="cosa-2col">
+              <p className="cosa-big-heading">Uno spazio attrezzato per realizzare contenuti in autonomia</p>
+              <ServiceBlock s={photoStudio} />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* Domanda SCP */}
+        <section className="cosa-section" style={{ paddingTop: 0 }}>
+          <Reveal>
+            <p className="cosa-big-heading cosa-big-heading-full">
+              E se la presentazione aziendale diventasse uno strumento sempre a portata di mano?
+            </p>
+          </Reveal>
+        </section>
+
+        {/* SCP (f) */}
+        <section className="cosa-section" style={{ paddingTop: 0 }}>
+          <Reveal>
+            <div className="cosa-2col cosa-2col-scp">
+              <ServiceBlock s={scp} />
+              <div className="cosa-scp-img">
+                <Image
+                  src="/servizi/scp-mockup.jpg"
+                  alt="SCP — Smart Company Profile"
+                  width={420}
+                  height={746}
+                  sizes="(max-width: 820px) 80vw, 420px"
+                  style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+                />
+              </div>
+            </div>
+          </Reveal>
         </section>
 
         <ProjectsSection />

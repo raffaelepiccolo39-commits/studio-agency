@@ -793,6 +793,115 @@ body {
   .case-content-row { flex-direction: column !important; gap: 12px !important; padding: 20px 24px !important; }
 }
 
+/* ─── PAGINA SERVIZI (cosa-facciamo) ─── */
+.cosa-intro {
+  padding: clamp(110px, 13vw, 170px) clamp(24px, 5vw, 40px) clamp(30px, 4vw, 50px);
+}
+.cosa-intro-text {
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: clamp(34px, 4.6vw, 64px);
+  line-height: 0.98;
+  color: #ffffff;
+  text-align: right;
+  max-width: 995px;
+  margin: 0 0 0 auto;
+}
+.cosa-label {
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: 16px;
+  color: #b2b2b2;
+  margin: 0 0 clamp(30px, 4vw, 48px);
+  padding: 0 clamp(24px, 5vw, 40px);
+}
+.cosa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(48px, 6vw, 100px) clamp(40px, 5vw, 80px);
+  padding: 0 clamp(24px, 5vw, 40px);
+}
+.cosa-service {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.6vw, 44px);
+}
+.cosa-service-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.cosa-service-title {
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: clamp(28px, 3.4vw, 50px);
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+  color: var(--accent);
+  margin: 0;
+}
+.cosa-service-letter {
+  font-family: var(--font-syne);
+  font-weight: 400;
+  font-size: 16px;
+  color: #b2b2b2;
+  flex-shrink: 0;
+  padding-top: 6px;
+}
+.cosa-service-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 580px;
+}
+.cosa-service-desc p {
+  font-family: var(--font-syne);
+  font-weight: 400;
+  font-size: clamp(15px, 1.4vw, 22px);
+  line-height: 1.4;
+  color: #ffffff;
+  margin: 0;
+}
+.cosa-studio-img {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 46vw, 693px);
+}
+.cosa-section {
+  padding: clamp(48px, 6vw, 90px) clamp(24px, 5vw, 40px);
+}
+.cosa-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 5vw, 80px);
+  align-items: center;
+}
+.cosa-big-heading {
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: clamp(30px, 4.2vw, 64px);
+  line-height: 0.98;
+  color: #ffffff;
+  margin: 0;
+  max-width: 720px;
+}
+.cosa-big-heading-full {
+  max-width: 1006px;
+}
+.cosa-scp-img {
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+}
+@media (max-width: 820px) {
+  .cosa-intro-text { text-align: left; }
+  .cosa-grid { grid-template-columns: 1fr; gap: clamp(40px, 8vw, 56px); }
+  .cosa-2col { grid-template-columns: 1fr; gap: clamp(28px, 6vw, 44px); }
+  .cosa-scp-img { max-width: 320px; margin: 0; }
+  .cosa-service-desc { max-width: none; }
+}
+
 /* ─── TIKTOK VIDEOS ─── */
 .tiktok-grid {
   display: flex;
