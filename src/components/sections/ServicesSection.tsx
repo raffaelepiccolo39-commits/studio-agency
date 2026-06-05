@@ -159,6 +159,10 @@ export default function ServicesSection() {
   }, { scope: sectionRef })
 
   useEffect(() => {
+    // Hover solo su dispositivi con hover reale (desktop). Su touch si usa il tap (onClick),
+    // così non c'è conflitto mouseenter+click che richiedeva il doppio tocco.
+    if (typeof window === 'undefined' || !window.matchMedia('(hover: hover)').matches) return
+
     const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.service-card')
     if (!cards) return
 
@@ -276,7 +280,11 @@ export default function ServicesSection() {
                   key={s.id}
                   data-service={s.id}
                   className={`service-card ${isActive ? 'is-active' : ''}`}
-                  onClick={() => setActiveId(prev => (prev === s.id ? null : s.id))}
+                  onClick={() => {
+                    // Solo su touch (no hover): il desktop usa il passaggio del mouse
+                    if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) return
+                    setActiveId(prev => (prev === s.id ? null : s.id))
+                  }}
                   style={{
                     position: 'relative',
                     minHeight: 'clamp(380px, 38vw, 500px)',
@@ -296,6 +304,8 @@ export default function ServicesSection() {
                     transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), background 0.5s cubic-bezier(0.16,1,0.3,1)',
                   }}
                 >
+                  <span className="service-card-toggle" aria-hidden>{isActive ? '−' : '+'}</span>
+
                   {/* Top: title + tag */}
                   <div style={{
                     display: 'flex',

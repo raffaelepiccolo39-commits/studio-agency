@@ -434,6 +434,19 @@ body {
   .services-evolve .service-card h3 {
     font-size: 15px !important;
     line-height: 1.2 !important;
+    padding-right: 22px;
+  }
+  .services-evolve .service-card-toggle {
+    display: block;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-family: var(--font-syne);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--accent);
+    pointer-events: none;
   }
   /* descrizione nascosta: appare solo al tap (.is-active) */
   .services-evolve .service-card-features { display: none !important; }
@@ -724,6 +737,9 @@ body {
   .nav-mobile { display: flex !important; }
   .nav-mobile-overlay { display: flex !important; }
 }
+
+/* Indicatore +/- servizi: visibile solo su smartphone */
+.service-card-toggle { display: none; }
 
 /* ─── RESPONSIVE PAGINE PROGETTI ─── */
 @media (max-width: 760px) {
