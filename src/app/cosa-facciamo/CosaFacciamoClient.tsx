@@ -78,6 +78,37 @@ const scp: Svc = {
   ],
 }
 
+function ColorScrollText({ text, full = false }: { text: string; full?: boolean }) {
+  const ref = useRef<HTMLParagraphElement>(null)
+  useGSAP(
+    () => {
+      const el = ref.current
+      if (!el) return
+      const words = el.querySelectorAll<HTMLElement>('.csw-word')
+      gsap.fromTo(
+        words,
+        { opacity: 0.16 },
+        {
+          opacity: 1,
+          ease: 'none',
+          stagger: 0.4,
+          scrollTrigger: { trigger: el, start: 'top 82%', end: 'bottom 55%', scrub: 0.4 },
+        }
+      )
+    },
+    { scope: ref }
+  )
+  return (
+    <p ref={ref} className={`cosa-big-heading${full ? ' cosa-big-heading-full' : ''}`}>
+      {text.split(' ').map((w, i) => (
+        <span key={i} className="csw-word">
+          {w}{' '}
+        </span>
+      ))}
+    </p>
+  )
+}
+
 function ServiceBlock({ s }: { s: Svc }) {
   return (
     <div className="cosa-service">
@@ -161,16 +192,14 @@ export default function CosaFacciamoPage() {
         {/* Photo studio (e) */}
         <section className="cosa-section">
           <div className="cosa-2col">
-            <p className="cosa-big-heading cosa-anim">Uno spazio attrezzato per realizzare contenuti in autonomia</p>
+            <ColorScrollText text="Uno spazio attrezzato per realizzare contenuti in autonomia" />
             <ServiceBlock s={photoStudio} />
           </div>
         </section>
 
         {/* Domanda SCP */}
         <section className="cosa-section" style={{ paddingTop: 0 }}>
-          <p className="cosa-big-heading cosa-big-heading-full cosa-anim">
-            E se la presentazione aziendale diventasse uno strumento sempre a portata di mano?
-          </p>
+          <ColorScrollText text="E se la presentazione aziendale diventasse uno strumento sempre a portata di mano?" full />
         </section>
 
         {/* SCP (f) */}

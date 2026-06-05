@@ -889,6 +889,9 @@ body {
 .cosa-big-heading-full {
   max-width: 1006px;
 }
+.csw-word {
+  will-change: opacity;
+}
 .cosa-scp-img {
   width: 100%;
   max-width: 420px;
