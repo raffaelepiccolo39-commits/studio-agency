@@ -3,10 +3,9 @@
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
-import Magnetic from '@/components/ui/Magnetic'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -17,203 +16,116 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-const displayOrder = [
-  'pasticceria-bluemoon',
-  'contex-biancheria',
-  'svinati',
-  'maestri-cotonieri',
-  'alma-studio',
-  'quadrifoglio-group',
-  'alba-ricambi',
-]
+const FILTERS = ['Tutti', 'Brand Identity', 'E-commerce', 'Social Media', 'Content Creation'] as const
 
-const tagsFor = (p: Project) => {
-  const hasEcom = /e-commerce/i.test(p.platform) || p.services.some(s => /e-commerce/i.test(s))
-  const hasBrand = p.services.some(s => /brand/i.test(s) || /logo/i.test(s))
-  const hasSocial = p.services.some(s => /social/i.test(s))
-  const hasContent = p.services.some(s => /shooting/i.test(s) || /content/i.test(s))
-
+function tagsArr(p: Project): string[] {
+  const hasEcom = /e-commerce/i.test(p.platform) || p.services.some((s) => /e-commerce/i.test(s))
+  const hasBrand = p.services.some((s) => /brand/i.test(s) || /logo/i.test(s))
+  const hasSocial = p.services.some((s) => /social/i.test(s))
+  const hasContent = p.services.some((s) => /shooting/i.test(s) || /content/i.test(s))
   const tags: string[] = []
-  if (hasBrand) tags.push('BRAND IDENTITY')
-  if (hasEcom) tags.push('E-COMMERCE')
-  if (hasContent || hasSocial) tags.push('CONTENT CREATION')
-  if (hasSocial) tags.push('SOCIAL MEDIA')
-  return tags.join(' • ')
+  if (hasBrand) tags.push('Brand Identity')
+  if (hasEcom) tags.push('E-commerce')
+  if (hasContent || hasSocial) tags.push('Content Creation')
+  if (hasSocial) tags.push('Social Media')
+  return tags
 }
 
-function ProjectCard({ project, fullWidth = false }: { project: Project; fullWidth?: boolean }) {
+function ProjectCard({ project }: { project: Project }) {
   return (
-    <Link
-      href={`/progetti/${project.slug}`}
-      className="project-card progetti-grid-card"
-      style={{
-        gridColumn: fullWidth ? '1 / -1' : undefined,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '30px',
-        textDecoration: 'none',
-        color: 'inherit',
-      }}
-    >
-      <div
-        className="progetti-grid-img-wrap"
-        style={{
-          position: 'relative',
-          width: '100%',
-          aspectRatio: fullWidth ? '1380 / 787.5' : '675 / 787.5',
-          overflow: 'hidden',
-        }}
-      >
+    <Link href={`/progetti/${project.slug}`} className="evo-card">
+      <div className="evo-card-img">
         <Image
           src={coverFor(project)}
           alt={project.title}
           fill
-          sizes={fullWidth ? '100vw' : '(max-width: 768px) 100vw, 50vw'}
-          className="project-img"
-          style={{
-            objectFit: 'cover',
-            transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1)',
-            willChange: 'transform',
-          }}
+          sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+          className="evo-img"
+          style={{ objectFit: 'cover' }}
         />
+        <span className="evo-card-year">{project.year}</span>
       </div>
-
-      <div style={{
-        display: 'flex',
-        gap: '30px',
-        alignItems: 'flex-start',
-        width: '100%',
-      }}>
-        <div style={{ flex: '1 1 auto', minWidth: 0 }}>
-          <p style={{
-            fontFamily: 'var(--font-syne)',
-            fontWeight: 500,
-            fontSize: '16px',
-            color: '#b2b2b2',
-            lineHeight: 1.3,
-            margin: 0,
-          }}>
-            {tagsFor(project)}
-          </p>
-          <p className="progetti-grid-title" style={{
-            fontFamily: 'var(--font-syne)',
-            fontWeight: 500,
-            fontSize: '16px',
-            color: '#ffffff',
-            textDecoration: 'underline',
-            lineHeight: 1.3,
-            marginTop: '2px',
-            textTransform: 'uppercase',
-            transition: 'color 0.3s',
-          }}>
-            {project.title}
-          </p>
-        </div>
-        <Magnetic strength={0.5} radius={60}>
-          <svg
-            className="progetti-grid-arrow"
-            width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden
-            style={{ flexShrink: 0, marginTop: '2px', color: '#ffffff', transition: 'transform 0.4s ease, color 0.3s', display: 'block' }}
-          >
-            <path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
-          </svg>
-        </Magnetic>
+      <div className="evo-card-meta">
+        <p className="evo-card-services">{tagsArr(project).join(' • ').toUpperCase()}</p>
+        <h3 className="evo-card-title">{project.title}</h3>
       </div>
     </Link>
   )
 }
 
 export default function ProgettiPage({ projects }: { projects: Project[] }) {
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]>('Tutti')
   const gridRef = useRef<HTMLDivElement>(null)
+  const headRef = useRef<HTMLElement>(null)
 
-  const orderedProjects = displayOrder
-    .map(slug => projects.find(p => p.slug === slug))
-    .filter((p): p is Project => Boolean(p && p.immagini.length > 0))
+  const withCover = projects.filter((p) => p.immagini.length > 0)
+  const filtered = withCover.filter((p) => filter === 'Tutti' || tagsArr(p).includes(filter))
 
+  // Reveal header (al load)
+  useGSAP(
+    () => {
+      const els = headRef.current?.querySelectorAll<HTMLElement>('.evo-anim')
+      if (els?.length) {
+        gsap.from(els, { y: 36, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.1, delay: 0.15 })
+      }
+    },
+    { scope: headRef }
+  )
 
-  useGSAP(() => {
-    const wraps = gridRef.current?.querySelectorAll<HTMLElement>('.progetti-grid-img-wrap')
-    if (!wraps) return
-
-    wraps.forEach((wrap) => {
-      const img = wrap.querySelector<HTMLImageElement>('.project-img')
-      if (!img) return
-
-      gsap.set(wrap, { clipPath: 'inset(0% 0% 100% 0%)' })
-      gsap.set(img, { scale: 1.25 })
-
-      gsap.to(wrap, {
-        clipPath: 'inset(0% 0% 0% 0%)',
-        duration: 1.3,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: wrap,
-          start: 'top 88%',
-          toggleActions: 'play none none reverse',
-        },
-      })
-
-      gsap.to(img, {
-        scale: 1,
-        duration: 1.5,
-        ease: 'expo.out',
-        scrollTrigger: {
-          trigger: wrap,
-          start: 'top 88%',
-          toggleActions: 'play none none reverse',
-        },
-      })
-    })
-  }, { scope: gridRef })
+  // Reveal griglia (anche al cambio filtro)
+  useGSAP(
+    () => {
+      const cards = gridRef.current?.querySelectorAll<HTMLElement>('.evo-card')
+      if (cards?.length) {
+        gsap.fromTo(
+          cards,
+          { y: 40, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, ease: 'expo.out', stagger: 0.06, overwrite: true }
+        )
+      }
+    },
+    { scope: gridRef, dependencies: [filter] }
+  )
 
   return (
     <>
       <Cursor />
       <Navbar />
-      <main>
-        <section style={{
-          paddingTop: '60px',
-          paddingBottom: '0',
-          background: '#0a0a0a',
-        }}>
-          <div
-            className="progetti-page-inner"
-            style={{
-              border: '0.5px solid #525252',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '30px',
-              padding: '40px 30px',
-            }}
-          >
-            <p style={{
-              fontFamily: 'var(--font-syne)',
-              fontWeight: 500,
-              fontSize: '16px',
-              color: '#b2b2b2',
-              margin: 0,
-            }}>
-              I NOSTRI PROGETTI
-            </p>
+      <main className="evo-projects">
+        {/* Header */}
+        <section className="evo-head" ref={headRef}>
+          <p className="evo-eyebrow evo-anim">
+            <span className="evo-dot" /> Portfolio
+          </p>
+          <h1 className="evo-h1 evo-anim">
+            I nostri <span className="evo-acc">progetti</span>
+          </h1>
+          <p className="evo-sub evo-anim">
+            Brand, e-commerce, social e contenuti per aziende che vogliono distinguersi. Ogni progetto è un
+            sistema costruito su misura.
+          </p>
 
-            <div
-              ref={gridRef}
-              className="progetti-grid-2col"
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '30px',
-              }}
-            >
-              {orderedProjects.map((p, i) => {
-                const isLast = i === orderedProjects.length - 1 && orderedProjects.length % 2 === 1
-                return (
-                  <ProjectCard key={p.slug} project={p} fullWidth={isLast} />
-                )
-              })}
-            </div>
+          {/* Filtri */}
+          <div className="evo-filters evo-anim">
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                type="button"
+                className={`evo-filter${filter === f ? ' is-active' : ''}`}
+                onClick={() => setFilter(f)}
+              >
+                {f}
+              </button>
+            ))}
           </div>
         </section>
+
+        {/* Griglia */}
+        <div className="evo-grid" ref={gridRef}>
+          {filtered.map((p) => (
+            <ProjectCard key={p.slug} project={p} />
+          ))}
+        </div>
       </main>
       <Footer />
     </>
