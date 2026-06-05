@@ -1023,32 +1023,45 @@ body {
   transform: scaleX(0);
 }
 @media (max-width: 820px) {
-  /* Orizzontale anche su mobile: pannelli più stretti, lettera sopra + testo sotto */
-  .metodo-panel {
-    flex-basis: 86vw;
-    width: 86vw;
-    padding: 0 26px;
+  /* Mobile: layout verticale impilato (niente scroll orizzontale/pin) */
+  .metodo-h {
+    height: auto;
+    overflow: visible;
   }
-  .metodo-panel-intro {
-    flex-basis: 100vw;
-    width: 100vw;
+  .metodo-h-track {
+    flex-direction: column;
+    width: 100%;
+    transform: none !important;
+  }
+  .metodo-panel {
+    flex: none;
+    width: 100%;
+    height: auto;
+    justify-content: flex-start;
+    padding: clamp(48px, 11vw, 80px) clamp(24px, 5vw, 40px);
+    border-left: none;
+    border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+  }
+  .metodo-panel:first-child {
+    border-top: none;
   }
   .metodo-panel-step {
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
-    gap: 14px;
-  }
-  .metodo-giant {
-    font-size: clamp(120px, 34vw, 210px);
-    line-height: 0.8;
+    gap: 8px;
   }
   .metodo-panel-content {
     max-width: none;
   }
+  .metodo-giant {
+    transform: none !important;
+    display: block;
+    font-size: clamp(120px, 36vw, 220px);
+    line-height: 0.8;
+    margin: 0 0 6px;
+  }
   .metodo-progress-track {
-    left: 26px;
-    right: 26px;
+    display: none;
   }
 }
 
