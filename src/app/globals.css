@@ -703,20 +703,24 @@ body {
 /* ─── TIKTOK VIDEOS ─── */
 .tiktok-grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: clamp(16px, 1.6vw, 24px);
+  gap: clamp(12px, 1.2vw, 20px);
   width: 100%;
-  max-width: 968px;
+  max-width: 1500px;
 }
 .tiktok-card {
-  flex: 0 0 auto;
-  width: 300px;
-  max-width: 100%;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 300px;
   border-radius: 16px;
   overflow: hidden;
   background: #000000;
   box-shadow: 0 20px 54px -22px rgba(0, 0, 0, 0.3), 0 4px 12px -6px rgba(0, 0, 0, 0.12);
+}
+@media (max-width: 920px) {
+  .tiktok-grid { flex-wrap: wrap; }
+  .tiktok-card { flex: 0 0 auto; width: min(300px, 82vw); max-width: 100%; }
 }
 .tiktok-frame {
   position: relative;
