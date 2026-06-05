@@ -5,7 +5,14 @@ import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import ProjectsSection from '@/components/sections/ProjectsSection'
 import Image from 'next/image'
-import { useInView } from 'react-intersection-observer'
+import { useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 const ACCENT = 'var(--accent)'
 
@@ -71,32 +78,16 @@ const scp: Svc = {
   ],
 }
 
-function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
-  const { ref, inView } = useInView({ threshold: 0.12, triggerOnce: true })
-  return (
-    <div
-      ref={ref}
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? 'translateY(0)' : 'translateY(28px)',
-        transition: `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
-      }}
-    >
-      {children}
-    </div>
-  )
-}
-
 function ServiceBlock({ s }: { s: Svc }) {
   return (
     <div className="cosa-service">
       <div className="cosa-service-head">
-        <h2 className="cosa-service-title" style={{ whiteSpace: 'pre-line' }}>{s.title}</h2>
-        <span className="cosa-service-letter">({s.id})</span>
+        <h2 className="cosa-service-title cosa-anim" style={{ whiteSpace: 'pre-line' }}>{s.title}</h2>
+        <span className="cosa-service-letter cosa-anim">({s.id})</span>
       </div>
       <div className="cosa-service-desc">
         {s.paras.map((p, i) => (
-          <p key={i}>{p}</p>
+          <p key={i} className="cosa-anim">{p}</p>
         ))}
       </div>
     </div>
@@ -104,6 +95,22 @@ function ServiceBlock({ s }: { s: Svc }) {
 }
 
 export default function CosaFacciamoPage() {
+  const rootRef = useRef<HTMLElement>(null)
+
+  useGSAP(
+    () => {
+      const els = rootRef.current?.querySelectorAll<HTMLElement>('.cosa-anim')
+      if (!els || !els.length) return
+      gsap.set(els, { opacity: 0, y: 34 })
+      ScrollTrigger.batch(Array.from(els), {
+        start: 'top 90%',
+        onEnter: (batch) =>
+          gsap.to(batch, { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.09, overwrite: true }),
+      })
+    },
+    { scope: rootRef }
+  )
+
   const serviceJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -124,26 +131,24 @@ export default function CosaFacciamoPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <Cursor />
       <Navbar />
-      <main style={{ background: '#0a0a0a' }}>
+      <main ref={rootRef} style={{ background: '#0a0a0a' }}>
         {/* Intro */}
         <section className="cosa-intro">
-          <p className="cosa-intro-text">Diamo forma al tuo brand.</p>
+          <p className="cosa-intro-text cosa-anim">Diamo forma al tuo brand.</p>
         </section>
 
         {/* I nostri servizi */}
         <section style={{ paddingTop: 'clamp(20px, 3vw, 40px)', paddingBottom: 'clamp(40px, 5vw, 60px)' }}>
-          <p className="cosa-label">I NOSTRI SERVIZI</p>
-          <Reveal>
-            <div className="cosa-grid">
-              {services.map((s) => (
-                <ServiceBlock key={s.id} s={s} />
-              ))}
-            </div>
-          </Reveal>
+          <p className="cosa-label cosa-anim">I NOSTRI SERVIZI</p>
+          <div className="cosa-grid">
+            {services.map((s) => (
+              <ServiceBlock key={s.id} s={s} />
+            ))}
+          </div>
         </section>
 
         {/* Foto sala posa */}
-        <div className="cosa-studio-img">
+        <div className="cosa-studio-img cosa-anim">
           <Image
             src="/servizi/photo-studio.jpg"
             alt="La nostra sala posa / photo studio"
@@ -155,40 +160,34 @@ export default function CosaFacciamoPage() {
 
         {/* Photo studio (e) */}
         <section className="cosa-section">
-          <Reveal>
-            <div className="cosa-2col">
-              <p className="cosa-big-heading">Uno spazio attrezzato per realizzare contenuti in autonomia</p>
-              <ServiceBlock s={photoStudio} />
-            </div>
-          </Reveal>
+          <div className="cosa-2col">
+            <p className="cosa-big-heading cosa-anim">Uno spazio attrezzato per realizzare contenuti in autonomia</p>
+            <ServiceBlock s={photoStudio} />
+          </div>
         </section>
 
         {/* Domanda SCP */}
         <section className="cosa-section" style={{ paddingTop: 0 }}>
-          <Reveal>
-            <p className="cosa-big-heading cosa-big-heading-full">
-              E se la presentazione aziendale diventasse uno strumento sempre a portata di mano?
-            </p>
-          </Reveal>
+          <p className="cosa-big-heading cosa-big-heading-full cosa-anim">
+            E se la presentazione aziendale diventasse uno strumento sempre a portata di mano?
+          </p>
         </section>
 
         {/* SCP (f) */}
         <section className="cosa-section" style={{ paddingTop: 0 }}>
-          <Reveal>
-            <div className="cosa-2col cosa-2col-scp">
-              <ServiceBlock s={scp} />
-              <div className="cosa-scp-img">
-                <Image
-                  src="/servizi/scp-mockup.jpg"
-                  alt="SCP — Smart Company Profile"
-                  width={420}
-                  height={746}
-                  sizes="(max-width: 820px) 80vw, 420px"
-                  style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
-                />
-              </div>
+          <div className="cosa-2col cosa-2col-scp">
+            <ServiceBlock s={scp} />
+            <div className="cosa-scp-img cosa-anim">
+              <Image
+                src="/servizi/scp-mockup.jpg"
+                alt="SCP — Smart Company Profile"
+                width={420}
+                height={746}
+                sizes="(max-width: 820px) 80vw, 420px"
+                style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
+              />
             </div>
-          </Reveal>
+          </div>
         </section>
 
         <ProjectsSection />
