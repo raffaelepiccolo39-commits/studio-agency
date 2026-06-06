@@ -1256,6 +1256,182 @@ body {
   .lavora-apply { justify-self: start; margin-top: 10px; }
 }
 
+/* ─── MODALE CANDIDATURA ─── */
+.cand-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(8, 8, 8, 0.72);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+  cursor: auto;
+  animation: candFade 0.25s ease;
+}
+@keyframes candFade { from { opacity: 0; } to { opacity: 1; } }
+.cand-modal {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: auto;
+  background: #131313;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: clamp(26px, 4vw, 44px);
+  color: #ffffff;
+  cursor: auto;
+  animation: candPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes candPop {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.cand-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s;
+}
+.cand-close:hover { background: rgba(255, 255, 255, 0.16); }
+.cand-eyebrow {
+  font-family: var(--font-syne);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 8px;
+}
+.cand-title {
+  font-family: var(--font-syne);
+  font-weight: 600;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.06;
+  color: #ffffff;
+  margin: 0 0 8px;
+}
+.cand-sub {
+  font-family: var(--font-syne);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 24px;
+}
+.cand-form { display: flex; flex-direction: column; gap: 14px; }
+.cand-gotcha { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.cand-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.cand-field { display: flex; flex-direction: column; gap: 7px; }
+.cand-field > span {
+  font-family: var(--font-syne);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.65);
+}
+.cand-field input,
+.cand-field select,
+.cand-field textarea {
+  font-family: var(--font-syne);
+  font-size: 15px;
+  color: #ffffff;
+  background: #0c0c0c;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9px;
+  padding: 11px 13px;
+  outline: none;
+  width: 100%;
+  cursor: auto;
+  transition: border-color 0.25s;
+}
+.cand-field textarea { resize: vertical; min-height: 64px; }
+.cand-field select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23999' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.cand-field input:focus,
+.cand-field select:focus,
+.cand-field textarea:focus { border-color: var(--accent); }
+.cand-field input::placeholder,
+.cand-field textarea::placeholder { color: rgba(255, 255, 255, 0.32); }
+.cand-file {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 9px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+.cand-file:hover { border-color: var(--accent); }
+.cand-file input[type='file'] { display: none; }
+.cand-file-btn {
+  font-family: var(--font-syne);
+  font-size: 13px;
+  font-weight: 600;
+  color: #0a0a0a;
+  background: #ffffff;
+  padding: 8px 16px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+.cand-file-name { font-family: var(--font-syne); font-size: 13px; color: rgba(255, 255, 255, 0.55); word-break: break-all; }
+.cand-error { font-family: var(--font-syne); font-size: 13px; color: #ff6b6b; margin: 2px 0 0; }
+.cand-submit {
+  margin-top: 8px;
+  background: var(--accent);
+  color: #0a0a0a;
+  font-family: var(--font-syne);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: 100px;
+  padding: 13px 24px;
+  cursor: pointer;
+  transition: opacity 0.25s;
+}
+.cand-submit:hover { opacity: 0.88; }
+.cand-submit:disabled { opacity: 0.5; cursor: default; }
+.cand-success { text-align: center; padding: 10px 0; }
+.cand-success-mark {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #0a0a0a;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+@media (max-width: 480px) {
+  .cand-row2 { grid-template-columns: 1fr; }
+}
+
 /* ─── TIKTOK VIDEOS ─── */
 .tiktok-grid {
   display: flex;

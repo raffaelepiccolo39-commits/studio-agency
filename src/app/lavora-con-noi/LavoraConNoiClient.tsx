@@ -3,8 +3,9 @@
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
+import CandidaturaModal from '@/components/ui/CandidaturaModal'
 import Image from 'next/image'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -46,10 +47,9 @@ const positions: Position[] = [
   },
 ]
 
-const mailto = (subject: string) => `mailto:info@piraweb.it?subject=${encodeURIComponent(subject)}`
-
 export default function LavoraConNoiPage() {
   const rootRef = useRef<HTMLElement>(null)
+  const [activePos, setActivePos] = useState<string | null>(null)
 
   useGSAP(
     () => {
@@ -123,15 +123,16 @@ export default function LavoraConNoiPage() {
                   <span className="lavora-row-type">{p.type}</span>
                   <p className="lavora-row-desc">{p.desc}</p>
                 </div>
-                <a className="lavora-apply" href={mailto(p.subject)}>
+                <button type="button" className="lavora-apply" onClick={() => setActivePos(p.title)}>
                   CANDIDATI
-                </a>
+                </button>
               </div>
             ))}
           </div>
         </section>
       </main>
       <Footer />
+      <CandidaturaModal open={!!activePos} position={activePos || ''} onClose={() => setActivePos(null)} />
     </>
   )
 }
