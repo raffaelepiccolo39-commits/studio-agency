@@ -79,7 +79,6 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
   const otherProjects = otherProjectsOrder
     .map(slug => allProjects.find(p => p.slug === slug))
     .filter((p): p is Project => Boolean(p && p.immagini.length > 0 && p.slug !== project.slug))
-    .slice(0, 3)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -382,19 +381,15 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
               color: '#b2b2b2',
               margin: 0,
             }}>
-              I NOSTRI PROGETTI
+              ALTRI PROGETTI
             </p>
 
-            <div className="case-other-projects" style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '30px',
-            }}>
+            <div className="case-other-projects">
               {otherProjects.map((p) => (
                 <Link
                   key={p.slug}
                   href={`/progetti/${p.slug}`}
-                  className="project-card"
+                  className="project-card case-other-card"
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
