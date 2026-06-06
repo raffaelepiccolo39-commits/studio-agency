@@ -1024,6 +1024,7 @@ body {
   color: #ffffff;
   margin: 0;
   max-width: none;
+  overflow-wrap: break-word;
 }
 .evo-hl { color: var(--accent); }
 /* Filtri */
@@ -1111,10 +1112,14 @@ body {
   margin: 0;
 }
 @media (max-width: 900px) {
-  .evo-statement { max-width: none; }
+  .evo-statement { max-width: none; font-size: clamp(23px, 5.4vw, 36px); line-height: 1.18; }
   .evo-grid { grid-template-columns: 1fr; }
   .evo-card { grid-column: 1 / -1 !important; }
   .evo-card-img { aspect-ratio: 4 / 3 !important; }
+}
+@media (max-width: 480px) {
+  .evo-toplabels { gap: 10px 14px; padding-bottom: clamp(26px, 8vw, 40px); }
+  .evo-toplabels span { font-size: 12px; }
 }
 
 /* ─── TIKTOK VIDEOS ─── */
