@@ -52,9 +52,36 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  // Fallback testuale (senza allegato) sul Formspree già attivo
+  const sendFormspree = async () => {
+    try {
+      const r = await fetch('https://formspree.io/f/xlgwaygp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          _subject: `Nuova candidatura — ${posizione} — ${nome} ${cognome}`,
+          tipo: 'CANDIDATURA',
+          nome,
+          cognome,
+          email,
+          esperienza: esperienza || '—',
+          posizione,
+          messaggio: messaggio || '',
+          nota_cv: attachments.length ? 'CV allegato presente (richiede Resend per ricezione)' : 'Nessun CV',
+        }),
+      })
+      return r.ok
+    } catch {
+      return false
+    }
+  }
+
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
-    return NextResponse.json({ error: 'Servizio email non configurato' }, { status: 503 })
+    const ok = await sendFormspree()
+    return ok
+      ? NextResponse.json({ success: true, cv: false })
+      : NextResponse.json({ error: 'Invio non riuscito' }, { status: 500 })
   }
 
   const html = `
@@ -84,11 +111,15 @@ export async function POST(request: NextRequest) {
       }),
     })
     if (!res.ok) {
-      const detail = await res.text().catch(() => '')
-      return NextResponse.json({ error: 'Invio non riuscito', detail }, { status: 502 })
+      // Resend ha fallito → fallback testuale, così la candidatura non va persa
+      const ok = await sendFormspree()
+      return ok
+        ? NextResponse.json({ success: true, cv: false })
+        : NextResponse.json({ error: 'Invio non riuscito' }, { status: 502 })
     }
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true, cv: attachments.length > 0 })
   } catch {
-    return NextResponse.json({ error: 'Errore di rete' }, { status: 500 })
+    const ok = await sendFormspree()
+    return ok ? NextResponse.json({ success: true, cv: false }) : NextResponse.json({ error: 'Errore di rete' }, { status: 500 })
   }
 }
