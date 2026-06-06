@@ -1122,6 +1122,140 @@ body {
   .evo-toplabels span { font-size: 12px; }
 }
 
+/* ─── PAGINA LAVORA CON NOI ─── */
+.lavora { background: #0a0a0a; }
+.lavora-hero {
+  position: relative;
+  min-height: clamp(440px, 62vh, 640px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.lavora-hero-img { z-index: 0; }
+.lavora-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(10, 10, 10, 0.25) 0%, rgba(10, 10, 10, 0.12) 36%, rgba(10, 10, 10, 0.94) 100%);
+}
+.lavora-hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1640px;
+  margin-inline: auto;
+  padding: clamp(28px, 5vw, 56px) clamp(24px, 5vw, 40px);
+  display: flex;
+  flex-direction: column;
+}
+.lavora-eyebrow {
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: clamp(12px, 1vw, 15px);
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 clamp(10px, 1.5vw, 18px);
+}
+.lavora-title { margin: 0; overflow: hidden; line-height: 0.9; }
+.lavora-title span {
+  display: block;
+  font-family: var(--font-bebas);
+  font-size: clamp(58px, 12vw, 150px);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+  will-change: transform;
+}
+.lavora-sub {
+  font-family: var(--font-syne);
+  font-weight: 400;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 620px;
+  margin: clamp(18px, 2.4vw, 30px) 0 0;
+}
+.lavora-positions {
+  padding: clamp(56px, 8vw, 110px) clamp(24px, 5vw, 40px);
+  max-width: 1640px;
+  margin-inline: auto;
+}
+.lavora-poslabel {
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin: 0 0 clamp(28px, 4vw, 50px);
+}
+.lavora-list { display: flex; flex-direction: column; }
+.lavora-row {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) minmax(0, 430px) 170px;
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
+  padding: clamp(28px, 3.4vw, 46px) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.lavora-row:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.12); }
+.lavora-row-num {
+  font-family: var(--font-syne);
+  font-size: 15px;
+  color: #b2b2b2;
+  padding-top: 8px;
+}
+.lavora-row-title {
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: clamp(28px, 3.2vw, 50px);
+  line-height: 0.98;
+  color: var(--accent);
+  margin: 0;
+}
+.lavora-row-info { display: flex; flex-direction: column; gap: 14px; padding-top: 6px; }
+.lavora-row-type {
+  font-family: var(--font-syne);
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  color: #b2b2b2;
+}
+.lavora-row-desc {
+  font-family: var(--font-syne);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #ffffff;
+  margin: 0;
+}
+.lavora-apply {
+  justify-self: end;
+  align-self: start;
+  margin-top: 6px;
+  background: var(--accent);
+  color: #0a0a0a;
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  padding: 11px 30px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: none;
+  transition: opacity 0.3s;
+}
+.lavora-apply:hover { opacity: 0.85; }
+@media (max-width: 900px) {
+  .lavora-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .lavora-row-num { padding-top: 0; }
+  .lavora-row-info { padding-top: 0; }
+  .lavora-row-title { font-size: clamp(30px, 8vw, 44px); line-height: 1; }
+  .lavora-apply { justify-self: start; margin-top: 10px; }
+}
+
 /* ─── TIKTOK VIDEOS ─── */
 .tiktok-grid {
   display: flex;
