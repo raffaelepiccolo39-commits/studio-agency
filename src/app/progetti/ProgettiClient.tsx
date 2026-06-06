@@ -11,6 +11,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import type { Project } from '@/data/projects'
 import { coverFor } from '@/data/homeCovers'
+import { hoverImagesFor } from '@/data/hoverImages'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -40,8 +41,10 @@ const PATTERN = [
 ]
 
 function ProjectCard({ project, span, ratio }: { project: Project; span: number; ratio: string }) {
-  // Lista immagini: cover + tutta la gallery (dedup)
-  const imgs = [coverFor(project), ...project.immagini].filter((v, i, a) => a.indexOf(v) === i)
+  // Immagini hover: se ci sono quelle dedicate (override) uso quelle, altrimenti la gallery del progetto.
+  // In testa resta sempre la cover come stato a riposo.
+  const gallery = hoverImagesFor(project.slug) ?? project.immagini
+  const imgs = [coverFor(project), ...gallery].filter((v, i, a) => a.indexOf(v) === i)
   const [idx, setIdx] = useState(0)
   const [active, setActive] = useState(false) // monta la gallery solo dopo il primo hover
   const timer = useRef<number | undefined>(undefined)
