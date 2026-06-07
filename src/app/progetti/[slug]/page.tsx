@@ -8,6 +8,7 @@ import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getDims } from '@/lib/imageDims'
+import { coverFor } from '@/data/homeCovers'
 
 const BASE_URL = 'https://www.piraweb.it'
 
@@ -366,7 +367,7 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
                     overflow: 'hidden',
                   }}>
                     <Image
-                      src={p.immagini[0]}
+                      src={coverFor(p)}
                       alt={p.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
