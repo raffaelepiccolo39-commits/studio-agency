@@ -303,42 +303,24 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
         {/* Gallery: immagini a proporzioni naturali (niente crop). Prima full-width, resto masonry 2col/1col */}
         {project.immagini.length > 0 && (
           <section className="case-gallery-wrap" style={{ background: '#0a0a0a' }}>
-            {(() => {
-              const [hero, ...rest] = project.immagini
-              return (
-                <>
-                  <div className="case-gallery-hero">
-                    <Image
-                      src={hero}
-                      alt={`${project.title} 1`}
-                      fill
-                      sizes="100vw"
-                      priority
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                  {rest.length > 0 && (
-                    <div className="case-gallery">
-                      {rest.map((img, i) => {
-                        const { width, height } = getDims(img)
-                        return (
-                          <Image
-                            key={img}
-                            className="case-gallery-item"
-                            src={img}
-                            alt={`${project.title} ${i + 2}`}
-                            width={width}
-                            height={height}
-                            sizes="(max-width: 860px) 100vw, 50vw"
-                            style={{ width: '100%', height: 'auto', display: 'block' }}
-                          />
-                        )
-                      })}
-                    </div>
-                  )}
-                </>
-              )
-            })()}
+            <div className="case-gallery">
+              {project.immagini.map((img, i) => {
+                const { width, height } = getDims(img)
+                return (
+                  <Image
+                    key={img}
+                    className="case-gallery-item"
+                    src={img}
+                    alt={`${project.title} ${i + 1}`}
+                    width={width}
+                    height={height}
+                    sizes="(max-width: 860px) 100vw, 50vw"
+                    priority={i === 0}
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                  />
+                )
+              })}
+            </div>
           </section>
         )}
 
