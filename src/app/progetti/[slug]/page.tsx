@@ -117,6 +117,7 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
           display: 'flex',
           gap: '15px',
           alignItems: 'center',
+          flexWrap: 'wrap',
         }}>
           <Link href="/progetti" style={{
             fontFamily: 'var(--font-syne)',
