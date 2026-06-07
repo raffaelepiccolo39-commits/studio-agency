@@ -29,8 +29,8 @@ export default function PrivacyPage() {
 
             <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,32px)', letterSpacing: '0.02em', marginTop: '48px', marginBottom: '16px' }}>1. Titolare del trattamento</h2>
             <p style={{ marginBottom: '16px' }}>
-              Il Titolare del trattamento è <strong>Pira Web Creative Agency</strong>, con sede in Casapesenna (CE).
-              {/* TODO: aggiungere ragione sociale completa, indirizzo legale e P.IVA */}
+              Il Titolare del trattamento è <strong>Pira Web S.r.l.</strong>, con sede legale in Via A. Petrillo n° 171,
+              81030 Casapesenna (CE), Italia — P.IVA IT04891370613.
             </p>
             <p style={{ marginBottom: '16px' }}>
               Per qualsiasi richiesta relativa al trattamento dei dati personali è possibile contattare il Titolare all&apos;indirizzo email:&nbsp;
