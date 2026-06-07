@@ -7,6 +7,7 @@ import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
 import Image from 'next/image'
+import { getDims } from '@/lib/imageDims'
 
 const BASE_URL = 'https://www.piraweb.it'
 
@@ -299,68 +300,46 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
           </div>
         </section>
 
-        {/* Gallery (Figma pattern: full-width + rows of 2 + full-width) */}
+        {/* Gallery: immagini a proporzioni naturali (niente crop). Prima full-width, resto masonry 2col/1col */}
         {project.immagini.length > 0 && (
-          <section style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-            background: '#0a0a0a',
-          }}>
-            {project.immagini.map((img, i) => {
-              const total = project.immagini.length
-              if (i === 0 || (total > 2 && i === total - 1 && (total - 1) % 2 === 0)) {
-                return (
-                  <div key={img} className="case-gallery-full" style={{
-                    position: 'relative',
-                    width: '100%',
-                    height: 'clamp(320px, 42vw, 608px)',
-                    overflow: 'hidden',
-                  }}>
-                    <Image
-                      src={img}
-                      alt={`${project.title} ${i + 1}`}
-                      fill
-                      sizes="100vw"
-                      priority={i === 0}
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                )
-              }
-              if ((i - 1) % 2 === 0) {
-                const next = project.immagini[i + 1]
-                return (
-                  <div key={img} className="case-gallery-pair" style={{
-                    display: 'grid',
-                    gridTemplateColumns: next ? '1fr 720px' : '1fr',
-                    gap: '10px',
-                  }}>
-                    <div style={{ position: 'relative', height: 'clamp(320px, 58vw, 828px)', overflow: 'hidden' }}>
-                      <Image
-                        src={img}
-                        alt={`${project.title} ${i + 1}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 60vw"
-                        style={{ objectFit: 'cover' }}
-                      />
+          <section className="case-gallery-wrap" style={{ background: '#0a0a0a' }}>
+            {(() => {
+              const [hero, ...rest] = project.immagini
+              const heroDims = getDims(hero)
+              return (
+                <>
+                  <Image
+                    className="case-gallery-hero"
+                    src={hero}
+                    alt={`${project.title} 1`}
+                    width={heroDims.width}
+                    height={heroDims.height}
+                    sizes="100vw"
+                    priority
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                  />
+                  {rest.length > 0 && (
+                    <div className="case-gallery">
+                      {rest.map((img, i) => {
+                        const { width, height } = getDims(img)
+                        return (
+                          <Image
+                            key={img}
+                            className="case-gallery-item"
+                            src={img}
+                            alt={`${project.title} ${i + 2}`}
+                            width={width}
+                            height={height}
+                            sizes="(max-width: 860px) 100vw, 50vw"
+                            style={{ width: '100%', height: 'auto', display: 'block' }}
+                          />
+                        )
+                      })}
                     </div>
-                    {next && (
-                      <div style={{ position: 'relative', height: 'clamp(320px, 58vw, 828px)', overflow: 'hidden' }}>
-                        <Image
-                          src={next}
-                          alt={`${project.title} ${i + 2}`}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 720px"
-                          style={{ objectFit: 'cover' }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                )
-              }
-              return null
-            })}
+                  )}
+                </>
+              )
+            })()}
           </section>
         )}
 
