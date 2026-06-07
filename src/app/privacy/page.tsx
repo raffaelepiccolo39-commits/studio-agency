@@ -67,9 +67,10 @@ export default function PrivacyPage() {
               e dei servizi connessi, nominati responsabili del trattamento ex art. 28 GDPR, tra cui:
             </p>
             <ul style={{ paddingLeft: '24px', marginBottom: '16px' }}>
-              <li style={{ marginBottom: '8px' }}><strong>Vercel Inc.</strong> — hosting del sito.</li>
+              <li style={{ marginBottom: '8px' }}><strong>Vercel Inc.</strong> — hosting e distribuzione del sito.</li>
               <li style={{ marginBottom: '8px' }}><strong>Formspree</strong> — gestione degli invii dei form di contatto.</li>
-              {/* TODO: aggiungere altri responsabili se attivi (Sanity, Resend, Google Analytics, Meta Pixel...) */}
+              <li style={{ marginBottom: '8px' }}><strong>Resend</strong> — invio e gestione delle email relative alle candidature (modulo &ldquo;Lavora con noi&rdquo;), incluso il curriculum/portfolio allegato.</li>
+              <li style={{ marginBottom: '8px' }}><strong>Sanity</strong> — sistema di gestione dei contenuti (CMS) del sito.</li>
             </ul>
 
             <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,32px)', letterSpacing: '0.02em', marginTop: '48px', marginBottom: '16px' }}>6. Diritti dell&apos;interessato</h2>
