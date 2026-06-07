@@ -1136,11 +1136,12 @@ body {
 
 /* ─── GALLERY SCHEDA PROGETTO (proporzioni naturali, no crop) ─── */
 .case-gallery-wrap { display: flex; flex-direction: column; gap: 10px; }
-.case-gallery-hero { width: 100%; display: block; }
+.case-gallery-hero { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; }
 .case-gallery { column-count: 2; column-gap: 10px; }
 .case-gallery-item { margin: 0 0 10px; break-inside: avoid; }
 @media (max-width: 860px) {
   .case-gallery { column-count: 1; }
+  .case-gallery-hero { aspect-ratio: 4 / 3; }
 }
 
 /* ─── PAGINA LAVORA CON NOI ─── */

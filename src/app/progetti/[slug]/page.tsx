@@ -305,19 +305,18 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
           <section className="case-gallery-wrap" style={{ background: '#0a0a0a' }}>
             {(() => {
               const [hero, ...rest] = project.immagini
-              const heroDims = getDims(hero)
               return (
                 <>
-                  <Image
-                    className="case-gallery-hero"
-                    src={hero}
-                    alt={`${project.title} 1`}
-                    width={heroDims.width}
-                    height={heroDims.height}
-                    sizes="100vw"
-                    priority
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                  />
+                  <div className="case-gallery-hero">
+                    <Image
+                      src={hero}
+                      alt={`${project.title} 1`}
+                      fill
+                      sizes="100vw"
+                      priority
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </div>
                   {rest.length > 0 && (
                     <div className="case-gallery">
                       {rest.map((img, i) => {

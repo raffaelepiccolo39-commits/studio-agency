@@ -1,6 +1,17 @@
 // AUTO-GENERATED — dimensioni intrinseche reali delle immagini in /public/progetti
 // Rigenerare con lo script in scripts/gen-image-dims (se serve). Usato da getDims().
 export const IMAGE_DIMS: Record<string, [number, number]> = {
+  '/progetti/maestri-cotonieri/maestri-fig-01.jpg': [1600, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-02.jpg': [1501, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-03.jpg': [1739, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-04.jpg': [1501, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-05.jpg': [1501, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-06.jpg': [1739, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-07.jpg': [1739, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-08.jpg': [1600, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-09.jpg': [1739, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-10.jpg': [1501, 2000],
+  '/progetti/maestri-cotonieri/maestri-fig-11.jpg': [2000, 621],
   '/progetti/alba-ricambi/LAYOUT.png': [450, 1516],
   '/progetti/alba-ricambi/sito-alba-01.jpg': [4000, 2151],
   '/progetti/alba-ricambi/sito-alba-02.jpg': [1957, 2250],
@@ -93,5 +104,9 @@ export const IMAGE_DIMS: Record<string, [number, number]> = {
 // Fallback portrait (la maggior parte delle gallery sono 1957x2250).
 export function getDims(src: string): { width: number; height: number } {
   const d = IMAGE_DIMS[src]
-  return d ? { width: d[0], height: d[1] } : { width: 1957, height: 2250 }
+  if (d) return { width: d[0], height: d[1] }
+  // URL Sanity CDN: .../<hash>-<W>x<H>.<ext> → estrai le dimensioni reali
+  const m = src.match(/-(\d+)x(\d+)\.\w+(?:\?|$)/)
+  if (m) return { width: parseInt(m[1], 10), height: parseInt(m[2], 10) }
+  return { width: 1957, height: 2250 }
 }
