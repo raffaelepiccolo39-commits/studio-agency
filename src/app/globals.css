@@ -1124,7 +1124,7 @@ body {
   margin: 0;
 }
 @media (max-width: 900px) {
-  .evo-statement { max-width: none; font-size: clamp(23px, 5.4vw, 36px); line-height: 1.18; }
+  .evo-statement { max-width: none; font-size: clamp(19px, 4.8vw, 32px); line-height: 1.2; }
   .evo-grid { grid-template-columns: 1fr; }
   .evo-card { grid-column: 1 / -1 !important; }
   .evo-card-img { aspect-ratio: 4 / 3 !important; }
