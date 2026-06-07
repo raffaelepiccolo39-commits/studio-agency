@@ -105,7 +105,22 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
   const gridRef = useRef<HTMLDivElement>(null)
   const headRef = useRef<HTMLElement>(null)
 
-  const withCover = projects.filter((p) => p.immagini.length > 0)
+  const ORDER = [
+    'contex-biancheria',
+    'pasticceria-bluemoon',
+    'svinati',
+    'maestri-cotonieri',
+    'alma-studio',
+    'alba-ricambi',
+    'quadrifoglio-group',
+  ]
+  const rank = (slug: string) => {
+    const i = ORDER.indexOf(slug)
+    return i === -1 ? 999 : i
+  }
+  const withCover = projects
+    .filter((p) => p.immagini.length > 0)
+    .sort((a, b) => rank(a.slug) - rank(b.slug))
 
   useGSAP(
     () => {
