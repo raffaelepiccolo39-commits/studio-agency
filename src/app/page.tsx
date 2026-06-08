@@ -6,7 +6,6 @@ import IntroSection from '@/components/sections/IntroSection'
 import MarqueeSection from '@/components/sections/MarqueeSection'
 import StatsSection from '@/components/sections/StatsSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
-import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import ServicesSection from '@/components/sections/ServicesSection'
 import SponsorsSection from '@/components/sections/SponsorsSection'
 import MetodoSection from '@/components/sections/MetodoSection'
@@ -49,7 +48,6 @@ export default async function Home() {
         <MarqueeSection />
         <StatsSection />
         <ProjectsSection projects={projects} />
-        <TestimonialsSection />
         <ServicesSection />
         <SponsorsSection />
         <MetodoSection />

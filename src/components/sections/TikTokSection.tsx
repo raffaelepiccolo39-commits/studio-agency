@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 const videos = [
@@ -13,8 +12,6 @@ const videos = [
 
 export default function TikTokSection() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
-  const [loaded, setLoaded] = useState<Set<string>>(new Set())
-  const load = (id: string) => setLoaded((prev) => new Set(prev).add(id))
 
   return (
     <section
@@ -68,27 +65,13 @@ export default function TikTokSection() {
         {videos.map((v) => (
           <div className="tiktok-card" key={v.id}>
             <div className="tiktok-frame">
-              {loaded.has(v.id) ? (
-                <iframe
-                  src={`https://www.tiktok.com/player/v1/${v.id}?music_info=0&description=0&rel=0&autoplay=1`}
-                  title={`Video TikTok @${v.user}`}
-                  allow="encrypted-media; fullscreen; picture-in-picture; autoplay"
-                  allowFullScreen
-                />
-              ) : (
-                <button
-                  type="button"
-                  className="tiktok-facade"
-                  onClick={() => load(v.id)}
-                  aria-label={`Carica e guarda il video TikTok di @${v.user}`}
-                >
-                  <span className="tiktok-facade-play" aria-hidden>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
-                  </span>
-                  <span className="tiktok-facade-user">@{v.user}</span>
-                  <span className="tiktok-facade-hint">Guarda il video</span>
-                </button>
-              )}
+              <iframe
+                src={`https://www.tiktok.com/player/v1/${v.id}?music_info=0&description=0&rel=0`}
+                title={`Video TikTok @${v.user}`}
+                allow="encrypted-media; fullscreen; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+              />
             </div>
           </div>
         ))}

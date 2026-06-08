@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { Bebas_Neue, DM_Serif_Display, Syne } from 'next/font/google'
-import localFont from 'next/font/local'
 import './globals.css'
 import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider'
 import ScrollProgress from '@/components/ui/ScrollProgress'
@@ -25,13 +24,6 @@ const dmSerifDisplay = DM_Serif_Display({
 const syne = Syne({
   subsets: ['latin'],
   variable: '--font-syne',
-  display: 'swap',
-})
-
-// Boldonse self-hosted (era render-blocking via <link> Google Fonts)
-const boldonse = localFont({
-  src: './fonts/boldonse.woff2',
-  variable: '--font-boldonse',
   display: 'swap',
 })
 
@@ -94,8 +86,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="it" className={`${bebasNeue.variable} ${dmSerifDisplay.variable} ${syne.variable} ${boldonse.variable}`}>
+    <html lang="it" className={`${bebasNeue.variable} ${dmSerifDisplay.variable} ${syne.variable}`}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
