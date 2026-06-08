@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { trackLead } from '@/lib/gtag'
 
 const services = [
   'Brand Identity',
@@ -75,6 +76,7 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
 
       if (res.ok) {
         setStatus('success')
+        trackLead('consulenza')
         onSuccess?.()
       } else {
         setStatus('error')

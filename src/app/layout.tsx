@@ -98,6 +98,34 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
+        {/* Google Consent Mode v2 (default: denied) + GA4 — il consenso verrà aggiornato dalla CMP/cookie banner */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});
+              gtag('js', new Date());
+              gtag('config','G-P84R9MYBB5');
+            `,
+          }}
+        />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-P84R9MYBB5" />
+        {/* Meta Pixel */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init','33389650943984110');
+              fbq('track','PageView');
+            `,
+          }}
+        />
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: '<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=33389650943984110&ev=PageView&noscript=1" alt="" />',
+          }}
+        />
       </head>
       <body>
         <PageLoader />

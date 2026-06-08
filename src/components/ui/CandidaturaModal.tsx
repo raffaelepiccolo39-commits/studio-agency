@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { trackLead } from '@/lib/gtag'
 
 type Props = { open: boolean; position: string; onClose: () => void }
 
@@ -68,6 +69,7 @@ export default function CandidaturaModal({ open, position, onClose }: Props) {
       const json = await res.json().catch(() => ({}))
       if (res.ok && json.success) {
         setStatus('ok')
+        trackLead('candidatura')
       } else {
         setStatus('error')
         setError(json.error || 'Invio non riuscito, riprova.')

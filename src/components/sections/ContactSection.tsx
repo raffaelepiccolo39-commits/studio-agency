@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
+import { trackLead } from '@/lib/gtag'
 
 export default function ContactSection() {
   const [name, setName] = useState('')
@@ -26,6 +27,7 @@ export default function ContactSection() {
 
       if (res.ok) {
         setStatus('success')
+        trackLead('contatti')
         setName(''); setEmail(''); setMessage('')
       } else {
         setStatus('error')
