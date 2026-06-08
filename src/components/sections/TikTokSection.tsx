@@ -58,7 +58,7 @@ export default function TikTokSection() {
           transition: 'opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.16s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.16s',
         }}
       >
-        Generano milioni di visualizzazioni e community reali.
+        Dall&rsquo;idea alla viralità: creiamo contenuti organici che fanno crescere brand, community e riconoscibilità.
       </p>
 
       <div className="tiktok-grid">
