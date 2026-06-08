@@ -115,7 +115,7 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
         {/* Breadcrumb */}
         <div style={{
           background: '#0a0a0a',
-          padding: '40px 30px 20px',
+          padding: 'clamp(92px, 12vw, 116px) 30px 20px',
           display: 'flex',
           gap: '15px',
           alignItems: 'center',
