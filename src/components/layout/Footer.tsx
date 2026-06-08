@@ -212,6 +212,10 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
             <Link href="/privacy" className="footer-bottom-link">PRIVACY POLICY</Link>
             <span aria-hidden> • </span>
             <Link href="/cookie" className="footer-bottom-link">COOKIE POLICY</Link>
+            <span aria-hidden> • </span>
+            <button type="button" data-cc="show-preferencesModal" className="footer-bottom-link" style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', cursor: 'pointer' }}>
+              PREFERENZE COOKIE
+            </button>
           </p>
           <ul style={{ display: 'flex', alignItems: 'center', gap: '4px', listStyle: 'none', margin: 0, padding: 0 }}>
             <li>

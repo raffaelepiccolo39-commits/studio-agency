@@ -5,6 +5,7 @@ import PageLoader from '@/components/ui/PageLoader'
 import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider'
 import ScrollProgress from '@/components/ui/ScrollProgress'
 import PageTransition from '@/components/ui/PageTransition'
+import CookieBanner from '@/components/ui/CookieBanner'
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -111,27 +112,14 @@ export default function RootLayout({
           }}
         />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-P84R9MYBB5" />
-        {/* Meta Pixel */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init','33389650943984110');
-              fbq('track','PageView');
-            `,
-          }}
-        />
-        <noscript
-          dangerouslySetInnerHTML={{
-            __html: '<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=33389650943984110&ev=PageView&noscript=1" alt="" />',
-          }}
-        />
+        {/* Meta Pixel: caricato solo dopo il consenso marketing (vedi CookieBanner) */}
       </head>
       <body>
         <PageLoader />
         <ScrollProgress />
         <PageTransition />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <CookieBanner />
       </body>
     </html>
   )
