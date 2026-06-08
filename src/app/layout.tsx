@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Bebas_Neue, DM_Serif_Display, Syne } from 'next/font/google'
 import './globals.css'
-import PageLoader from '@/components/ui/PageLoader'
 import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider'
 import ScrollProgress from '@/components/ui/ScrollProgress'
 import PageTransition from '@/components/ui/PageTransition'
@@ -115,7 +114,6 @@ export default function RootLayout({
         {/* Meta Pixel: caricato solo dopo il consenso marketing (vedi CookieBanner) */}
       </head>
       <body>
-        <PageLoader />
         <ScrollProgress />
         <PageTransition />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
