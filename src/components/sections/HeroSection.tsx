@@ -16,6 +16,8 @@ const SLIDE_DURATION = 6000
 export default function HeroSection() {
   const heroRef = useRef<HTMLElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
+  // Le slide 2 e 3 si caricano dopo il primo paint, così la slide 1 (LCP) ha la priorità
+  const [othersReady, setOthersReady] = useState(false)
 
   useGSAP(() => {
     const lines = heroRef.current?.querySelectorAll<HTMLElement>('.hero-line')
@@ -55,6 +57,11 @@ export default function HeroSection() {
       setActiveIndex((i) => (i + 1) % slides.length)
     }, SLIDE_DURATION)
     return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    const t = setTimeout(() => setOthersReady(true), 1200)
+    return () => clearTimeout(t)
   }, [])
 
   return (
@@ -99,18 +106,20 @@ export default function HeroSection() {
                 transition: 'opacity 1.4s cubic-bezier(0.16,1,0.3,1), transform 1.4s cubic-bezier(0.16,1,0.3,1)',
               }}
             >
-              <Image
-                src={src}
-                alt=""
-                fill
-                priority={i === 0}
-                sizes="100vw"
-                style={{
-                  objectFit: 'cover',
-                  transform: isActive ? 'scale(1.08)' : 'scale(1)',
-                  transition: `transform ${SLIDE_DURATION + 1500}ms linear`,
-                }}
-              />
+              {(i === 0 || othersReady) && (
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  priority={i === 0}
+                  sizes="100vw"
+                  style={{
+                    objectFit: 'cover',
+                    transform: isActive ? 'scale(1.08)' : 'scale(1)',
+                    transition: `transform ${SLIDE_DURATION + 1500}ms linear`,
+                  }}
+                />
+              )}
               <div
                 style={{
                   position: 'absolute',
@@ -186,15 +195,23 @@ export default function HeroSection() {
             aria-label={`Vai alla slide ${i + 1}`}
             onClick={() => setActiveIndex(i)}
             style={{
-              width: i === activeIndex ? '32px' : '12px',
-              height: '2px',
-              background: i === activeIndex ? '#ffffff' : 'rgba(255,255,255,0.4)',
+              background: 'none',
               border: 'none',
-              padding: 0,
+              padding: '12px 5px',
               cursor: 'pointer',
-              transition: 'width 0.5s cubic-bezier(0.16,1,0.3,1), background 0.3s ease',
+              display: 'block',
             }}
-          />
+          >
+            <span
+              style={{
+                display: 'block',
+                width: i === activeIndex ? '32px' : '12px',
+                height: '2px',
+                background: i === activeIndex ? '#ffffff' : 'rgba(255,255,255,0.4)',
+                transition: 'width 0.5s cubic-bezier(0.16,1,0.3,1), background 0.3s ease',
+              }}
+            />
+          </button>
         ))}
       </div>
     </section>

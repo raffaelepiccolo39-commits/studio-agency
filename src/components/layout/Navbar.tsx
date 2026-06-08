@@ -140,6 +140,8 @@ export default function Navbar() {
             </Link>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? 'Chiudi menu' : 'Apri menu'}
+              aria-expanded={menuOpen}
               style={{
                 background: 'none', border: 'none', cursor: 'none',
                 display: 'flex', flexDirection: 'column',

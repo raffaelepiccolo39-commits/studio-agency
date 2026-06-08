@@ -26,10 +26,9 @@
   --surface: #111111;
   --border: #1e1e1e;
   --text: #f0ede6;
-  --muted: #555;
+  --muted: #8a8a8a;
   --accent: #FFD108;
   --accent-red: #ff4d1c;
-  --font-boldonse: 'Boldonse', var(--font-bebas), sans-serif;
 }
 
 /* ─── BASE ─── */
