@@ -10,6 +10,18 @@ export async function generateStaticParams() {
   return posts.map(p => ({ slug: p.slug }))
 }
 
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const post = await getPostBySlug(params.slug)
+  if (!post) return {}
+  return {
+    title: `${post.title} — Pira Web`,
+    description: post.excerpt,
+    // Articolo in lavorazione: noindex finché i contenuti non sono completi.
+    robots: { index: false, follow: true },
+    alternates: { canonical: `https://www.piraweb.it/blog/${post.slug}` },
+  }
+}
+
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getPostBySlug(params.slug)
   if (!post) notFound()

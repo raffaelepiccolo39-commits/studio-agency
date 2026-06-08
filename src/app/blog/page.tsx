@@ -9,6 +9,13 @@ const categoryColors: Record<string, string> = {
   'E-commerce': '#c8f55a', 'Tech': '#5a8cf5', 'Design': '#ff4d1c', 'Marketing': '#f5c85a',
 }
 
+export const metadata = {
+  title: 'Blog — Pira Web Creative Agency',
+  description: 'Riflessioni su design, tecnologia e marketing digitale dal team di Pira Web.',
+  // Blog in lavorazione: escluso dall'indicizzazione finché i contenuti non sono completi.
+  robots: { index: false, follow: true },
+}
+
 export default async function BlogPage() {
   const posts = await getPosts()
   const featured = posts.find(p => p.featured) ?? posts[0]

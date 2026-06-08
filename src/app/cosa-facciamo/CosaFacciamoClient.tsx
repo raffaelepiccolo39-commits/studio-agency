@@ -146,7 +146,7 @@ function ServiceRow({ s, index }: { s: Svc; index: number }) {
           <Image
             className="cosa-par-img"
             src={s.image}
-            alt=""
+            alt={`Pira Web — ${s.title.replace(/\n/g, ' ')}`}
             fill
             sizes="(max-width: 820px) 100vw, 45vw"
             style={{ objectFit: 'cover' }}
@@ -218,14 +218,14 @@ export default function CosaFacciamoPage() {
       <main ref={rootRef} style={{ background: '#0a0a0a' }}>
         {/* Intro */}
         <section className="cosa-intro">
-          <p className="cosa-intro-text">
+          <h1 className="cosa-intro-text">
             {'Diamo forma al tuo brand.'.split(' ').flatMap((w, i) => [
               <span className="cosa-intro-mask" key={`w${i}`}>
                 <span className="cosa-intro-word">{w}</span>
               </span>,
               ' ',
             ])}
-          </p>
+          </h1>
         </section>
 
         {/* I nostri servizi */}

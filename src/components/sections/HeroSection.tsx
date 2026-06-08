@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 
@@ -98,14 +99,14 @@ export default function HeroSection() {
                 transition: 'opacity 1.4s cubic-bezier(0.16,1,0.3,1), transform 1.4s cubic-bezier(0.16,1,0.3,1)',
               }}
             >
-              <div
+              <Image
+                src={src}
+                alt=""
+                fill
+                priority={i === 0}
+                sizes="100vw"
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundImage: `url("${src}")`,
-                  backgroundPosition: 'center',
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
+                  objectFit: 'cover',
                   transform: isActive ? 'scale(1.08)' : 'scale(1)',
                   transition: `transform ${SLIDE_DURATION + 1500}ms linear`,
                 }}

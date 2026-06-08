@@ -160,10 +160,10 @@ export default function ProgettiPage({ projects }: { projects: Project[] }) {
             <span>Social Media</span>
             <span>E-commerce</span>
           </div>
-          <p className="evo-statement evo-anim">
+          <h1 className="evo-statement evo-anim">
             Diamo forma a brand e business con <Hl>branding</Hl>, <Hl>web &amp; e-commerce</Hl>,{' '}
             <Hl>social media</Hl>, <Hl>content creation</Hl> e tutto ciò che serve per far crescere la tua azienda.
-          </p>
+          </h1>
         </section>
 
         <div className="evo-grid" ref={gridRef}>

@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer'
 
 const testimonials = [
   {
-    testo: "Pira Web ha trasformato completamente la nostra presenza online. L'e-commerce che hanno realizzato ha superato ogni aspettativa in termini di design e funzionalita'.",
+    testo: "Pira Web ha trasformato completamente la nostra presenza online. L'e-commerce che hanno realizzato ha superato ogni aspettativa in termini di design e funzionalità.",
     autore: 'Con.tex Biancheria',
     ruolo: 'E-commerce & Social Media',
   },
@@ -14,7 +14,7 @@ const testimonials = [
     ruolo: 'Brand Identity & Social Media',
   },
   {
-    testo: "La gestione social che fanno per noi e' impeccabile. Contenuti di qualita', strategia chiara e risultati concreti sulla community.",
+    testo: "La gestione social che fanno per noi è impeccabile. Contenuti di qualità, strategia chiara e risultati concreti sulla community.",
     autore: 'Svinati',
     ruolo: 'Social Media Management',
   },
