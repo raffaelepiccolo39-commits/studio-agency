@@ -55,21 +55,31 @@ export async function POST(request: NextRequest) {
         </table>
         ${message ? `<p style="margin:16px 0 0"><strong>Messaggio:</strong><br>${esc(message).replace(/\n/g, '<br>')}</p>` : ''}
       </div>`;
-    try {
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          from: process.env.RESEND_FROM || 'Pira Web <onboarding@resend.dev>',
-          to: ['info@piraweb.it'],
-          reply_to: email,
-          subject: `Nuova richiesta — ${type === 'contact' ? 'Contatti' : 'Consulenza'} — ${fullName}`,
-          html,
-        }),
-      });
-      results.resend = res.ok;
-    } catch {
-      results.resend = false;
+    const payload = JSON.stringify({
+      from: process.env.RESEND_FROM || 'Pira Web <onboarding@resend.dev>',
+      to: ['info@piraweb.it'],
+      reply_to: email,
+      subject: `Nuova richiesta — ${type === 'contact' ? 'Contatti' : 'Consulenza'} — ${fullName}`,
+      html,
+    });
+    // Fino a 2 tentativi: gestisce blip/rate-limit (429) o errori 5xx transitori di Resend
+    for (let attempt = 1; attempt <= 2 && !results.resend; attempt++) {
+      try {
+        const res = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+          body: payload,
+        });
+        results.resend = res.ok;
+        if (!res.ok) {
+          const errBody = await res.text().catch(() => '');
+          console.error(`[contact] Resend FALLITO (tentativo ${attempt}) status=${res.status} body=${errBody}`);
+          if (attempt < 2) await new Promise((r) => setTimeout(r, 700));
+        }
+      } catch (e) {
+        console.error(`[contact] Resend ECCEZIONE (tentativo ${attempt}):`, e);
+        if (attempt < 2) await new Promise((r) => setTimeout(r, 700));
+      }
     }
   }
 
