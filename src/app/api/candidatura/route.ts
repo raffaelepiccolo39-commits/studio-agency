@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Richiesta non valida' }, { status: 400 })
   }
 
-  // Honeypot anti-spam
-  if (form.get('_gotcha')) return NextResponse.json({ success: true })
+  // NB: rimosso il blocco honeypot `_gotcha`: l'autofill del browser riempiva il
+  // campo nascosto e le candidature reali venivano scartate in silenzio.
 
   const nome = String(form.get('nome') || '').trim()
   const cognome = String(form.get('cognome') || '').trim()

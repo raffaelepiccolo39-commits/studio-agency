@@ -21,10 +21,11 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const {
     name, surname, company, email, phone,
-    service, budget, message, formType, _gotcha,
+    service, budget, message, formType,
   } = body;
 
-  if (_gotcha) return NextResponse.json({ success: true });
+  // NB: rimosso il blocco honeypot `_gotcha`: l'autofill del browser riempiva il
+  // campo nascosto e gli invii reali venivano scartati in silenzio (falso verde).
 
   if (!name || !email) {
     return NextResponse.json({ error: 'Nome e email obbligatori' }, { status: 400 });
