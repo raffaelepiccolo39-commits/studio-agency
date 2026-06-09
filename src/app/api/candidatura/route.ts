@@ -97,29 +97,43 @@ export async function POST(request: NextRequest) {
       ${messaggio ? `<p style="margin:16px 0 0"><strong>Messaggio:</strong><br>${esc(messaggio).replace(/\n/g, '<br>')}</p>` : ''}
     </div>`
 
-  try {
-    const res = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from: process.env.RESEND_FROM || 'Pira Web Candidature <onboarding@resend.dev>',
-        to: ['info@piraweb.it'],
-        reply_to: email,
-        subject: `Nuova candidatura — ${posizione} — ${nome} ${cognome}`,
-        html,
-        attachments,
-      }),
-    })
-    if (!res.ok) {
-      // Resend ha fallito → fallback testuale, così la candidatura non va persa
-      const ok = await sendFormspree()
-      return ok
-        ? NextResponse.json({ success: true, cv: false })
-        : NextResponse.json({ error: 'Invio non riuscito' }, { status: 502 })
+  const payload = JSON.stringify({
+    from: process.env.RESEND_FROM || 'Pira Web Candidature <onboarding@resend.dev>',
+    to: ['info@piraweb.it'],
+    reply_to: email,
+    subject: `Nuova candidatura — ${posizione} — ${nome} ${cognome}`,
+    html,
+    attachments,
+  })
+
+  // Fino a 2 tentativi: gestisce blip/rate-limit (429) o 5xx transitori di Resend
+  let resendOk = false
+  for (let attempt = 1; attempt <= 2 && !resendOk; attempt++) {
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        body: payload,
+      })
+      resendOk = res.ok
+      if (!res.ok) {
+        const errBody = await res.text().catch(() => '')
+        console.error(`[candidatura] Resend FALLITO (tentativo ${attempt}) status=${res.status} body=${errBody}`)
+        if (attempt < 2) await new Promise((r) => setTimeout(r, 700))
+      }
+    } catch (e) {
+      console.error(`[candidatura] Resend ECCEZIONE (tentativo ${attempt}):`, e)
+      if (attempt < 2) await new Promise((r) => setTimeout(r, 700))
     }
-    return NextResponse.json({ success: true, cv: attachments.length > 0 })
-  } catch {
-    const ok = await sendFormspree()
-    return ok ? NextResponse.json({ success: true, cv: false }) : NextResponse.json({ error: 'Errore di rete' }, { status: 500 })
   }
+
+  if (resendOk) {
+    return NextResponse.json({ success: true, cv: attachments.length > 0 })
+  }
+
+  // Resend KO dopo i tentativi → fallback testuale Formspree, così la candidatura non va persa
+  const ok = await sendFormspree()
+  return ok
+    ? NextResponse.json({ success: true, cv: false })
+    : NextResponse.json({ error: 'Invio non riuscito' }, { status: 502 })
 }

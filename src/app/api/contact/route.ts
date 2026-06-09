@@ -124,9 +124,17 @@ export async function POST(request: NextRequest) {
     results.formspree = false;
   }
 
-  if (results.resend || results.gestionale || results.formspree) {
+  // "Verde solo se inviata davvero": il successo dipende dal canale che recapita
+  // in casella. Resend è il primario (quando configurato); il gestionale è solo
+  // CRM e Formspree è una copia best-effort, NON contano per la conferma all'utente.
+  // Se Resend non è configurato, si ripiega su Formspree per non bloccare il form.
+  const emailDelivered = apiKey ? results.resend : results.formspree;
+
+  if (emailDelivered) {
     return NextResponse.json({ success: true, ...results });
   }
 
-  return NextResponse.json({ error: 'Errore invio' }, { status: 500 });
+  // Email non partita: niente finto successo. Il front-end mostra "scrivici a info@".
+  console.error(`[contact] INVIO NON RIUSCITO — resend=${results.resend} formspree=${results.formspree} gestionale=${results.gestionale}`);
+  return NextResponse.json({ error: 'Errore invio', ...results }, { status: 500 });
 }
