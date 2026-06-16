@@ -69,7 +69,11 @@ const organizationSchema = {
   telephone: '+3908117560017',
   vatID: 'IT04891370613',
   areaServed: ['Casapesenna', 'Caserta', 'Napoli', 'Campania', 'Italia'],
-  sameAs: [],
+  sameAs: [
+    'https://www.instagram.com/piraweb_agency/',
+    'https://www.facebook.com/pirawebonline',
+    'https://www.linkedin.com/company/pira-web/',
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Via A. Petrillo 171',
