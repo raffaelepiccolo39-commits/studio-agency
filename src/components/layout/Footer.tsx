@@ -1,6 +1,8 @@
 'use client'
 
 import Link from 'next/link'
+import Script from 'next/script'
+import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 
 const SR_ONLY: React.CSSProperties = {
@@ -49,6 +51,16 @@ type FooterProps = {
 export default function Footer({ ctaTitle }: FooterProps = {}) {
   const year = new Date().getFullYear()
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
+  const trustboxRef = useRef<HTMLDivElement>(null)
+
+  // In una SPA il bootstrap Trustpilot non ri-scansiona il DOM ad ogni navigazione
+  // client-side: forziamo il render del widget dopo il mount del footer.
+  useEffect(() => {
+    const w = window as unknown as { Trustpilot?: { loadFromElement: (el: HTMLElement | null, force?: boolean) => void } }
+    if (w.Trustpilot && trustboxRef.current) {
+      w.Trustpilot.loadFromElement(trustboxRef.current, true)
+    }
+  }, [])
 
   const resolvedTitle = ctaTitle ?? (
     <>
@@ -145,6 +157,21 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
             Via A.Petrillo N°171<br />
             81030 CASAPESENNA CE, IT
           </address>
+
+          {/* TrustBox widget - Review Collector */}
+          <div
+            ref={trustboxRef}
+            className="trustpilot-widget"
+            data-locale="it-IT"
+            data-template-id="56278e9abfbbba0bdcd568bc"
+            data-businessunit-id="6a30e7af0059b090210c3582"
+            data-style-height="52px"
+            data-style-width="100%"
+            data-token="91295a7c-a594-4b7c-9593-77b4ccbf35d4"
+            style={{ maxWidth: '320px' }}
+          >
+            <a href="https://it.trustpilot.com/review/piraweb.it" target="_blank" rel="noopener noreferrer">Trustpilot</a>
+          </div>
         </section>
 
         {/* Destra: CTA prominente */}
@@ -259,6 +286,18 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
           ©{year} Pira Web S.r.l. — Tutti i diritti riservati — P.IVA IT04891370613
         </p>
       </div>
+
+      {/* TrustBox loader */}
+      <Script
+        src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          const w = window as unknown as { Trustpilot?: { loadFromElement: (el: HTMLElement | null, force?: boolean) => void } }
+          if (w.Trustpilot && trustboxRef.current) {
+            w.Trustpilot.loadFromElement(trustboxRef.current, true)
+          }
+        }}
+      />
     </footer>
   )
 }
