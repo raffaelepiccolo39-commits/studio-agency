@@ -21,8 +21,12 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const {
     name, surname, company, email, phone,
-    service, budget, message, formType,
+    service, budget, message, formType, source,
   } = body;
+
+  // Fonte del lead: 'ads' = landing ADV, 'website' = form del sito (default)
+  const leadSource = source === 'ads' ? 'ads' : 'website';
+  const sourceLabel = leadSource === 'ads' ? 'ADV' : 'Sito';
 
   // NB: rimosso il blocco honeypot `_gotcha`: l'autofill del browser riempiva il
   // campo nascosto e gli invii reali venivano scartati in silenzio (falso verde).
@@ -60,7 +64,7 @@ export async function POST(request: NextRequest) {
       from: process.env.RESEND_FROM || 'Pira Web <onboarding@resend.dev>',
       to: ['info@piraweb.it'],
       reply_to: email,
-      subject: `Nuova richiesta — ${type === 'contact' ? 'Contatti' : 'Consulenza'} — ${fullName}`,
+      subject: `[${sourceLabel}] Nuova richiesta — ${type === 'contact' ? 'Contatti' : 'Consulenza'} — ${fullName}`,
       html,
     });
     // Fino a 2 tentativi: gestisce blip/rate-limit (429) o errori 5xx transitori di Resend
@@ -96,6 +100,7 @@ export async function POST(request: NextRequest) {
         phone: phone || '',
         service: servicePieces,
         message: message || '',
+        source: leadSource,
         api_key: process.env.GESTIONALE_WEBHOOK_KEY,
       }),
     });

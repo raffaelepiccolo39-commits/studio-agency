@@ -46,9 +46,10 @@ function LinkedInIcon() {
 
 type FooterProps = {
   ctaTitle?: React.ReactNode
+  ctaHref?: string
 }
 
-export default function Footer({ ctaTitle }: FooterProps = {}) {
+export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps = {}) {
   const year = new Date().getFullYear()
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
   const trustboxRef = useRef<HTMLDivElement>(null)
@@ -196,7 +197,7 @@ export default function Footer({ ctaTitle }: FooterProps = {}) {
             {resolvedTitle}
           </h2>
           <Link
-            href="/contatti"
+            href={ctaHref}
             className="footer-cta-button footer-cta-button-lg"
             aria-label="Richiedi una consulenza"
           >
