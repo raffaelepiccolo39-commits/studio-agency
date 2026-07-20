@@ -109,6 +109,9 @@ export default function ServicesSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const manifestoRef = useRef<HTMLHeadingElement>(null)
   const [activeId, setActiveId] = useState<string | null>(null)
+  // Le immagini di sfondo si vedono solo in hover (desktop): su touch non servono e
+  // non vanno scaricate. Caricate solo se il device supporta l'hover.
+  const [canHover, setCanHover] = useState(false)
 
   useGSAP(() => {
     const h2 = manifestoRef.current
@@ -162,6 +165,7 @@ export default function ServicesSection() {
     // Hover solo su dispositivi con hover reale (desktop). Su touch si usa il tap (onClick),
     // così non c'è conflitto mouseenter+click che richiedeva il doppio tocco.
     if (typeof window === 'undefined' || !window.matchMedia('(hover: hover)').matches) return
+    setCanHover(true)
 
     const cards = sectionRef.current?.querySelectorAll<HTMLElement>('.service-card')
     if (!cards) return
@@ -204,7 +208,7 @@ export default function ServicesSection() {
             style={{
               position: 'absolute',
               inset: 0,
-              backgroundImage: `url("${s.image}")`,
+              backgroundImage: canHover ? `url("${s.image}")` : 'none',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: activeId === s.id ? 1 : 0,
