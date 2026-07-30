@@ -81,39 +81,46 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
   return <span style={EYEBROW}><span style={{ width: 7, height: 7, background: 'var(--accent)', display: 'inline-block' }} />{children}</span>
 }
 
+// ⚠️ Va iniettato con dangerouslySetInnerHTML, non come figlio di <style>.
+// Come testo React escaperebbe > < & lato server (`details &gt; summary`):
+// il browser dentro <style> non li de-escapa, quindi la regola non si applica
+// e il testo differisce da quello del client → errore di idratazione e la
+// pagina viene ri-renderizzata interamente sul client.
+const LANDING_CSS = `
+  .lp-card { transition: border-color .4s, background .4s, transform .4s; }
+  .lp-card:hover { border-color: rgba(255,255,255,0.3) !important; background: rgba(20,20,20,0.85) !important; transform: translateY(-3px); }
+  .lp-topcta { display: inline-flex; }
+  @media (max-width:600px){ .lp-topcta { display:none !important; } }
+  .lp-sticky { display:none; }
+  @media (max-width:600px){ .lp-sticky { display:flex !important; } }
+  /* Su mobile il WhatsApp sale sopra la barra CTA sticky */
+  @media (max-width:600px){ .lp-wa { bottom: 84px !important; right: 16px !important; } }
+  .lp-marquee { animation: lp-scroll 34s linear infinite; }
+  @keyframes lp-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .lp-root details > summary::-webkit-details-marker { display:none; }
+  .lp-root details[open] .lp-faqicon { transform: rotate(45deg); }
+
+  /* Hero a due colonne → stack su mobile */
+  @media (max-width: 900px){
+    .lp-hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+  }
+
+  /* Metodo PIRA: compatto SOLO nella landing (la home resta invariata) */
+  .lp-root #metodo.metodo-h { border-top: none; }
+  @media (min-width: 821px){
+    .lp-root #metodo.metodo-h { height: 74vh; }
+  }
+  @media (max-width: 820px){
+    .lp-root #metodo .metodo-panel { min-height: 46vh; padding-top: 24px; padding-bottom: 24px; }
+  }
+`
+
 export default function LandingClient({ projects }: { projects: Project[] }) {
   return (
     <>
       <Cursor />
       <main style={{ background: '#0a0a0a', color: 'var(--text)', minHeight: '100vh', fontFamily: SYNE }}>
-        <style>{`
-          .lp-card { transition: border-color .4s, background .4s, transform .4s; }
-          .lp-card:hover { border-color: rgba(255,255,255,0.3) !important; background: rgba(20,20,20,0.85) !important; transform: translateY(-3px); }
-          .lp-topcta { display: inline-flex; }
-          @media (max-width:600px){ .lp-topcta { display:none !important; } }
-          .lp-sticky { display:none; }
-          @media (max-width:600px){ .lp-sticky { display:flex !important; } }
-          /* Su mobile il WhatsApp sale sopra la barra CTA sticky */
-          @media (max-width:600px){ .lp-wa { bottom: 84px !important; right: 16px !important; } }
-          .lp-marquee { animation: lp-scroll 34s linear infinite; }
-          @keyframes lp-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-          .lp-root details > summary::-webkit-details-marker { display:none; }
-          .lp-root details[open] .lp-faqicon { transform: rotate(45deg); }
-
-          /* Hero a due colonne → stack su mobile */
-          @media (max-width: 900px){
-            .lp-hero-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
-          }
-
-          /* Metodo PIRA: compatto SOLO nella landing (la home resta invariata) */
-          .lp-root #metodo.metodo-h { border-top: none; }
-          @media (min-width: 821px){
-            .lp-root #metodo.metodo-h { height: 74vh; }
-          }
-          @media (max-width: 820px){
-            .lp-root #metodo .metodo-panel { min-height: 46vh; padding-top: 24px; padding-bottom: 24px; }
-          }
-        `}</style>
+        <style dangerouslySetInnerHTML={{ __html: LANDING_CSS }} />
 
         <div className="lp-root">
           {/* ── Header slim (stile navbar) ── */}
