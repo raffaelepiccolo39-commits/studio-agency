@@ -1,0 +1,574 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   QUESTIONARIO — CSS Modules puro, nessuna dipendenza.
+
+   I tre font arrivano dalle variabili impostate nel RootLayout. Se nel tuo
+   layout.tsx hanno altri nomi, cambia solo queste tre righe: i fallback
+   reggono comunque.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.pagina {
+  --q-display: var(--font-bebas), 'Arial Narrow', sans-serif;
+  --q-serif: var(--font-dm-serif), Georgia, serif;
+  --q-ui: var(--font-syne), system-ui, sans-serif;
+
+  --q-bg: #0a0a0a;
+  --q-testo: #f0ede6;
+  --q-muto: rgba(240, 237, 230, 0.5);
+  --q-linea: #232323;
+  --q-accento: #ffd108;
+  --q-errore: #ff5a3c;
+
+  min-height: 100vh;
+  background: var(--q-bg);
+  color: var(--q-testo);
+  font-family: var(--q-ui);
+  padding: 28px 24px 80px;
+}
+
+/* ─── TESTATA ─── */
+.testata {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 1180px;
+  margin: 0 auto 56px;
+}
+
+.marchio {
+  font-family: var(--q-display);
+  font-size: 22px;
+  letter-spacing: 0.14em;
+  color: var(--q-testo);
+  text-decoration: none;
+  cursor: none;
+}
+
+.marchio:hover {
+  color: var(--q-accento);
+}
+
+.contatore {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--q-muto);
+}
+
+/* ─── IMPIANTO ─── */
+.griglia {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 72px;
+  max-width: 1180px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* ─── RAIL DEI PASSI ─── */
+.rail {
+  position: sticky;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.railVoce {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 9px 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(240, 237, 230, 0.28);
+  border-top: 1px solid var(--q-linea);
+  transition: color 0.35s ease;
+}
+
+.railVoce:last-child {
+  border-bottom: 1px solid var(--q-linea);
+}
+
+.railNumero {
+  font-family: var(--q-display);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+
+.railFatta {
+  color: rgba(240, 237, 230, 0.55);
+}
+
+.railAttiva {
+  color: var(--q-accento);
+}
+
+/* Barra di avanzamento: unico indicatore su mobile */
+.barra {
+  display: none;
+  height: 2px;
+  background: var(--q-linea);
+  max-width: 1180px;
+  margin: 0 auto 34px;
+}
+
+.barraPieno {
+  height: 100%;
+  background: var(--q-accento);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── SEZIONE ─── */
+.sezione {
+  animation: qEntra 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  max-width: 720px;
+}
+
+@keyframes qEntra {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.passo {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--q-accento);
+  margin-bottom: 18px;
+}
+
+.titolo {
+  font-family: var(--q-display);
+  font-size: clamp(42px, 7vw, 76px);
+  line-height: 0.95;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.sottotitolo {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--q-muto);
+  max-width: 54ch;
+}
+
+/* ─── CAMPI ─── */
+.campi {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px 28px;
+  margin-top: 52px;
+}
+
+.campo {
+  grid-column: span 2;
+  min-width: 0;
+}
+
+.campoMeta {
+  grid-column: span 1;
+}
+
+.etichetta {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--q-accento);
+  margin-bottom: 10px;
+}
+
+.obbligo {
+  color: rgba(240, 237, 230, 0.3);
+}
+
+.aiuto {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(240, 237, 230, 0.42);
+  margin: -4px 0 14px;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #2a2a2a;
+  padding: 13px 0;
+  color: var(--q-testo);
+  font-size: 16px;
+  font-family: var(--q-ui);
+  outline: none;
+  transition: border-color 0.3s ease;
+  cursor: none;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(240, 237, 230, 0.26);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-bottom-color: var(--q-accento);
+}
+
+.textarea {
+  resize: none;
+  line-height: 1.7;
+}
+
+.select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--q-muto) 50%),
+    linear-gradient(135deg, var(--q-muto) 50%, transparent 50%);
+  background-position: calc(100% - 11px) 21px, calc(100% - 6px) 21px;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 26px;
+}
+
+.select option {
+  background: #111111;
+  color: var(--q-testo);
+}
+
+.inputErrato {
+  border-bottom-color: var(--q-errore);
+}
+
+/* ─── OPZIONI (radio / checkbox) ─── */
+.gruppo {
+  border: none;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.legenda {
+  padding: 0;
+}
+
+.opzioni {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.opzione {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 15px 17px;
+  border: 1px solid var(--q-linea);
+  font-size: 14.5px;
+  line-height: 1.35;
+  color: rgba(240, 237, 230, 0.72);
+  cursor: none;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease;
+}
+
+.opzione:hover {
+  border-color: #3a3a3a;
+  color: var(--q-testo);
+}
+
+.opzioneAttiva {
+  border-color: var(--q-accento);
+  color: var(--q-testo);
+  background: rgba(255, 209, 8, 0.05);
+}
+
+.opzioneErrata {
+  border-color: rgba(255, 90, 60, 0.5);
+}
+
+/* Il pallino/quadratino è disegnato dallo span: l'input resta nel DOM,
+   invisibile ma raggiungibile da tastiera e screen reader. */
+.controllo {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.segno {
+  position: relative;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #3f3f3f;
+  transition: border-color 0.25s ease;
+}
+
+.segnoTondo {
+  border-radius: 50%;
+}
+
+.opzioneAttiva .segno {
+  border-color: var(--q-accento);
+}
+
+.opzioneAttiva .segno::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: var(--q-accento);
+}
+
+.opzioneAttiva .segnoTondo::after {
+  border-radius: 50%;
+}
+
+.controllo:focus-visible + .segno {
+  outline: 2px solid var(--q-accento);
+  outline-offset: 2px;
+}
+
+/* ─── CONSENSO ─── */
+.consenso {
+  grid-column: span 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(240, 237, 230, 0.6);
+  cursor: none;
+  padding-top: 6px;
+}
+
+.consenso input {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: #ffd108;
+  cursor: none;
+}
+
+.consenso a {
+  color: var(--q-accento);
+  text-decoration: underline;
+}
+
+/* ─── ERRORI ─── */
+.errore {
+  display: block;
+  margin-top: 9px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--q-errore);
+}
+
+.erroreInvio {
+  grid-column: span 2;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--q-errore);
+}
+
+.erroreInvio a {
+  color: var(--q-accento);
+}
+
+/* ─── AZIONI ─── */
+.azioni {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-top: 56px;
+  padding-top: 30px;
+  border-top: 1px solid var(--q-linea);
+}
+
+.avanti {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--q-accento);
+  color: #0a0a0a;
+  border: none;
+  padding: 17px 30px;
+  font-family: var(--q-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: background 0.3s ease, opacity 0.3s ease;
+}
+
+.avanti:hover {
+  background: var(--q-testo);
+}
+
+.avanti:disabled {
+  opacity: 0.45;
+}
+
+.freccia {
+  display: flex;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.avanti:hover .freccia {
+  transform: translateX(4px);
+}
+
+.indietro {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--q-muto);
+  font-family: var(--q-ui);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: color 0.3s ease;
+}
+
+.indietro:hover {
+  color: var(--q-testo);
+}
+
+/* ─── SCHERMATE DI ESITO ─── */
+.esito {
+  max-width: 620px;
+  margin: 8vh auto 0;
+  text-align: center;
+  animation: qEntra 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.esitoSegno {
+  font-family: var(--q-display);
+  font-size: 64px;
+  line-height: 1;
+  color: var(--q-accento);
+}
+
+.esitoSegnoSpento {
+  color: rgba(240, 237, 230, 0.3);
+}
+
+.esitoTitolo {
+  font-family: var(--q-serif);
+  font-size: clamp(34px, 5.5vw, 54px);
+  line-height: 1.1;
+  margin-top: 22px;
+}
+
+.esitoTesto {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(240, 237, 230, 0.68);
+}
+
+.esitoNota {
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid var(--q-linea);
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--q-muto);
+}
+
+.esitoLink {
+  display: inline-block;
+  margin-top: 36px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--q-accento);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 209, 8, 0.35);
+  padding-bottom: 3px;
+  cursor: none;
+}
+
+.esitoLink:hover {
+  color: var(--q-testo);
+  border-bottom-color: var(--q-testo);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .griglia {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .rail {
+    display: none;
+  }
+
+  .barra {
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .pagina {
+    padding: 22px 20px 64px;
+  }
+
+  .testata {
+    margin-bottom: 34px;
+  }
+
+  .campi {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .campo,
+  .campoMeta,
+  .consenso,
+  .erroreInvio {
+    grid-column: span 1;
+  }
+
+  .opzioni {
+    grid-template-columns: 1fr;
+  }
+
+  .azioni {
+    margin-top: 42px;
+    gap: 18px;
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .avanti {
+    justify-content: space-between;
+  }
+
+  .indietro {
+    text-align: center;
+    padding: 6px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sezione,
+  .esito {
+    animation: none;
+  }
+
+  .avanti:hover .freccia {
+    transform: none;
+  }
+}
