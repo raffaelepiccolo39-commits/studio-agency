@@ -4,16 +4,32 @@ import { useEffect, useRef, useState } from 'react'
 
 type CursorState = 'default' | 'hover' | 'label'
 
+/** Il cursore custom ha senso solo dove esiste un puntatore preciso (mouse/trackpad). */
+const QUERY_PUNTATORE = '(hover: hover) and (pointer: fine)'
+
 export default function Cursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
   const [state, setState] = useState<CursorState>('default')
   const [label, setLabel] = useState('')
+  const [attivo, setAttivo] = useState(false)
   const pos = useRef({ x: 0, y: 0 })
   const ring = useRef({ x: 0, y: 0 })
   const rafRef = useRef<number>()
 
+  // Su touch il cursore non va montato: resterebbe un pallino fermo in alto a
+  // sinistra. Resta in ascolto perché su iPad il trackpad può arrivare dopo.
   useEffect(() => {
+    const mq = window.matchMedia(QUERY_PUNTATORE)
+    setAttivo(mq.matches)
+    const onChange = (e: MediaQueryListEvent) => setAttivo(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  useEffect(() => {
+    if (!attivo) return
+
     const onMove = (e: MouseEvent) => {
       pos.current = { x: e.clientX, y: e.clientY }
       if (cursorRef.current) {
@@ -60,7 +76,9 @@ export default function Cursor() {
       document.removeEventListener('mouseover', handleOver)
       if (rafRef.current) cancelAnimationFrame(rafRef.current)
     }
-  }, [])
+  }, [attivo])
+
+  if (!attivo) return null
 
   const sizes = {
     default: { dot: 10, ring: 36 },

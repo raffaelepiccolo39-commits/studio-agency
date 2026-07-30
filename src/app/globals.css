@@ -40,7 +40,26 @@ body {
   color: var(--text);
   font-family: var(--font-syne), sans-serif;
   overflow-x: hidden;
-  cursor: none;
+}
+
+/* ─── CURSORE NATIVO ───
+   Lo nascondiamo solo dove montiamo quello custom, cioè con un puntatore preciso
+   (vedi la stessa media query in components/ui/Cursor.tsx). Su touch il componente
+   non viene montato: senza questa condizione la pagina resterebbe senza puntatore. */
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+}
+
+/* Senza puntatore preciso ripristiniamo il cursore di sistema anche dove i
+   componenti impostano cursor:none inline (tablet con trackpad, ibridi). */
+@media not all and (hover: hover) and (pointer: fine) {
+  a, button:not(:disabled), [role='button'], label, select, summary {
+    cursor: pointer !important;
+  }
+  input:not([type='checkbox']):not([type='radio']):not([type='submit']),
+  textarea {
+    cursor: text !important;
+  }
 }
 
 /* Accessibilità: focus visibile da tastiera su tutti gli elementi interattivi */
