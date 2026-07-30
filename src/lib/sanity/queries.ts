@@ -59,7 +59,10 @@ function portableTextToBlocks(body: any[] | undefined): PostBlock[] {
         .filter((c: any) => c?._type === 'span')
         .map((c: any) => c.text ?? '')
         .join('')
-      return b.style === 'h2' ? { type: 'h2', text } : { type: 'p', text }
+      if (b.listItem) return { type: 'li', text }
+      if (b.style === 'h2') return { type: 'h2', text }
+      if (b.style === 'h3') return { type: 'h3', text }
+      return { type: 'p', text }
     })
     .filter((b) => b.text.trim().length > 0)
 }
@@ -76,6 +79,7 @@ function mapPost(r: SanityPostRaw, body: PostBlock[] = []): Post {
     publishedAt: iso,
     date: iso ? formatDate(iso) : '',
     author: { name: r.author?.name ?? '', role: r.author?.role ?? '' },
+    coverImage: r.coverImage ?? undefined,
     content: body,
   }
 }
