@@ -3,6 +3,7 @@ import Footer from '@/components/layout/Footer'
 import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
+import Image from 'next/image'
 import { getPosts } from '@/lib/sanity/queries'
 
 const categoryColors: Record<string, string> = {
@@ -11,9 +12,8 @@ const categoryColors: Record<string, string> = {
 
 export const metadata = {
   title: 'Blog — Pira Web Creative Agency',
-  description: 'Riflessioni su design, tecnologia e marketing digitale dal team di Pira Web.',
-  // Blog in lavorazione: escluso dall'indicizzazione finché i contenuti non sono completi.
-  robots: { index: false, follow: true },
+  description: 'Guide pratiche su e-commerce, siti web, branding e social per le PMI, dal team di Pira Web.',
+  alternates: { canonical: 'https://www.piraweb.it/blog' },
 }
 
 export default async function BlogPage() {
@@ -29,14 +29,25 @@ export default async function BlogPage() {
           tag="Insights & Approfondimenti"
           title="IL NOSTRO"
           titleAccent="blog"
-          subtitle="Riflessioni su design, tecnologia e marketing digitale dal team Studio."
+          subtitle="Guide pratiche su e-commerce, siti web, branding e social, scritte dal team di Pira Web."
         />
 
         {/* Featured */}
         <section style={{ padding: 'clamp(40px,6vw,80px) clamp(24px,5vw,40px)', borderBottom: '1px solid var(--border)' }}>
           <Link href={`/blog/${featured.slug}`} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))', gap: '2px', textDecoration: 'none', background: 'var(--surface)' }}>
             <div style={{ minHeight: '360px', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ fontFamily: 'var(--font-bebas)', fontSize: '80px', color: 'transparent', WebkitTextStroke: '1px rgba(200,245,90,0.15)' }}>FEATURED</div>
+              {featured.coverImage ? (
+                <Image
+                  src={featured.coverImage}
+                  alt={featured.title}
+                  fill
+                  priority
+                  sizes="(max-width: 900px) 100vw, 50vw"
+                  style={{ objectFit: 'cover' }}
+                />
+              ) : (
+                <div style={{ fontFamily: 'var(--font-bebas)', fontSize: '80px', color: 'transparent', WebkitTextStroke: '1px rgba(200,245,90,0.15)' }}>FEATURED</div>
+              )}
               <span style={{ position: 'absolute', top: '24px', left: '24px', padding: '5px 12px', background: 'var(--accent)', color: '#0a0a0a', fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}>In evidenza</span>
             </div>
             <div style={{ padding: '48px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -61,8 +72,18 @@ export default async function BlogPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: '2px' }}>
             {rest.map(post => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="card-hover" style={{ textDecoration: 'none', background: 'var(--surface)', display: 'block' }}>
-                <div style={{ height: '200px', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '11px', color: 'var(--muted)', letterSpacing: '0.2em' }}>IMMAGINE ARTICOLO</span>
+                <div style={{ height: '200px', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+                  {post.coverImage ? (
+                    <Image
+                      src={post.coverImage}
+                      alt={post.title}
+                      fill
+                      sizes="(max-width: 700px) 100vw, 33vw"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '11px', color: 'var(--muted)', letterSpacing: '0.2em' }}>{post.category.toUpperCase()}</span>
+                  )}
                 </div>
                 <div style={{ padding: '32px' }}>
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '16px' }}>
@@ -81,14 +102,11 @@ export default async function BlogPage() {
           </div>
         </section>
 
-        {/* Newsletter */}
+        {/* CTA finale */}
         <section style={{ padding: 'clamp(60px,10vw,100px) clamp(24px,5vw,40px)', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
-          <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(36px,5vw,64px)', marginBottom: '16px' }}>RICEVI I NOSTRI <span style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', color: 'var(--accent)' }}>insights</span></h2>
-          <p style={{ fontSize: '14px', color: 'rgba(240,237,230,0.5)', marginBottom: '40px', maxWidth: '400px', margin: '0 auto 40px' }}>Nessuno spam. Solo contenuti utili su e-commerce, design e marketing digitale.</p>
-          <div style={{ display: 'flex', gap: '0', maxWidth: '480px', margin: '0 auto', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <input type="email" placeholder="la-tua@email.com" style={{ flex: 1, minWidth: '240px', padding: '16px 20px', background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', fontFamily: 'var(--font-syne)', fontSize: '14px', outline: 'none' }} />
-            <button style={{ padding: '16px 28px', background: 'var(--accent)', color: '#0a0a0a', fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', border: 'none', cursor: 'none' }}>Iscriviti</button>
-          </div>
+          <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(36px,5vw,64px)', marginBottom: '16px' }}>UN DUBBIO SUL TUO <span style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', color: 'var(--accent)' }}>progetto?</span></h2>
+          <p style={{ fontSize: '14px', color: 'rgba(240,237,230,0.5)', maxWidth: '460px', margin: '0 auto 40px', lineHeight: 1.7 }}>Raccontaci la tua situazione: ti diciamo cosa ha senso fare nel tuo caso, senza impegno.</p>
+          <a href="/contatti" className="btn-accent">Parliamone →</a>
         </section>
       </main>
       <Footer />

@@ -2,8 +2,29 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getPosts, getPostBySlug } from '@/lib/sanity/queries'
+import type { PostBlock } from '@/data/posts'
+
+// I `li` consecutivi vanno resi come un unico <ul>, gli altri blocchi restano singoli.
+type BlockGroup =
+  | { kind: 'ul'; items: string[] }
+  | { kind: 'block'; block: PostBlock }
+
+function groupBlocks(blocks: PostBlock[]): BlockGroup[] {
+  const out: BlockGroup[] = []
+  for (const block of blocks) {
+    if (block.type === 'li') {
+      const last = out[out.length - 1]
+      if (last?.kind === 'ul') last.items.push(block.text)
+      else out.push({ kind: 'ul', items: [block.text] })
+    } else {
+      out.push({ kind: 'block', block })
+    }
+  }
+  return out
+}
 
 export async function generateStaticParams() {
   const posts = await getPosts()
@@ -16,17 +37,56 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: `${post.title} — Pira Web`,
     description: post.excerpt,
-    // Articolo in lavorazione: noindex finché i contenuti non sono completi.
-    robots: { index: false, follow: true },
     alternates: { canonical: `https://www.piraweb.it/blog/${post.slug}` },
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description: post.excerpt,
+      url: `https://www.piraweb.it/blog/${post.slug}`,
+      publishedTime: post.publishedAt,
+      ...(post.coverImage ? { images: [post.coverImage] } : {}),
+    },
   }
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await getPostBySlug(params.slug)
   if (!post) notFound()
+
+  // Correlati: prima gli articoli della stessa categoria, poi i più recenti.
+  const all = await getPosts()
+  const others = all.filter(p => p.slug !== post.slug)
+  const related = [
+    ...others.filter(p => p.category === post.category),
+    ...others.filter(p => p.category !== post.category),
+  ].slice(0, 3)
+
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    ...(post.coverImage ? { image: [post.coverImage] } : {}),
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    articleSection: post.category,
+    inLanguage: 'it-IT',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.piraweb.it/blog/${post.slug}` },
+    author: { '@type': 'Organization', name: 'Pira Web', url: 'https://www.piraweb.it' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Pira Web',
+      url: 'https://www.piraweb.it',
+      logo: { '@type': 'ImageObject', url: 'https://www.piraweb.it/logo.png' },
+    },
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <Cursor />
       <Navbar />
       <main>
@@ -49,18 +109,58 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           </div>
         </section>
 
-        <div style={{ height: 'clamp(240px,40vw,520px)', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--border)' }}>
-          <span style={{ fontFamily: 'var(--font-bebas)', fontSize: '14px', color: 'var(--muted)', letterSpacing: '0.2em' }}>IMMAGINE COPERTINA</span>
-        </div>
+        {post.coverImage && (
+          <div style={{ position: 'relative', height: 'clamp(240px,40vw,520px)', background: 'var(--surface)', borderBottom: '1px solid var(--border)', overflow: 'hidden' }}>
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              fill
+              priority
+              sizes="100vw"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
+        )}
 
         <article style={{ maxWidth: '720px', margin: '0 auto', padding: 'clamp(60px,8vw,100px) clamp(24px,5vw,40px)' }}>
-          {post.content.map((block, i) => {
-            if (block.type === 'h2') return (
-              <h2 key={i} style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(28px,3.5vw,48px)', letterSpacing: '0.02em', margin: '56px 0 20px' }}>{block.text.toUpperCase()}</h2>
+          {groupBlocks(post.content).map((group, i) => {
+            if (group.kind === 'ul') return (
+              <ul key={i} style={{ margin: '0 0 28px', paddingLeft: '22px', listStyle: 'none' }}>
+                {group.items.map((text, j) => (
+                  <li key={j} style={{ position: 'relative', fontSize: '16px', lineHeight: 1.8, color: 'rgba(240,237,230,0.65)', marginBottom: '14px' }}>
+                    <span aria-hidden style={{ position: 'absolute', left: '-22px', color: 'var(--accent)' }}>—</span>
+                    {text}
+                  </li>
+                ))}
+              </ul>
             )
-            return <p key={i} style={{ fontSize: '16px', lineHeight: 1.9, color: 'rgba(240,237,230,0.65)', marginBottom: '24px' }}>{block.text}</p>
+            const b = group.block
+            if (b.type === 'h2') return (
+              <h2 key={i} style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(28px,3.5vw,48px)', letterSpacing: '0.02em', margin: '56px 0 20px' }}>{b.text.toUpperCase()}</h2>
+            )
+            if (b.type === 'h3') return (
+              <h3 key={i} style={{ fontFamily: 'var(--font-syne)', fontWeight: 700, fontSize: 'clamp(17px,2vw,21px)', lineHeight: 1.35, margin: '36px 0 14px', color: 'var(--text)' }}>{b.text}</h3>
+            )
+            return <p key={i} style={{ fontSize: '16px', lineHeight: 1.9, color: 'rgba(240,237,230,0.65)', marginBottom: '24px' }}>{b.text}</p>
           })}
         </article>
+
+        {related.length > 0 && (
+          <section style={{ padding: 'clamp(48px,7vw,90px) clamp(24px,5vw,40px)', borderTop: '1px solid var(--border)' }}>
+            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,40px)', letterSpacing: '0.02em', marginBottom: '32px' }}>
+              CONTINUA A <span style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', color: 'var(--accent)' }}>leggere</span>
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '2px' }}>
+              {related.map(r => (
+                <Link key={r.slug} href={`/blog/${r.slug}`} className="card-hover" style={{ textDecoration: 'none', background: 'var(--surface)', display: 'block', padding: '28px' }}>
+                  <span style={{ fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent)' }}>{r.category}</span>
+                  <h3 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(20px,2.2vw,28px)', letterSpacing: '0.02em', lineHeight: 1.1, color: 'var(--text)', margin: '12px 0 12px' }}>{r.title.toUpperCase()}</h3>
+                  <p style={{ fontSize: '13px', lineHeight: 1.7, color: 'rgba(240,237,230,0.5)' }}>{r.excerpt}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section style={{ padding: 'clamp(60px,10vw,100px) clamp(24px,5vw,40px)', borderTop: '1px solid var(--border)', textAlign: 'center', background: 'var(--surface)' }}>
           <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(36px,5vw,72px)', marginBottom: '32px' }}>

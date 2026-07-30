@@ -9,6 +9,7 @@ const links = [
   { label: 'HOME', href: '/' },
   { label: 'SERVIZI', href: '/cosa-facciamo' },
   { label: 'PROGETTI', href: '/progetti' },
+  { label: 'BLOG', href: '/blog' },
   { label: 'LAVORA CON NOI', href: '/lavora-con-noi' },
 ]
 
