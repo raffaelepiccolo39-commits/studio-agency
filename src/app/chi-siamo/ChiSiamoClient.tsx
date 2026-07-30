@@ -6,14 +6,15 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import ScrollReveal from '@/components/ui/ScrollReveal'
-import Image from 'next/image'
 import { useState } from 'react'
 
+// Scelta editoriale: nessuna foto delle persone. In hover il pannello centrale
+// mostra l'iniziale del nome (vedi sezione Team più sotto).
 const team = [
-  { name: 'Raffaele Antonio Piccolo', role: 'Founder & CEO', bio: 'Ingegnere di formazione, imprenditore per vocazione. Raffaele ha fondato Pira Web nel 2018 con una visione precisa: portare rigore tecnico e mentalità imprenditoriale nel mondo del digitale. Coordina strategia, tecnologia e crescita di ogni progetto.', photo: '/team/raffaele.jpg' },
-  { name: 'Raffaela Sparaco', role: 'Graphic Design & Creative Director', bio: 'Mente creativa dietro ogni identità visiva che usciamo. Raffaela trasforma brief strategici in linguaggi grafici coerenti, riconoscibili e capaci di posizionare un brand nella mente del suo pubblico.', photo: '/team/raffaela.jpg' },
-  { name: 'Bernis Del Villano', role: 'Social Media Manager & Art Director', bio: 'Gestisce la presenza social dei nostri clienti con metodo e creatività. Bernis costruisce piani editoriali, cura la comunicazione visiva sui canali digitali e trasforma ogni profilo in uno strumento di crescita.', photo: '/team/bernis.jpg' },
-  { name: 'Manuela Del Villano', role: 'Content Creator', bio: 'Produce contenuti che raccontano, coinvolgono e convertono. Manuela si occupa della creazione di contenuti testuali e visivi su misura per ogni brand, mantenendo tono di voce e identità sempre riconoscibili.', photo: '/team/manuela.jpg' },
+  { name: 'Raffaele Antonio Piccolo', role: 'Founder & CEO', bio: 'Ingegnere di formazione, imprenditore per vocazione. Raffaele ha fondato Pira Web nel 2018 con una visione precisa: portare rigore tecnico e mentalità imprenditoriale nel mondo del digitale. Coordina strategia, tecnologia e crescita di ogni progetto.' },
+  { name: 'Raffaela Sparaco', role: 'Graphic Design & Creative Director', bio: 'Mente creativa dietro ogni identità visiva che usciamo. Raffaela trasforma brief strategici in linguaggi grafici coerenti, riconoscibili e capaci di posizionare un brand nella mente del suo pubblico.' },
+  { name: 'Bernis Del Villano', role: 'Social Media Manager & Art Director', bio: 'Gestisce la presenza social dei nostri clienti con metodo e creatività. Bernis costruisce piani editoriali, cura la comunicazione visiva sui canali digitali e trasforma ogni profilo in uno strumento di crescita.' },
+  { name: 'Manuela Del Villano', role: 'Content Creator', bio: 'Produce contenuti che raccontano, coinvolgono e convertono. Manuela si occupa della creazione di contenuti testuali e visivi su misura per ogni brand, mantenendo tono di voce e identità sempre riconoscibili.' },
 ]
 
 const values = [
@@ -242,42 +243,25 @@ Lavoriamo per generare valore nel tempo."
             Il team
           </p>
 
-          {/* Foto centrata */}
-          <div style={{
-            position: 'absolute',
-            top: '50%', left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '280px', height: '360px',
-            zIndex: 10, pointerEvents: 'none',
-            opacity: hoveredMember !== null ? 1 : 0,
-            transition: 'opacity 0.4s ease',
-          }}>
-            {team.map((member, i) => (
-              <Image
-                key={i}
-                src={member.photo}
-                alt={member.name}
-                fill
-                sizes="280px"
-                style={{
-                  objectFit: 'cover',
-                  opacity: hoveredMember === i ? 1 : 0,
-                  transition: 'opacity 0.4s ease',
-                }}
-                onError={(e) => { e.currentTarget.style.display = 'none' }}
-              />
-            ))}
-            {hoveredMember !== null && (
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: 'var(--surface)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: 'var(--font-bebas)', fontSize: '80px', color: 'var(--accent)',
-                zIndex: -1,
-              }}>
-                {team[hoveredMember]?.name.charAt(0)}
-              </div>
-            )}
+          {/* Pannello centrale: iniziale del nome, nessuna foto */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              top: '50%', left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '280px', height: '360px',
+              zIndex: 10, pointerEvents: 'none',
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: 'var(--font-bebas)', fontSize: '120px', lineHeight: 1,
+              color: 'var(--accent)',
+              opacity: hoveredMember !== null ? 1 : 0,
+              transition: 'opacity 0.4s ease',
+            }}
+          >
+            {hoveredMember !== null && team[hoveredMember]?.name.charAt(0)}
           </div>
 
           <div style={{ borderTop: '1px solid var(--border)' }}>
@@ -333,7 +317,9 @@ Lavoriamo per generare valore nel tempo."
                   </p>
                   <p className="team-bio" style={{
                     fontSize: '12px', color: 'rgba(240,237,230,0.4)', marginTop: '6px',
-                    maxWidth: '320px', lineHeight: 1.6,
+                    // marginLeft auto: senza, il blocco da 320px resta a sinistra
+                    // della colonna e finisce sotto il pannello centrale.
+                    maxWidth: '320px', marginLeft: 'auto', lineHeight: 1.6,
                     opacity: hoveredMember === i ? 1 : 0,
                     transition: 'opacity 0.3s',
                   }}>
