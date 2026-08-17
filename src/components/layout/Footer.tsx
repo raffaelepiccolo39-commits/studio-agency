@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import Script from 'next/script'
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { useSiteSettings } from '@/components/SiteSettingsProvider'
 import { socialAttivi } from '@/data/site'
+import { useConsenso } from '@/lib/consenso'
 
 const SR_ONLY: React.CSSProperties = {
   position: 'absolute',
@@ -79,14 +79,33 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
   const trustboxRef = useRef<HTMLDivElement>(null)
 
-  // In una SPA il bootstrap Trustpilot non ri-scansiona il DOM ad ogni navigazione
-  // client-side: forziamo il render del widget dopo il mount del footer.
+  // Il widget recensioni è un contenuto di terze parti: si monta SOLO con il
+  // consenso marketing. Chi rifiuta vede al suo posto un link a Trustpilot,
+  // che non fa partire nessuna richiesta finché non lo clicca.
+  const consensoMarketing = useConsenso('marketing')
+
+  // In una SPA il bootstrap Trustpilot non ri-scansiona il DOM ad ogni
+  // navigazione client-side: forziamo il render dopo il mount, e di nuovo se il
+  // consenso arriva dopo (l'utente accetta a footer già montato).
   useEffect(() => {
+    if (!consensoMarketing) return
     const w = window as unknown as { Trustpilot?: { loadFromElement: (el: HTMLElement | null, force?: boolean) => void } }
     if (w.Trustpilot && trustboxRef.current) {
       w.Trustpilot.loadFromElement(trustboxRef.current, true)
+      return
     }
-  }, [])
+    // Lo script parte da CookieBanner nello stesso momento: se non è ancora
+    // pronto lo aspettiamo, senza bloccare nulla.
+    const attesa = setInterval(() => {
+      const win = window as unknown as { Trustpilot?: { loadFromElement: (el: HTMLElement | null, force?: boolean) => void } }
+      if (win.Trustpilot && trustboxRef.current) {
+        win.Trustpilot.loadFromElement(trustboxRef.current, true)
+        clearInterval(attesa)
+      }
+    }, 400)
+    const stop = setTimeout(() => clearInterval(attesa), 10000)
+    return () => { clearInterval(attesa); clearTimeout(stop) }
+  }, [consensoMarketing])
 
   // Contatti e social arrivano dalle Impostazioni sito su Sanity (con i valori
   // storici come riserva, vedi src/data/site.ts).
@@ -189,20 +208,33 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
             {impostazioni.indirizzo.provincia}, {impostazioni.indirizzo.nazione}
           </address>
 
-          {/* TrustBox widget - Review Collector */}
-          <div
-            ref={trustboxRef}
-            className="trustpilot-widget"
-            data-locale="it-IT"
-            data-template-id="56278e9abfbbba0bdcd568bc"
-            data-businessunit-id="6a30e7af0059b090210c3582"
-            data-style-height="52px"
-            data-style-width="100%"
-            data-token="91295a7c-a594-4b7c-9593-77b4ccbf35d4"
-            style={{ maxWidth: '320px' }}
-          >
-            <a href={impostazioni.trustpilot} target="_blank" rel="noopener noreferrer">Trustpilot</a>
-          </div>
+          {/* Recensioni: il widget Trustpilot solo col consenso marketing,
+              altrimenti un link che non contatta nessuno finché non si clicca. */}
+          {consensoMarketing ? (
+            <div
+              ref={trustboxRef}
+              className="trustpilot-widget"
+              data-locale="it-IT"
+              data-template-id="56278e9abfbbba0bdcd568bc"
+              data-businessunit-id="6a30e7af0059b090210c3582"
+              data-style-height="52px"
+              data-style-width="100%"
+              data-token="91295a7c-a594-4b7c-9593-77b4ccbf35d4"
+              style={{ maxWidth: '320px' }}
+            >
+              <a href={impostazioni.trustpilot} target="_blank" rel="noopener noreferrer">Trustpilot</a>
+            </div>
+          ) : (
+            <a
+              href={impostazioni.trustpilot}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-bottom-link"
+              style={{ maxWidth: '320px' }}
+            >
+              Leggi le recensioni su Trustpilot
+            </a>
+          )}
         </section>
 
         {/* Destra: CTA prominente */}
@@ -301,17 +333,8 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
         </p>
       </div>
 
-      {/* TrustBox loader */}
-      <Script
-        src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          const w = window as unknown as { Trustpilot?: { loadFromElement: (el: HTMLElement | null, force?: boolean) => void } }
-          if (w.Trustpilot && trustboxRef.current) {
-            w.Trustpilot.loadFromElement(trustboxRef.current, true)
-          }
-        }}
-      />
+      {/* Il loader Trustpilot non sta più qui: lo carica CookieBanner dopo il
+          consenso marketing. Prima partiva su tutte le pagine col footer. */}
     </footer>
   )
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Bebas_Neue, DM_Serif_Display, Syne } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider'
 import ScrollProgress from '@/components/ui/ScrollProgress'
@@ -28,6 +29,21 @@ const dmSerifDisplay = DM_Serif_Display({
 const syne = Syne({
   subsets: ['latin'],
   variable: '--font-syne',
+  display: 'swap',
+})
+
+// Boldonse è servito da noi, non da Google Fonts.
+// Il foglio di stile di Google partiva su ogni pagina prima del consenso e
+// mandava l'IP di chi visita a Google: sul solo trasferimento dell'IP a Google
+// Fonts c'è già giurisprudenza europea. Il font è sotto licenza SIL OFL,
+// quindi ospitarlo è consentito. Gli altri font erano già serviti da noi
+// tramite next/font: questo era rimasto indietro.
+const boldonse = localFont({
+  src: [
+    { path: '../fonts/boldonse-latin.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/boldonse-latin-ext.woff2', weight: '400', style: 'normal' },
+  ],
+  variable: '--font-boldonse',
   display: 'swap',
 })
 
@@ -97,11 +113,8 @@ export default async function RootLayout({
   const organizationSchema = organizationSchemaDa(impostazioni)
 
   return (
-    <html lang="it" className={`${bebasNeue.variable} ${dmSerifDisplay.variable} ${syne.variable}`}>
+    <html lang="it" className={`${bebasNeue.variable} ${dmSerifDisplay.variable} ${syne.variable} ${boldonse.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationSchema) }}
@@ -119,18 +132,10 @@ export default async function RootLayout({
           }}
         />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-P84R9MYBB5" />
-        {/* Meta Pixel: caricato solo dopo il consenso marketing (vedi CookieBanner) */}
-        {/* Trustpilot Automatic Feedback Service (inviti recensioni) */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(w,d,s,r,n){w.TrustpilotObject=n;w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};
-                a=d.createElement(s);a.async=1;a.src=r;a.type='text/java'+s;f=d.getElementsByTagName(s)[0];
-                f.parentNode.insertBefore(a,f)})(window,document,'script', 'https://invitejs.trustpilot.com/tp.min.js', 'tp');
-                tp('register', 'lYvErsaOMqNtnxlN');
-            `,
-          }}
-        />
+        {/* Meta Pixel, Trustpilot e player TikTok: caricati solo dopo il
+            consenso marketing, dentro CookieBanner. Qui non deve tornarci
+            niente di terze parti: quello che sta nell'<head> parte prima che
+            l'utente abbia risposto al banner. */}
       </head>
       <body>
         <SiteSettingsProvider value={impostazioni}>

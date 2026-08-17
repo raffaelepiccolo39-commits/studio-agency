@@ -1,6 +1,7 @@
 'use client'
 
 import { useInView } from 'react-intersection-observer'
+import { useConsenso } from '@/lib/consenso'
 
 const videos = [
   { user: 'maestri_cotonieri_home', id: '7616016157396569366' },
@@ -12,6 +13,10 @@ const videos = [
 
 export default function TikTokSection() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
+  // Gli iframe del player TikTok contattano tiktok.com al montaggio e vedono IP
+  // e pagina visitata: si montano solo col consenso marketing. Senza consenso
+  // resta una scheda cliccabile che porta al profilo, e non parte niente.
+  const consensoMarketing = useConsenso('marketing')
 
   return (
     <section
@@ -65,17 +70,46 @@ export default function TikTokSection() {
         {videos.map((v) => (
           <div className="tiktok-card" key={v.id}>
             <div className="tiktok-frame">
-              <iframe
-                src={`https://www.tiktok.com/player/v1/${v.id}?music_info=0&description=0&rel=0`}
-                title={`Video TikTok @${v.user}`}
-                allow="encrypted-media; fullscreen; picture-in-picture"
-                allowFullScreen
-                loading="lazy"
-              />
+              {consensoMarketing ? (
+                <iframe
+                  src={`https://www.tiktok.com/player/v1/${v.id}?music_info=0&description=0&rel=0`}
+                  title={`Video TikTok @${v.user}`}
+                  allow="encrypted-media; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              ) : (
+                <a
+                  className="tiktok-facade"
+                  href={`https://www.tiktok.com/@${v.user}/video/${v.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Guarda il video di @${v.user} su TikTok (apre in nuova scheda)`}
+                >
+                  <span className="tiktok-facade-play" aria-hidden>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                  <span className="tiktok-facade-user">@{v.user}</span>
+                  <span className="tiktok-facade-hint">Guarda su TikTok</span>
+                </a>
+              )}
             </div>
           </div>
         ))}
       </div>
+
+      {!consensoMarketing && (
+        <p className="tiktok-consenso">
+          I video sono ospitati da TikTok. Per vederli qui dentro servono i
+          cookie di marketing:{' '}
+          <button type="button" data-cc="show-preferencesModal" className="tiktok-consenso-bottone">
+            gestisci le preferenze
+          </button>
+          . Oppure aprili direttamente su TikTok.
+        </p>
+      )}
 
       <p className="tiktok-hint" aria-hidden>
         <span className="tiktok-hint-line" />

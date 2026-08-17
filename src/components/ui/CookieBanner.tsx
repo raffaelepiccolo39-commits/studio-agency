@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import 'vanilla-cookieconsent/dist/cookieconsent.css'
 import * as CookieConsent from 'vanilla-cookieconsent'
 import { META_PIXEL_ID } from '@/lib/gtag'
+import { aggiornaConsenso } from '@/lib/consenso'
 
 type Win = Window & { gtag?: (...args: unknown[]) => void; fbq?: (...args: unknown[]) => void; _fbq?: unknown }
 
@@ -37,6 +38,43 @@ function loadMetaPixel() {
   w.fbq?.('track', 'PageView')
 }
 
+let trustpilotLoaded = false
+
+/**
+ * Trustpilot: registrazione inviti recensione + widget del footer.
+ *
+ * Prima stavano nell'<head> del layout e dentro il Footer, quindi partivano su
+ * ogni pagina anche per chi cliccava "Rifiuta". Sono servizi di terze parti che
+ * vedono IP e pagina visitata: vanno dopo il consenso marketing, come il Pixel.
+ */
+function loadTrustpilot() {
+  if (trustpilotLoaded || typeof window === 'undefined') return
+  trustpilotLoaded = true
+
+  // 1) Automatic Feedback Service (inviti recensione)
+  /* eslint-disable */
+  // @ts-ignore — snippet ufficiale Trustpilot
+  ;(function (w: any, d: any, s: any, r: any, n: any) {
+    w.TrustpilotObject = n
+    w[n] = w[n] || function () { (w[n].q = w[n].q || []).push(arguments) }
+    const a = d.createElement(s)
+    a.async = 1
+    a.src = r
+    a.type = 'text/java' + s
+    const f = d.getElementsByTagName(s)[0]
+    f.parentNode.insertBefore(a, f)
+  })(window, document, 'script', 'https://invitejs.trustpilot.com/tp.min.js', 'tp')
+  // @ts-ignore
+  window.tp?.('register', 'lYvErsaOMqNtnxlN')
+  /* eslint-enable */
+
+  // 2) Bootstrap del widget TrustBox, che poi il Footer fa renderizzare
+  const script = document.createElement('script')
+  script.src = 'https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js'
+  script.async = true
+  document.head.appendChild(script)
+}
+
 function applyConsent() {
   const analytics = CookieConsent.acceptedCategory('analytics')
   const marketing = CookieConsent.acceptedCategory('marketing')
@@ -48,8 +86,14 @@ function applyConsent() {
     ad_user_data: marketing ? 'granted' : 'denied',
     ad_personalization: marketing ? 'granted' : 'denied',
   })
-  // Meta Pixel solo con consenso marketing
-  if (marketing) loadMetaPixel()
+  // Meta Pixel, Trustpilot e player TikTok solo con consenso marketing
+  if (marketing) {
+    loadMetaPixel()
+    loadTrustpilot()
+  }
+  // Chi mostra contenuti di terze parti si iscrive qui e reagisce da solo
+  // (widget Trustpilot nel footer, video TikTok in home).
+  aggiornaConsenso({ analytics, marketing })
 }
 
 export default function CookieBanner() {
@@ -71,7 +115,7 @@ export default function CookieBanner() {
             consentModal: {
               title: 'Rispettiamo la tua privacy 🍪',
               description:
-                'Usiamo cookie tecnici necessari al funzionamento del sito e, previo consenso, cookie analitici e di marketing per misurare e migliorare l’esperienza. Puoi accettarli tutti, rifiutarli o personalizzare le tue scelte.',
+                'Usiamo cookie tecnici necessari al funzionamento del sito e, previo consenso, cookie analitici e di marketing per misurare e migliorare l’esperienza. Con il consenso mostriamo anche contenuti ospitati da terzi, come i video TikTok e le recensioni Trustpilot. Puoi accettarli tutti, rifiutarli o personalizzare le tue scelte.',
               acceptAllBtn: 'Accetta tutti',
               acceptNecessaryBtn: 'Rifiuta',
               showPreferencesBtn: 'Personalizza',
@@ -101,7 +145,7 @@ export default function CookieBanner() {
                 },
                 {
                   title: 'Marketing',
-                  description: 'Permettono di misurare le campagne pubblicitarie e mostrare annunci pertinenti (Meta Pixel).',
+                  description: 'Permettono di misurare le campagne pubblicitarie e mostrare annunci pertinenti, e di mostrare contenuti ospitati da terzi: Meta Pixel, widget recensioni Trustpilot, video TikTok.',
                   linkedCategory: 'marketing',
                 },
                 {
