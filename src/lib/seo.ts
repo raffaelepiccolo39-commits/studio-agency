@@ -1,7 +1,28 @@
 import type { Metadata } from 'next'
+import { getPagina } from '@/lib/sanity/queries'
+import { paginaDiRiserva } from '@/data/pagine'
 
 const SITE = 'https://www.piraweb.it'
 const OG_IMAGE = `${SITE}/og-image.jpg`
+
+/**
+ * Come pageMetadata, ma titolo e descrizione arrivano dallo Studio.
+ *
+ * Da usare nelle pagine così:
+ *   export const generateMetadata = () => metadataDaCms('/chi-siamo')
+ *
+ * Se Sanity non risponde restano i valori storici di src/data/pagine.ts: una
+ * pagina senza titolo su Google è peggio di una con un titolo vecchio.
+ */
+export async function metadataDaCms(percorso: string): Promise<Metadata> {
+  const pagina = (await getPagina(percorso)) ?? paginaDiRiserva(percorso)
+  if (!pagina) return {}
+  return pageMetadata({
+    title: pagina.titoloSeo,
+    description: pagina.descrizioneSeo,
+    path: percorso,
+  })
+}
 
 /**
  * Costruisce i metadata SEO per-pagina coerenti col layout root.

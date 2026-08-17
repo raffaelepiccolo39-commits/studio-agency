@@ -3,11 +3,13 @@ import { projects as mockProjects, type Project } from '@/data/projects'
 import { posts as mockPosts, type Post, type PostBlock } from '@/data/posts'
 import { siteSettings as defaultSiteSettings, type SiteSettings } from '@/data/site'
 import { servizi as defaultServizi, type Servizio } from '@/data/servizi'
+import { paginaDiRiserva, type Pagina } from '@/data/pagine'
 import type { SanityProjectRaw, SanityPostRaw } from '@/types'
 
 const PROJECT_REVALIDATE = 3600
 const POST_REVALIDATE = 1800
 const SERVICE_REVALIDATE = 1800
+const PAGE_REVALIDATE = 1800
 // I contatti si cambiano di rado ma quando si cambiano si vogliono vedere
 // subito: mezz'ora è il compromesso, e comunque ogni pagina li rilegge.
 const SETTINGS_REVALIDATE = 1800
@@ -172,6 +174,45 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     return mapPost(raw, portableTextToBlocks(raw.body))
   } catch {
     return mockPosts.find((p) => p.slug === slug) ?? null
+  }
+}
+
+// ─── PAGINE (SEO + intestazione) ─────────────────────────────────────────────
+
+/**
+ * SEO e intestazione di una pagina, per percorso ("/chi-siamo", "/" per la home).
+ *
+ * Se Sanity non risponde o la scheda non esiste ancora, tornano i valori
+ * storici: una pagina senza titolo è peggio di una con un titolo vecchio.
+ */
+export async function getPagina(percorso: string): Promise<Pagina | undefined> {
+  const riserva = paginaDiRiserva(percorso)
+  if (!isSanityConfigured()) return riserva
+  try {
+    const raw = await client.fetch<Partial<Pagina> | null>(
+      `*[_type == "pagina" && percorso == $percorso][0] {
+        percorso, titoloSeo, descrizioneSeo, intestazione
+      }`,
+      { percorso },
+      { next: { revalidate: PAGE_REVALIDATE, tags: ['pagine', `pagina:${percorso}`] } }
+    )
+    if (!raw || !riserva) return riserva
+    return {
+      ...riserva,
+      titoloSeo: testo(raw.titoloSeo, riserva.titoloSeo),
+      descrizioneSeo: testo(raw.descrizioneSeo, riserva.descrizioneSeo),
+      intestazione: riserva.intestazione && {
+        occhiello: testo(raw.intestazione?.occhiello, riserva.intestazione.occhiello),
+        titolo: testo(raw.intestazione?.titolo, riserva.intestazione.titolo),
+        titoloEvidenziato: testo(raw.intestazione?.titoloEvidenziato, riserva.intestazione.titoloEvidenziato),
+        // La coda può essere vuota per scelta (il blog non ce l'ha): qui una
+        // stringa vuota è un valore, non un campo dimenticato.
+        titoloDopo: raw.intestazione?.titoloDopo ?? riserva.intestazione.titoloDopo,
+        sottotitolo: testo(raw.intestazione?.sottotitolo, riserva.intestazione.sottotitolo),
+      },
+    }
+  } catch {
+    return riserva
   }
 }
 

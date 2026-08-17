@@ -1,12 +1,8 @@
-import { pageMetadata } from '@/lib/seo'
+import { metadataDaCms } from '@/lib/seo'
 import ContattiClient from './ContattiClient'
 
-export const metadata = pageMetadata({
-  title: 'Contatti',
-  description:
-    'Parliamo del tuo progetto. Contatta Pira Web Creative Agency per brand direction, sviluppo web e marketing. Casapesenna (CE) — info@piraweb.it.',
-  path: '/contatti',
-})
+// Titolo e descrizione si cambiano da piraweb.it/studio → Pagine.
+export const generateMetadata = () => metadataDaCms('/contatti')
 
 export default function Page() {
   return <ContattiClient />

@@ -13,6 +13,7 @@ import { projects } from '../src/data/projects'
 import { posts, type PostBlock } from '../src/data/posts'
 import { servizi } from '../src/data/servizi'
 import { siteSettings } from '../src/data/site'
+import { pagine } from '../src/data/pagine'
 
 const ROOT = process.cwd()
 const PUBLIC = join(ROOT, 'public')
@@ -21,8 +22,8 @@ const OUT = join(OUT_DIR, 'seed.ndjson')
 // Secondo file con i SOLI documenti introdotti dopo il primo popolamento.
 // Serve per non reimportare progetti e articoli, che su Sanity esistono già e
 // potrebbero essere stati modificati dallo Studio: reimportarli li sovrascrive.
-const OUT_NUOVI = join(OUT_DIR, 'seed-servizi-impostazioni.ndjson')
-const TIPI_NUOVI = ['service', 'siteSettings']
+const OUT_NUOVI = join(OUT_DIR, 'seed-nuovi-contenuti.ndjson')
+const TIPI_NUOVI = ['service', 'siteSettings', 'pagina']
 
 const key = (prefix: string, i: number) => `${prefix}${i.toString(36)}`
 
@@ -115,6 +116,18 @@ servizi.forEach((s, i) => {
   })
 })
 
+// ── Pagine (SEO + intestazione) ───────────────────────────────────────────────
+pagine.forEach((pg) => {
+  docs.push({
+    _id: `pagina-${pg.percorso === '/' ? 'home' : pg.percorso.slice(1)}`,
+    _type: 'pagina',
+    percorso: pg.percorso,
+    titoloSeo: pg.titoloSeo,
+    descrizioneSeo: pg.descrizioneSeo,
+    ...(pg.intestazione ? { intestazione: pg.intestazione } : {}),
+  })
+})
+
 // ── Impostazioni sito (singleton: _id fisso, come si aspetta lo Studio) ───────
 docs.push({
   _id: 'siteSettings',
@@ -137,8 +150,8 @@ const nuovi = docs.filter((d) => TIPI_NUOVI.includes(d._type))
 writeFileSync(OUT_NUOVI, nuovi.map((d) => JSON.stringify(d)).join('\n') + '\n', 'utf8')
 
 console.log(`✓ Scritti ${docs.length} documenti in ${OUT}`)
-console.log(`✓ Scritti ${nuovi.length} documenti (solo servizi e impostazioni) in ${OUT_NUOVI}`)
-console.log(`  (${projects.length} progetti, ${posts.length} articoli, ${servizi.length} servizi, 1 impostazioni sito)`)
+console.log(`✓ Scritti ${nuovi.length} documenti (solo i contenuti nuovi) in ${OUT_NUOVI}`)
+console.log(`  (${projects.length} progetti, ${posts.length} articoli, ${servizi.length} servizi, ${pagine.length} pagine, 1 impostazioni sito)`)
 if (missing.length) {
   console.warn(`\n⚠ ${missing.length} immagini referenziate ma non trovate in /public:`)
   missing.forEach((m) => console.warn('   ' + m))

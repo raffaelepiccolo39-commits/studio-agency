@@ -1,4 +1,5 @@
 import { siteSettings as defaults } from '@/data/site'
+import { percorsiGestiti } from '@/data/pagine'
 
 // sanity/schemas/project.ts
 // Superset lossless del tipo `Project` (src/data/projects.ts): nessun campo dei
@@ -237,5 +238,76 @@ export const serviceSchema = {
   },
 }
 
+// sanity/schemas/pagina.ts
+// Una scheda per pagina del sito: come appare su Google e, dove c'è,
+// l'intestazione grande in cima. Il percorso è la chiave e si sceglie da un
+// elenco chiuso: una pagina inventata non corrisponderebbe a niente.
+export const paginaSchema = {
+  name: 'pagina',
+  title: 'Pagina',
+  type: 'document',
+  groups: [
+    { name: 'seo', title: 'Google e social', default: true },
+    { name: 'testi', title: 'Intestazione' },
+  ],
+  fields: [
+    {
+      name: 'percorso', title: 'Pagina', type: 'string',
+      options: { list: percorsiGestiti },
+      description: 'Quale pagina del sito stai modificando.',
+      validation: (R: any) => R.required(),
+    },
+    {
+      name: 'titoloSeo', title: 'Titolo nei risultati di ricerca', type: 'string',
+      group: 'seo',
+      description: 'Quello che si legge in grande su Google. Tienilo sotto i 60 caratteri o viene tagliato.',
+      validation: (R: any) => R.max(70).warning('Sopra i 60 caratteri Google lo taglia.'),
+    },
+    {
+      name: 'descrizioneSeo', title: 'Descrizione nei risultati di ricerca', type: 'text',
+      rows: 3, group: 'seo',
+      description: 'Le due righe sotto al titolo. Il punto giusto è 150-160 caratteri.',
+      validation: (R: any) => R.max(200).warning('Sopra i 160 caratteri Google la taglia.'),
+    },
+    {
+      name: 'intestazione', title: 'Intestazione della pagina', type: 'object',
+      group: 'testi',
+      description: 'Il blocco grande in cima. Vale solo per le pagine che ce l\'hanno: Chi Siamo e Blog.',
+      fields: [
+        {
+          name: 'occhiello', title: 'Riga piccola sopra', type: 'string',
+          description: 'Es. "CHI SIAMO"',
+        },
+        {
+          name: 'titolo', title: 'Titolo — prima parte', type: 'string',
+          description: 'Occhio agli spazi in fondo: servono a staccare dalla parte evidenziata.',
+        },
+        {
+          name: 'titoloEvidenziato', title: 'Titolo — parte evidenziata', type: 'string',
+          description: 'È la parte in corsivo giallo.',
+        },
+        { name: 'titoloDopo', title: 'Titolo — coda', type: 'string' },
+        {
+          name: 'sottotitolo', title: 'Sottotitolo', type: 'text', rows: 6,
+          description: 'Gli a capo che scrivi qui si vedono anche sul sito.',
+        },
+      ],
+    },
+  ],
+  preview: {
+    select: { percorso: 'percorso', titolo: 'titoloSeo' },
+    prepare: ({ percorso, titolo }: any) => ({
+      title: percorsiGestiti.find((p: any) => p.value === percorso)?.title ?? percorso ?? 'Pagina senza percorso',
+      subtitle: titolo,
+    }),
+  },
+}
+
 // sanity/schema.ts — esporta tutti gli schemi
-export const schemaTypes = [projectSchema, postSchema, siteSettingsSchema, serviceSchema]
+export const schemaTypes = [
+  projectSchema,
+  postSchema,
+  siteSettingsSchema,
+  serviceSchema,
+  paginaSchema,
+]
