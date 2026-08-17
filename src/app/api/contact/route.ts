@@ -5,6 +5,15 @@ export const runtime = 'nodejs';
 const FORMSPREE_IDS = {
   contact: 'xlgwaygp',
   consulenza: 'mbdaqvyj',
+  // Il questionario riusa la casella Formspree della consulenza: è solo la copia
+  // di riserva, l'oggetto lo distingue comunque.
+  questionario: 'mbdaqvyj',
+} as const;
+
+const ETICHETTE = {
+  contact: 'Contatti',
+  consulenza: 'Consulenza',
+  questionario: 'Questionario',
 } as const;
 
 type FormType = keyof typeof FORMSPREE_IDS;
@@ -21,7 +30,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const {
     name, surname, company, email, phone,
-    service, budget, message, formType, source,
+    service, budget, message, formType, source, esito,
   } = body;
 
   // Fonte del lead: 'ads' = landing ADV, 'website' = form del sito (default)
@@ -37,8 +46,12 @@ export async function POST(request: NextRequest) {
 
   const type: FormType = isFormType(formType) ? formType : 'consulenza';
   const formspreeId = FORMSPREE_IDS[type];
+  const etichetta = ETICHETTE[type];
   const fullName = [name, surname].filter(Boolean).join(' ');
   const servicePieces = [service, budget].filter(Boolean).join(' — ');
+  // Esito della qualificazione (solo questionario): finisce nell'oggetto della
+  // mail e nella nota del CRM, così i fuori target si riconoscono a colpo d'occhio.
+  const esitoLabel = typeof esito === 'string' && esito.trim() ? esito.trim() : '';
 
   const results = { resend: false, gestionale: false, formspree: false };
 
@@ -52,9 +65,10 @@ export async function POST(request: NextRequest) {
       ['Azienda', company || '—'],
       ['Servizio', servicePieces || '—'],
     ];
+    if (esitoLabel) rows.push(['Esito', esitoLabel]);
     const html = `
       <div style="font-family:Arial,sans-serif;font-size:15px;color:#0a0a0a;line-height:1.6">
-        <h2 style="margin:0 0 16px">Nuova richiesta dal sito — ${type === 'contact' ? 'Contatti' : 'Consulenza'}</h2>
+        <h2 style="margin:0 0 16px">Nuova richiesta dal sito — ${etichetta}</h2>
         <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">
           ${rows.map(([k, v]) => `<tr><td style="padding:4px 16px 4px 0;color:#6a6a6a">${k}</td><td><strong>${esc(v)}</strong></td></tr>`).join('')}
         </table>
@@ -64,7 +78,7 @@ export async function POST(request: NextRequest) {
       from: process.env.RESEND_FROM || 'Pira Web <onboarding@resend.dev>',
       to: ['info@piraweb.it'],
       reply_to: email,
-      subject: `[${sourceLabel}] Nuova richiesta — ${type === 'contact' ? 'Contatti' : 'Consulenza'} — ${fullName}`,
+      subject: `[${sourceLabel}] Nuova richiesta — ${etichetta}${esitoLabel ? ` (${esitoLabel})` : ''} — ${fullName}`,
       html,
     });
     // Fino a 2 tentativi: gestisce blip/rate-limit (429) o errori 5xx transitori di Resend
@@ -99,7 +113,9 @@ export async function POST(request: NextRequest) {
         email,
         phone: phone || '',
         service: servicePieces,
-        message: message || '',
+        message: [esitoLabel ? `[${etichetta} — ${esitoLabel}]` : '', message || '']
+          .filter(Boolean)
+          .join('\n\n'),
         source: leadSource,
         api_key: process.env.GESTIONALE_WEBHOOK_KEY,
       }),
@@ -123,6 +139,8 @@ export async function POST(request: NextRequest) {
         servizio: service || '',
         budget: budget || '',
         messaggio: message || '',
+        ...(esitoLabel ? { esito: esitoLabel } : {}),
+        _subject: `${etichetta}${esitoLabel ? ` [${esitoLabel}]` : ''} — ${company || fullName}`,
       }),
     });
     results.formspree = formspreeRes.ok;
