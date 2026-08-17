@@ -16,7 +16,14 @@ type Risposte = Record<string, Valore>
 type Esito = 'in target' | 'fuori target'
 type Stato = 'compilazione' | 'invio' | 'in target' | 'fuori target'
 
-const ENDPOINT = process.env.NEXT_PUBLIC_QUESTIONARIO_ENDPOINT ?? ''
+/**
+ * Le risposte passano dalla stessa rotta degli altri form del sito: mail via
+ * Resend + lead nel gestionale + copia su Formspree, con il "verde" mostrato
+ * solo se la mail è partita davvero. Prima si sparava a un endpoint preso da
+ * NEXT_PUBLIC_QUESTIONARIO_ENDPOINT che in produzione non è mai stato
+ * configurato: il form diceva "inviato" e i questionari si perdevano.
+ */
+const ENDPOINT = '/api/contact'
 
 /** Indice della sezione che contiene il campo di scarto. */
 const INDICE_GATE = sezioni.findIndex(sez => sez.campi.some(c => c.id === CAMPO_GATE))
@@ -112,32 +119,31 @@ export default function QuestionarioForm() {
         righe.push(`${campo.etichetta}: ${testo}`)
       }
     }
+    righe.push(`Consenso privacy: ${privacy ? 'sì' : 'no'}`)
+
+    // Forma attesa da /api/contact: i campi identificativi in chiaro, tutto il
+    // resto nel messaggio (che è il questionario completo, domanda per domanda).
+    // NIENTE honeypot _gotcha: l'autofill del browser lo riempiva e gli invii
+    // veri venivano scartati in silenzio con un falso "inviato" (vedi c8afba5,
+    // rimosso per la stessa ragione da contact e candidatura).
     return {
-      ...dati,
+      formType: 'questionario',
+      source: 'website',
       esito,
-      consenso_privacy: privacy ? 'sì' : 'no',
-      pagina: typeof window === 'undefined' ? '' : window.location.href,
-      riepilogo: righe.join('\n'),
-      // _subject = oggetto della mail su Formspree.
-      // NIENTE honeypot _gotcha: l'autofill del browser lo riempiva e gli invii
-      // veri venivano scartati in silenzio con un falso "inviato" (vedi c8afba5,
-      // rimosso per la stessa ragione da contact e candidatura).
-      _subject: `Questionario — ${dati.azienda || dati.nome || 'nuovo contatto'} [${esito}]`,
+      name: dati.nome ?? '',
+      surname: '',
+      company: dati.azienda ?? '',
+      email: dati.email ?? '',
+      phone: dati.telefono ?? '',
+      service: dati.servizi ?? '',
+      budget: dati[CAMPO_GATE] ?? '',
+      message: righe.join('\n'),
     }
   }
 
   const invia = async (esito: Esito) => {
     setErroreInvio(false)
     setStato('invio')
-
-    // Senza endpoint configurato il form resta usabile in locale: nessun invio.
-    if (!ENDPOINT) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.info('[questionario] endpoint non configurato — payload:', costruisciPayload(esito))
-      }
-      setStato(esito)
-      return
-    }
 
     try {
       const res = await fetch(ENDPOINT, {
