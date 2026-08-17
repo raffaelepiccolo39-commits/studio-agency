@@ -200,6 +200,18 @@ export default function ConsulenzaForm({ onSuccess, variant = 'dark' }: Props) {
           Errore. Scrivici a <a href="mailto:info@piraweb.it" style={{ color: 'var(--accent)' }}>info@piraweb.it</a>
         </p>
       )}
+      {/* Informativa privacy al momento della raccolta (art. 13 GDPR).
+          NON è una casella di consenso: per rispondere a una richiesta di
+          contatto la base giuridica sono le misure precontrattuali, quindi una
+          spunta di consenso sarebbe superflua e concettualmente sbagliata.
+          Quello che serve — ed è quello che mancava — è il link all'informativa. */}
+      <p style={{ fontSize: '12px', lineHeight: 1.6, color: 'rgba(240,237,230,0.55)', marginBottom: '16px' }}>
+        Inviando la richiesta dichiari di aver letto l&apos;
+        <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }}>
+          informativa privacy
+        </a>
+        . Usiamo i tuoi dati solo per risponderti.
+      </p>
       <button
         type="submit"
         disabled={status === 'loading'}

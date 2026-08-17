@@ -26,12 +26,54 @@ function esc(s: string) {
   return String(s).replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c] as string));
 }
 
+const EMAIL_VALIDA = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+// Tetti di lunghezza per campo. Servono a impedire che una richiesta gonfiata
+// riempia la casella o il CRM, non a giudicare cosa scrive chi ci contatta.
+// ⚠️ `message` è alto di proposito: il questionario ci infila TUTTE le risposte
+// concatenate (vedi QuestionarioForm), un limite basso spezzerebbe quel form.
+const TETTI: Record<string, number> = {
+  name: 120, surname: 120, company: 200, email: 254, phone: 40,
+  service: 200, budget: 100, esito: 40, message: 8000,
+};
+
+type EsitoCampo = { ok: true; valore: string } | { ok: false; errore: string };
+
+/** Ripulisce un campo e ne verifica tipo e lunghezza. */
+function campo(valore: unknown, chiave: string): EsitoCampo {
+  if (valore === undefined || valore === null) return { ok: true, valore: '' };
+  if (typeof valore !== 'string') {
+    return { ok: false, errore: `Il campo ${chiave} non è valido` };
+  }
+  const pulito = valore.trim();
+  if (pulito.length > TETTI[chiave]) {
+    return { ok: false, errore: `Il campo ${chiave} è troppo lungo` };
+  }
+  return { ok: true, valore: pulito };
+}
+
 export async function POST(request: NextRequest) {
-  const body = await request.json();
-  const {
-    name, surname, company, email, phone,
-    service, budget, message, formType, source, esito,
-  } = body;
+  // Un corpo malformato deve dare 400, non un errore del server.
+  let body: Record<string, unknown>;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Richiesta non valida' }, { status: 400 });
+  }
+
+  // Validazione PRIMA di qualunque chiamata verso l'esterno: niente mail,
+  // niente lead nel CRM e niente copia su Formspree finché i dati non reggono.
+  const campi: Record<string, string> = {};
+  for (const chiave of Object.keys(TETTI)) {
+    const esito = campo(body[chiave], chiave);
+    if (!esito.ok) {
+      return NextResponse.json({ error: esito.errore }, { status: 400 });
+    }
+    campi[chiave] = esito.valore;
+  }
+
+  const { name, surname, company, email, phone, service, budget, message, esito } = campi;
+  const { formType, source } = body;
 
   // Fonte del lead: 'ads' = landing ADV, 'website' = form del sito (default)
   const leadSource = source === 'ads' ? 'ads' : 'website';
@@ -43,6 +85,11 @@ export async function POST(request: NextRequest) {
   if (!name || !email) {
     return NextResponse.json({ error: 'Nome e email obbligatori' }, { status: 400 });
   }
+  // L'email finisce in reply_to: se è malformata, rispondere al lead diventa
+  // impossibile. La stessa regola è già in uso su /api/candidatura.
+  if (!EMAIL_VALIDA.test(email)) {
+    return NextResponse.json({ error: 'Email non valida' }, { status: 400 });
+  }
 
   const type: FormType = isFormType(formType) ? formType : 'consulenza';
   const formspreeId = FORMSPREE_IDS[type];
@@ -51,7 +98,7 @@ export async function POST(request: NextRequest) {
   const servicePieces = [service, budget].filter(Boolean).join(' — ');
   // Esito della qualificazione (solo questionario): finisce nell'oggetto della
   // mail e nella nota del CRM, così i fuori target si riconoscono a colpo d'occhio.
-  const esitoLabel = typeof esito === 'string' && esito.trim() ? esito.trim() : '';
+  const esitoLabel = esito;
 
   const results = { resend: false, gestionale: false, formspree: false };
 
@@ -102,30 +149,8 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // 2) Gestionale — entra come lead nel CRM
-  try {
-    const gestionaleRes = await fetch('https://gestionale.piraweb.it/api/webhook/contact-form', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        surname: surname || company || '',
-        email,
-        phone: phone || '',
-        service: servicePieces,
-        message: [esitoLabel ? `[${etichetta} — ${esitoLabel}]` : '', message || '']
-          .filter(Boolean)
-          .join('\n\n'),
-        source: leadSource,
-        api_key: process.env.GESTIONALE_WEBHOOK_KEY,
-      }),
-    });
-    results.gestionale = gestionaleRes.ok;
-  } catch {
-    results.gestionale = false;
-  }
-
-  // 3) Formspree — fallback, sempre attivo
+  // 2) Formspree — copia di riserva, sempre attiva: serve a non perdere mai la
+  //    richiesta, quindi parte anche quando Resend ha fallito.
   try {
     const formspreeRes = await fetch(`https://formspree.io/f/${formspreeId}`, {
       method: 'POST',
@@ -154,11 +179,53 @@ export async function POST(request: NextRequest) {
   // Se Resend non è configurato, si ripiega su Formspree per non bloccare il form.
   const emailDelivered = apiKey ? results.resend : results.formspree;
 
+  // 3) Gestionale — il lead entra nel CRM.
+  //    Si scrive SOLO se la mail è partita davvero: se non è partita l'utente
+  //    vede un errore e ricompila, e ogni tentativo lascerebbe un lead in più
+  //    da ripulire a mano.
   if (emailDelivered) {
-    return NextResponse.json({ success: true, ...results });
+    const webhookKey = process.env.GESTIONALE_WEBHOOK_KEY;
+    if (!webhookKey) {
+      // Senza chiave il webhook risponde 401 e il lead non entra nel CRM, ma
+      // l'utente vede comunque il verde: è un fallimento silenzioso, e deve
+      // lasciare traccia nei log.
+      console.error('[contact] GESTIONALE_WEBHOOK_KEY assente: il lead NON entrerà nel CRM');
+    }
+    try {
+      const gestionaleRes = await fetch('https://gestionale.piraweb.it/api/webhook/contact-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          surname: surname || company || '',
+          email,
+          phone: phone || '',
+          service: servicePieces,
+          message: [esitoLabel ? `[${etichetta} — ${esitoLabel}]` : '', message || '']
+            .filter(Boolean)
+            .join('\n\n'),
+          source: leadSource,
+          api_key: webhookKey,
+        }),
+      });
+      results.gestionale = gestionaleRes.ok;
+      if (!gestionaleRes.ok) {
+        const errBody = await gestionaleRes.text().catch(() => '');
+        console.error(`[contact] CRM RIFIUTATO status=${gestionaleRes.status} body=${errBody}`);
+      }
+    } catch (e) {
+      results.gestionale = false;
+      console.error('[contact] CRM ECCEZIONE:', e);
+    }
+  }
+
+  if (emailDelivered) {
+    // Al browser va solo l'esito: quale dei tre canali abbia funzionato è
+    // informazione nostra, e sta nei log.
+    return NextResponse.json({ success: true });
   }
 
   // Email non partita: niente finto successo. Il front-end mostra "scrivici a info@".
   console.error(`[contact] INVIO NON RIUSCITO — resend=${results.resend} formspree=${results.formspree} gestionale=${results.gestionale}`);
-  return NextResponse.json({ error: 'Errore invio', ...results }, { status: 500 });
+  return NextResponse.json({ error: 'Errore invio' }, { status: 500 });
 }

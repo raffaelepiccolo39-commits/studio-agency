@@ -4,10 +4,53 @@ export const runtime = 'nodejs'
 export const maxDuration = 20
 
 const MAX_BYTES = 4 * 1024 * 1024 // 4 MB (limite payload serverless)
-const ALLOWED = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 
+// Neutralizza anche le virgolette: senza, un'email costruita ad arte esce
+// dall'attributo href del mailto e inietta markup nella mail che leggiamo noi.
 function esc(s: string) {
-  return String(s).replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c] as string))
+  return String(s).replace(/[<>&"']/g, (c) => (
+    { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;' }[c] as string
+  ))
+}
+
+/**
+ * Riconosce il tipo di file dai primi byte invece che dall'etichetta dichiarata
+ * dal browser.
+ *
+ * Il controllo su `file.type` era aggirabile — mandando un tipo vuoto veniva
+ * saltato del tutto — ma non si può nemmeno irrigidirlo: alcuni browser
+ * spediscono i .doc senza tipo o come octet-stream, e si scarterebbero
+ * candidature vere. I primi byte, invece, non mentono.
+ */
+function contienePdf(buf: Buffer): boolean {
+  // Lo standard vuole "%PDF" all'inizio, ma in circolazione ci sono file con
+  // qualche byte spurio davanti che i lettori accettano lo stesso: cerchiamo
+  // nel primo kilobyte invece di pretenderlo alla posizione zero, per non
+  // scartare candidature valide.
+  return buf.subarray(0, 1024).toString('latin1').includes('%PDF')
+}
+
+function formatoRiconosciuto(buf: Buffer): boolean {
+  if (buf.length < 4) return false
+  if (contienePdf(buf)) return true
+  // PK.. → zip, cioè .docx (e tutti gli Office moderni)
+  if (buf[0] === 0x50 && buf[1] === 0x4b && buf[2] === 0x03 && buf[3] === 0x04) return true
+  // D0 CF 11 E0 → vecchio formato Office, .doc
+  if (buf[0] === 0xd0 && buf[1] === 0xcf && buf[2] === 0x11 && buf[3] === 0xe0) return true
+  return false
+}
+
+/** Nome file generato da noi: quello caricato non viene mai riusato. */
+function nomeAllegato(nome: string, cognome: string, buf: Buffer): string {
+  const pulito = `${nome}-${cognome}`
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '') // via gli accenti separati dalla normalize
+    .replace(/[^a-zA-Z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .toLowerCase()
+    .slice(0, 60)
+  const estensione = contienePdf(buf) ? 'pdf' : 'doc'
+  return `cv-${pulito || 'candidato'}.${estensione}`
 }
 
 export async function POST(request: NextRequest) {
@@ -44,11 +87,14 @@ export async function POST(request: NextRequest) {
       if (file.size > MAX_BYTES) {
         return NextResponse.json({ error: 'Il file supera i 4 MB' }, { status: 400 })
       }
-      if (file.type && !ALLOWED.includes(file.type)) {
+      const buf = Buffer.from(await file.arrayBuffer())
+      if (!formatoRiconosciuto(buf)) {
         return NextResponse.json({ error: 'Formato non valido (PDF o Word)' }, { status: 400 })
       }
-      const buf = Buffer.from(await file.arrayBuffer())
-      attachments.push({ filename: file.name || 'cv.pdf', content: buf.toString('base64') })
+      attachments.push({
+        filename: nomeAllegato(nome, cognome, buf),
+        content: buf.toString('base64'),
+      })
     }
   }
 
@@ -89,7 +135,7 @@ export async function POST(request: NextRequest) {
       <h2 style="margin:0 0 16px">Nuova candidatura — ${esc(posizione)}</h2>
       <table cellpadding="0" cellspacing="0" style="border-collapse:collapse">
         <tr><td style="padding:4px 16px 4px 0;color:#6a6a6a">Nome</td><td><strong>${esc(nome)} ${esc(cognome)}</strong></td></tr>
-        <tr><td style="padding:4px 16px 4px 0;color:#6a6a6a">Email</td><td><a href="mailto:${esc(email)}">${esc(email)}</a></td></tr>
+        <tr><td style="padding:4px 16px 4px 0;color:#6a6a6a">Email</td><td><a href="mailto:${encodeURIComponent(email)}">${esc(email)}</a></td></tr>
         <tr><td style="padding:4px 16px 4px 0;color:#6a6a6a">Esperienza</td><td>${esc(esperienza) || '—'}</td></tr>
         <tr><td style="padding:4px 16px 4px 0;color:#6a6a6a">Posizione</td><td>${esc(posizione)}</td></tr>
         <tr><td style="padding:4px 16px 4px 0;color:#6a6a6a">CV allegato</td><td>${attachments.length ? 'Sì' : 'No'}</td></tr>
