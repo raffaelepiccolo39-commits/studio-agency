@@ -1,6 +1,13 @@
 import type { Metadata } from 'next'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
+import {
+  PaginaLegale,
+  Sezione,
+  P,
+  Elenco,
+  Voce,
+  Collegamento,
+  Tabella,
+} from '@/components/ui/PaginaLegale'
 
 export const metadata: Metadata = {
   title: 'Cookie Policy — Pira Web',
@@ -8,82 +15,134 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// ⚠️ Questa pagina deve rispecchiare quello che il sito fa DAVVERO.
+// Se aggiungi o togli un servizio di terze parti (analytics, pixel, widget,
+// player incorporati), aggiorna anche questa tabella e le categorie del banner
+// in src/components/ui/CookieBanner.tsx.
+//
+// I caricamenti condizionati al consenso stanno tutti in CookieBanner.tsx e nei
+// componenti che usano useConsenso() (src/lib/consenso.ts).
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function CookiePage() {
   return (
-    <>
-      <Navbar />
-      <main style={{ paddingTop: 'clamp(120px,15vw,160px)', paddingBottom: 'clamp(60px,8vw,100px)' }}>
-        <section style={{ maxWidth: '760px', margin: '0 auto', padding: '0 clamp(24px,5vw,40px)' }}>
-          <h1 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(40px,7vw,80px)', letterSpacing: '0.01em', lineHeight: 1, marginBottom: '32px' }}>
-            COOKIE <span style={{ fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', color: 'var(--accent)' }}>policy</span>
-          </h1>
-          <p style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '48px', letterSpacing: '0.05em' }}>
-            Ultimo aggiornamento: 19 maggio 2026
-          </p>
+    <PaginaLegale
+      titolo="COOKIE"
+      titoloCorsivo="policy"
+      aggiornata="17 agosto 2026"
+      introduzione={
+        <>
+          Questa Cookie Policy descrive i cookie e le tecnologie analoghe utilizzati dal sito{' '}
+          <strong>piraweb.it</strong>, ai sensi dell&apos;art. 122 del Codice Privacy, del
+          Provvedimento del Garante per la protezione dei dati personali del 10 giugno 2021 e
+          delle Linee guida EDPB.
+        </>
+      }
+    >
+      <Sezione titolo="1. Cosa sono i cookie">
+        <P>
+          I cookie sono piccoli file di testo che i siti visitati inviano al dispositivo
+          dell&apos;utente, dove vengono memorizzati per essere ritrasmessi agli stessi siti alla
+          visita successiva. Tecnologie analoghe — come i pixel di tracciamento e i contenuti
+          incorporati da altri siti — possono raccogliere informazioni simili, e in questa
+          informativa sono trattate allo stesso modo.
+        </P>
+      </Sezione>
 
-          <div style={{ fontSize: '15px', lineHeight: 1.8, color: 'rgba(240,237,230,0.75)' }}>
-            <p style={{ marginBottom: '32px' }}>
-              Questa Cookie Policy descrive i cookie e le tecnologie analoghe utilizzati dal sito <strong>piraweb.it</strong>,
-              ai sensi del Provvedimento del Garante per la protezione dei dati personali del 10 giugno 2021 e delle Linee guida EDPB.
-            </p>
+      <Sezione titolo="2. Cookie e tecnologie utilizzati">
+        <P>
+          Il sito utilizza cookie tecnici, sempre attivi, e — <strong>solo previo consenso</strong>{' '}
+          dell&apos;utente — cookie analitici e di marketing. Finché l&apos;utente non presta il
+          consenso, i servizi di terze parti elencati più sotto <strong>non vengono caricati</strong>{' '}
+          e non ricevono alcun dato.
+        </P>
 
-            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,32px)', letterSpacing: '0.02em', marginTop: '48px', marginBottom: '16px' }}>1. Cosa sono i cookie</h2>
-            <p style={{ marginBottom: '16px' }}>
-              I cookie sono piccoli file di testo che i siti visitati inviano al terminale dell&apos;utente,
-              dove vengono memorizzati per essere ritrasmessi agli stessi siti alla visita successiva.
-              Tecnologie analoghe (pixel tag, web beacon, local storage) possono svolgere funzioni simili.
-            </p>
+        <P><strong>Cookie tecnici e necessari</strong> — non richiedono consenso (art. 122 Codice Privacy).</P>
+        <Tabella
+          intestazioni={['Nome', 'Fornitore', 'Finalità', 'Durata']}
+          righe={[
+            ['cc_cookie', 'Pira Web (questo sito)', 'Memorizza le preferenze espresse su questa informativa, per non richiederle a ogni visita.', '6 mesi'],
+            ['Cookie di infrastruttura', 'Vercel Inc.', 'Distribuzione delle pagine, bilanciamento del carico e sicurezza.', 'Sessione'],
+          ]}
+        />
 
-            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,32px)', letterSpacing: '0.02em', marginTop: '48px', marginBottom: '16px' }}>2. Cookie utilizzati</h2>
-            <p style={{ marginBottom: '16px' }}>
-              Il sito utilizza esclusivamente <strong>cookie tecnici</strong>, necessari al funzionamento del sito stesso
-              e all&apos;erogazione dei servizi richiesti dall&apos;utente. Per questi cookie non è richiesto il consenso
-              preventivo dell&apos;utente, ai sensi dell&apos;art. 122 del Codice Privacy.
-            </p>
-            <ul style={{ paddingLeft: '24px', marginBottom: '16px' }}>
-              <li style={{ marginBottom: '8px' }}>
-                <strong>Cookie di sessione tecnici</strong> — utilizzati per garantire la corretta navigazione e l&apos;invio dei form di contatto.
-                Durata: sessione.
-              </li>
-            </ul>
-            <p style={{ marginBottom: '16px' }}>
-              {/* TODO: se in futuro saranno attivati Google Analytics, Meta Pixel, hotjar, GTM o simili,
-                  aggiornare questa sezione e implementare un banner di consenso conforme al provvedimento Garante 2021. */}
-              Il sito <strong>non utilizza</strong> cookie di profilazione, di marketing o di analisi di terze parti.
-            </p>
+        <P><strong>Cookie analitici</strong> — installati solo con il consenso alla categoria &ldquo;Analitici&rdquo;.</P>
+        <Tabella
+          intestazioni={['Nome', 'Fornitore', 'Finalità', 'Durata']}
+          righe={[
+            ['_ga, _ga_*', 'Google Ireland Ltd. (Google Analytics 4)', 'Statistiche aggregate sull\'uso del sito: pagine viste, provenienza, dispositivo.', 'Fino a 2 anni'],
+          ]}
+        />
+        <P>
+          Google Analytics è configurato in modalità <em>Consent Mode v2</em>: in assenza di
+          consenso la memorizzazione di dati analitici e pubblicitari resta disattivata.
+        </P>
 
-            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,32px)', letterSpacing: '0.02em', marginTop: '48px', marginBottom: '16px' }}>3. Servizi di terze parti</h2>
-            <p style={{ marginBottom: '16px' }}>
-              I form di contatto sono gestiti tramite <strong>Formspree</strong>, che può impostare cookie tecnici necessari
-              all&apos;invio dei messaggi. L&apos;hosting è fornito da <strong>Vercel</strong>, che può impostare cookie tecnici
-              di sicurezza e funzionamento dell&apos;infrastruttura.
-            </p>
+        <P><strong>Cookie di marketing e contenuti di terze parti</strong> — installati solo con il consenso alla categoria &ldquo;Marketing&rdquo;.</P>
+        <Tabella
+          intestazioni={['Servizio', 'Fornitore', 'Finalità', 'Durata']}
+          righe={[
+            ['Meta Pixel (_fbp)', 'Meta Platforms Ireland Ltd.', 'Misurazione delle campagne pubblicitarie e pubblico personalizzato.', 'Fino a 3 mesi'],
+            ['Widget recensioni e inviti', 'Trustpilot A/S', 'Mostra le recensioni nel piè di pagina e gestisce gli inviti a recensire.', 'Variabile, definita da Trustpilot'],
+            ['Player video incorporati', 'TikTok Technology Ltd.', 'Riproduzione dei video nella sezione contenuti della home.', 'Variabile, definita da TikTok'],
+          ]}
+        />
+        <P>
+          Senza il consenso alla categoria &ldquo;Marketing&rdquo; i video TikTok non vengono
+          caricati: al loro posto compare un&apos;anteprima statica con un collegamento che apre
+          il video sul sito di TikTok, e il widget Trustpilot è sostituito da un semplice
+          collegamento. In entrambi i casi nessun dato viene trasmesso finché non si clicca.
+        </P>
+      </Sezione>
 
-            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,32px)', letterSpacing: '0.02em', marginTop: '48px', marginBottom: '16px' }}>4. Come gestire i cookie</h2>
-            <p style={{ marginBottom: '16px' }}>
-              L&apos;utente può in qualsiasi momento gestire o disattivare i cookie dal proprio browser. Le istruzioni sono disponibili sui siti ufficiali:
-            </p>
-            <ul style={{ paddingLeft: '24px', marginBottom: '16px' }}>
-              <li style={{ marginBottom: '8px' }}><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noreferrer" style={{ color: 'var(--accent)' }}>Google Chrome</a></li>
-              <li style={{ marginBottom: '8px' }}><a href="https://support.mozilla.org/it/kb/Gestione%20dei%20cookie" target="_blank" rel="noreferrer" style={{ color: 'var(--accent)' }}>Mozilla Firefox</a></li>
-              <li style={{ marginBottom: '8px' }}><a href="https://support.apple.com/it-it/guide/safari/sfri11471/mac" target="_blank" rel="noreferrer" style={{ color: 'var(--accent)' }}>Safari</a></li>
-              <li style={{ marginBottom: '8px' }}><a href="https://support.microsoft.com/it-it/microsoft-edge" target="_blank" rel="noreferrer" style={{ color: 'var(--accent)' }}>Microsoft Edge</a></li>
-            </ul>
-            <p style={{ marginBottom: '16px' }}>
-              La disattivazione dei cookie tecnici può comportare il malfunzionamento di alcune sezioni del sito.
-            </p>
+      <Sezione titolo="3. Come prestare, modificare o revocare il consenso">
+        <P>
+          Alla prima visita viene mostrato un banner che permette di accettare tutti i cookie,
+          rifiutarli o scegliere per categoria. La scelta può essere{' '}
+          <strong>modificata o revocata in qualsiasi momento</strong> dal collegamento{' '}
+          &ldquo;Preferenze cookie&rdquo; presente nel piè di pagina di ogni pagina del sito.
+        </P>
+        <P>
+          La revoca del consenso non pregiudica la liceità del trattamento effettuato prima
+          della revoca. I cookie tecnici non possono essere disattivati dal banner, ma restano
+          gestibili dalle impostazioni del browser: la loro disattivazione può però comportare
+          il malfunzionamento di alcune sezioni del sito.
+        </P>
+      </Sezione>
 
-            <h2 style={{ fontFamily: 'var(--font-bebas)', fontSize: 'clamp(24px,3vw,32px)', letterSpacing: '0.02em', marginTop: '48px', marginBottom: '16px' }}>5. Contatti</h2>
-            <p style={{ marginBottom: '16px' }}>
-              Per qualsiasi richiesta scrivi a&nbsp;
-              <a href="mailto:info@piraweb.it" style={{ color: 'var(--accent)' }}>info@piraweb.it</a>.
-              Per maggiori informazioni sul trattamento dei dati personali consulta la&nbsp;
-              <a href="/privacy" style={{ color: 'var(--accent)' }}>Privacy Policy</a>.
-            </p>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+      <Sezione titolo="4. Trasferimento dei dati fuori dall'Unione Europea">
+        <P>
+          Alcuni dei fornitori sopra elencati — Google, Meta e TikTok — appartengono a gruppi con
+          sede negli Stati Uniti e possono trasferire i dati al di fuori dello Spazio Economico
+          Europeo. Tali trasferimenti avvengono sulla base delle Clausole Contrattuali Standard
+          approvate dalla Commissione Europea e, ove applicabile, dell&apos;adesione dei fornitori
+          al <em>EU-U.S. Data Privacy Framework</em>. Prestando il consenso alla relativa categoria
+          l&apos;utente acconsente anche a tale trasferimento.
+        </P>
+      </Sezione>
+
+      <Sezione titolo="5. Gestione dei cookie dal browser">
+        <P>
+          Oltre al banner, l&apos;utente può gestire o eliminare i cookie direttamente dal proprio
+          browser. Le istruzioni sono disponibili sui siti ufficiali:
+        </P>
+        <Elenco>
+          <Voce><Collegamento href="https://support.google.com/chrome/answer/95647">Google Chrome</Collegamento></Voce>
+          <Voce><Collegamento href="https://support.mozilla.org/it/kb/Gestione%20dei%20cookie">Mozilla Firefox</Collegamento></Voce>
+          <Voce><Collegamento href="https://support.apple.com/it-it/guide/safari/sfri11471/mac">Safari</Collegamento></Voce>
+          <Voce><Collegamento href="https://support.microsoft.com/it-it/microsoft-edge">Microsoft Edge</Collegamento></Voce>
+        </Elenco>
+      </Sezione>
+
+      <Sezione titolo="6. Contatti">
+        <P>
+          Per qualsiasi richiesta scrivi a{' '}
+          <Collegamento href="mailto:info@piraweb.it">info@piraweb.it</Collegamento>. Per maggiori
+          informazioni sul trattamento dei dati personali consulta la{' '}
+          <Collegamento href="/privacy">Privacy Policy</Collegamento>.
+        </P>
+      </Sezione>
+    </PaginaLegale>
   )
 }
