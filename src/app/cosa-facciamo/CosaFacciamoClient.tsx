@@ -9,6 +9,7 @@ import { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { jsonLdScript } from '@/lib/jsonLd'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -212,7 +213,7 @@ export default function CosaFacciamoPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(serviceJsonLd) }} />
       <Cursor />
       <Navbar />
       <main ref={rootRef} style={{ background: '#0a0a0a' }}>
