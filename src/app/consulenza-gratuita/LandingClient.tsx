@@ -6,6 +6,7 @@ import Cursor from '@/components/ui/Cursor'
 import Footer from '@/components/layout/Footer'
 import type { Project } from '@/data/projects'
 import LandingForm from './LandingForm'
+import { useSiteSettings } from '@/components/SiteSettingsProvider'
 
 // Sezioni pesanti below-the-fold (con GSAP): caricate dopo il primo render
 // per alleggerire il bundle iniziale e velocizzare LCP/FCP.
@@ -21,8 +22,8 @@ const MetodoSection = dynamic(() => import('@/components/sections/MetodoSection'
    // TODO = placeholder da sostituire con materiali reali.
    ────────────────────────────────────────────────────────── */
 
-// Numero WhatsApp aziendale (internazionale, senza +)
-const WHATSAPP_NUMBER = '393318535698'
+// Il numero WhatsApp arriva dalle Impostazioni sito su Sanity (vedi useSiteSettings
+// più sotto): qui non c'è più niente da aggiornare a mano.
 
 const differenziatori = [
   { n: '01', t: 'Un solo partner', d: 'Strategia, brand, sviluppo e advertising sotto un’unica regia. Un solo interlocutore responsabile dei risultati.' },
@@ -116,6 +117,8 @@ const LANDING_CSS = `
 `
 
 export default function LandingClient({ projects }: { projects: Project[] }) {
+  const { whatsapp } = useSiteSettings()
+
   return (
     <>
       <Cursor />
@@ -248,7 +251,7 @@ export default function LandingClient({ projects }: { projects: Project[] }) {
 
           {/* ── Pulsante WhatsApp fisso ── */}
           <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}`}
+            href={`https://wa.me/${whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
             className="lp-wa"

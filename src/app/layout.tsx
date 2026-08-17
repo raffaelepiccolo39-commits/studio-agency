@@ -5,6 +5,10 @@ import SmoothScrollProvider from '@/components/ui/SmoothScrollProvider'
 import ScrollProgress from '@/components/ui/ScrollProgress'
 import PageTransition from '@/components/ui/PageTransition'
 import CookieBanner from '@/components/ui/CookieBanner'
+import { SiteSettingsProvider } from '@/components/SiteSettingsProvider'
+import { getSiteSettings } from '@/lib/sanity/queries'
+import { socialAttivi, type SiteSettings } from '@/data/site'
+import { jsonLdScript } from '@/lib/jsonLd'
 
 const bebasNeue = Bebas_Neue({
   weight: '400',
@@ -56,39 +60,42 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.piraweb.it' },
 }
 
-const organizationSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'Pira Web S.r.l.',
-  alternateName: 'Pira Web Creative Agency',
-  url: 'https://www.piraweb.it',
-  logo: 'https://www.piraweb.it/logo.png',
-  image: 'https://www.piraweb.it/og-image.jpg',
-  description: 'Agenzia digitale che unisce brand direction, sviluppo web e performance marketing. Costruiamo ecosistemi digitali per brand visionari.',
-  email: 'info@piraweb.it',
-  telephone: '+3908117560017',
-  vatID: 'IT04891370613',
-  areaServed: ['Casapesenna', 'Caserta', 'Napoli', 'Campania', 'Italia'],
-  sameAs: [
-    'https://www.instagram.com/piraweb_agency/',
-    'https://www.facebook.com/pirawebonline',
-    'https://www.linkedin.com/company/pira-web/',
-  ],
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: 'Via A. Petrillo 171',
-    addressLocality: 'Casapesenna',
-    addressRegion: 'CE',
-    postalCode: '81030',
-    addressCountry: 'IT',
-  },
+// I dati dell'azienda per Google arrivano dalle Impostazioni sito su Sanity:
+// cambiare il telefono nello Studio aggiorna anche la scheda nei risultati.
+function organizationSchemaDa(s: SiteSettings) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: s.ragioneSociale,
+    alternateName: s.nomeCommerciale,
+    url: 'https://www.piraweb.it',
+    logo: 'https://www.piraweb.it/logo.png',
+    image: 'https://www.piraweb.it/og-image.jpg',
+    description: 'Agenzia digitale che unisce brand direction, sviluppo web e performance marketing. Costruiamo ecosistemi digitali per brand visionari.',
+    email: s.email,
+    telephone: s.telefoni[0]?.numero,
+    vatID: s.partitaIva,
+    areaServed: ['Casapesenna', 'Caserta', 'Napoli', 'Campania', 'Italia'],
+    sameAs: socialAttivi(s).map(({ url }) => url),
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: s.indirizzo.via,
+      addressLocality: s.indirizzo.citta,
+      addressRegion: s.indirizzo.provincia,
+      postalCode: s.indirizzo.cap,
+      addressCountry: s.indirizzo.nazione,
+    },
+  }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const impostazioni = await getSiteSettings()
+  const organizationSchema = organizationSchemaDa(impostazioni)
+
   return (
     <html lang="it" className={`${bebasNeue.variable} ${dmSerifDisplay.variable} ${syne.variable}`}>
       <head>
@@ -97,7 +104,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(organizationSchema) }}
         />
         {/* Google Consent Mode v2 (default: denied) + GA4 — il consenso verrà aggiornato dalla CMP/cookie banner */}
         <script
@@ -126,10 +133,12 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ScrollProgress />
-        <PageTransition />
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
-        <CookieBanner />
+        <SiteSettingsProvider value={impostazioni}>
+          <ScrollProgress />
+          <PageTransition />
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+          <CookieBanner />
+        </SiteSettingsProvider>
       </body>
     </html>
   )

@@ -5,41 +5,48 @@ import Footer from '@/components/layout/Footer'
 import Cursor from '@/components/ui/Cursor'
 import ConsulenzaForm from '@/components/sections/ConsulenzaForm'
 import { useInView } from 'react-intersection-observer'
+import { useSiteSettings } from '@/components/SiteSettingsProvider'
+import type { SiteSettings } from '@/data/site'
+import { jsonLdScript } from '@/lib/jsonLd'
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'ContactPage',
-      name: 'Contatti — Pira Web Creative Agency',
-      url: 'https://www.piraweb.it/contatti',
-    },
-    {
-      '@type': 'LocalBusiness',
-      name: 'Pira Web Creative Agency',
-      url: 'https://www.piraweb.it',
-      telephone: '+39 081 175 60017',
-      email: 'info@piraweb.it',
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: 'Via A.Petrillo N°171',
-        postalCode: '81030',
-        addressLocality: 'Casapesenna',
-        addressRegion: 'CE',
-        addressCountry: 'IT',
+function jsonLdDa(s: SiteSettings) {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ContactPage',
+        name: `Contatti — ${s.nomeCommerciale}`,
+        url: 'https://www.piraweb.it/contatti',
       },
-    },
-  ],
+      {
+        '@type': 'LocalBusiness',
+        name: s.nomeCommerciale,
+        url: 'https://www.piraweb.it',
+        telephone: s.telefoni[0]?.etichetta,
+        email: s.email,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: s.indirizzo.via,
+          postalCode: s.indirizzo.cap,
+          addressLocality: s.indirizzo.citta,
+          addressRegion: s.indirizzo.provincia,
+          addressCountry: s.indirizzo.nazione,
+        },
+      },
+    ],
+  }
 }
 
 export default function ContattiPage() {
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
+  const impostazioni = useSiteSettings()
+  const jsonLd = jsonLdDa(impostazioni)
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }}
       />
       <Cursor />
       <Navbar />
@@ -68,7 +75,7 @@ export default function ContattiPage() {
             <aside style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <a
-                  href="mailto:info@piraweb.it"
+                  href={`mailto:${impostazioni.email}`}
                   style={{
                     fontFamily: 'var(--font-syne)',
                     fontSize: '16px',
@@ -76,7 +83,7 @@ export default function ContattiPage() {
                     textDecoration: 'none',
                   }}
                 >
-                  info@piraweb.it
+                  {impostazioni.email}
                 </a>
                 <p style={{
                   margin: 0,
@@ -84,8 +91,9 @@ export default function ContattiPage() {
                   color: 'rgba(240,237,230,0.7)',
                   lineHeight: 1.6,
                 }}>
-                  Via A.Petrillo N°171<br />
-                  81030 Casapesenna CE, IT
+                  {impostazioni.indirizzo.via}<br />
+                  {impostazioni.indirizzo.cap} {impostazioni.indirizzo.citta}{' '}
+                  {impostazioni.indirizzo.provincia}, {impostazioni.indirizzo.nazione}
                 </p>
               </div>
 

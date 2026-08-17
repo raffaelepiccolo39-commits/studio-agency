@@ -1,3 +1,5 @@
+import { siteSettings as defaults } from '@/data/site'
+
 // sanity/schemas/project.ts
 // Superset lossless del tipo `Project` (src/data/projects.ts): nessun campo dei
 // case study viene perso nella migrazione a CMS.
@@ -85,5 +87,102 @@ export const postSchema = {
   preview: { select: { title: 'title', subtitle: 'category', media: 'coverImage' } },
 }
 
+// sanity/schemas/siteSettings.ts
+// Documento UNICO (singleton): i dati dell'agenzia che compaiono ovunque nel
+// sito — footer, pagina contatti, dati strutturati per Google. Prima erano
+// scritti a mano in una quindicina di file.
+// I valori di riserva stanno in src/data/site.ts: se qui è vuoto, vince quello.
+export const siteSettingsSchema = {
+  name: 'siteSettings',
+  title: 'Impostazioni sito',
+  type: 'document',
+  // La scheda si apre già compilata con i dati veri dell'agenzia, invece che
+  // vuota: si modifica quello che serve e si salva.
+  initialValue: {
+    ragioneSociale: defaults.ragioneSociale,
+    nomeCommerciale: defaults.nomeCommerciale,
+    email: defaults.email,
+    telefoni: defaults.telefoni.map((t, i) => ({ _key: `tel${i}`, ...t })),
+    whatsapp: defaults.whatsapp,
+    indirizzo: defaults.indirizzo,
+    partitaIva: defaults.partitaIva,
+    social: defaults.social,
+    trustpilot: defaults.trustpilot,
+  },
+  groups: [
+    { name: 'contatti', title: 'Contatti', default: true },
+    { name: 'sede', title: 'Sede e dati fiscali' },
+    { name: 'social', title: 'Social' },
+  ],
+  fields: [
+    {
+      name: 'email', title: 'Email', type: 'string', group: 'contatti',
+      description: 'Compare nel footer, nella pagina contatti e nei messaggi di errore dei form.',
+      validation: (R: any) => R.required().email(),
+    },
+    {
+      name: 'telefoni', title: 'Telefoni', type: 'array', group: 'contatti',
+      description: 'Il PRIMO della lista è quello principale: è quello che Google mostra nei risultati. Trascina per riordinare.',
+      of: [{
+        type: 'object',
+        fields: [
+          {
+            name: 'etichetta', title: 'Come si legge sul sito', type: 'string',
+            description: 'Con gli spazi, es. "+39 081 175 60017"',
+            validation: (R: any) => R.required(),
+          },
+          {
+            name: 'numero', title: 'Numero per la chiamata', type: 'string',
+            description: 'Senza spazi, con prefisso, es. "+3908117560017"',
+            validation: (R: any) => R.required().regex(/^\+?\d{6,15}$/, { name: 'numero di telefono' }),
+          },
+        ],
+        preview: { select: { title: 'etichetta', subtitle: 'numero' } },
+      }],
+      validation: (R: any) => R.min(1),
+    },
+    {
+      name: 'whatsapp', title: 'Numero WhatsApp', type: 'string', group: 'contatti',
+      description: 'Solo cifre, col prefisso internazionale e SENZA il +. Es. 393318535698',
+      validation: (R: any) => R.regex(/^\d{8,15}$/, { name: 'numero WhatsApp' }),
+    },
+    {
+      name: 'indirizzo', title: 'Indirizzo', type: 'object', group: 'sede',
+      options: { columns: 2 },
+      fields: [
+        { name: 'via', title: 'Via e numero', type: 'string' },
+        { name: 'cap', title: 'CAP', type: 'string' },
+        { name: 'citta', title: 'Città', type: 'string' },
+        { name: 'provincia', title: 'Provincia (sigla)', type: 'string' },
+        { name: 'nazione', title: 'Nazione (sigla)', type: 'string', initialValue: 'IT' },
+      ],
+    },
+    {
+      name: 'ragioneSociale', title: 'Ragione sociale', type: 'string', group: 'sede',
+      description: 'Il nome legale, es. "Pira Web S.r.l."',
+    },
+    {
+      name: 'nomeCommerciale', title: 'Nome commerciale', type: 'string', group: 'sede',
+      description: 'Come ci presentiamo, es. "Pira Web Creative Agency"',
+    },
+    { name: 'partitaIva', title: 'Partita IVA', type: 'string', group: 'sede' },
+    {
+      name: 'social', title: 'Profili social', type: 'object', group: 'social',
+      description: 'Lascia vuoto un campo per NON mostrare quell\'icona nel footer.',
+      fields: [
+        { name: 'instagram', title: 'Instagram', type: 'url' },
+        { name: 'facebook', title: 'Facebook', type: 'url' },
+        { name: 'linkedin', title: 'LinkedIn', type: 'url' },
+        { name: 'tiktok', title: 'TikTok', type: 'url' },
+      ],
+    },
+    { name: 'trustpilot', title: 'Pagina Trustpilot', type: 'url', group: 'social' },
+  ],
+  preview: {
+    select: { subtitle: 'email' },
+    prepare: ({ subtitle }: any) => ({ title: 'Impostazioni sito', subtitle }),
+  },
+}
+
 // sanity/schema.ts — esporta tutti gli schemi
-export const schemaTypes = [projectSchema, postSchema]
+export const schemaTypes = [projectSchema, postSchema, siteSettingsSchema]

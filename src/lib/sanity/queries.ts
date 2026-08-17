@@ -1,10 +1,14 @@
 import { client } from './client'
 import { projects as mockProjects, type Project } from '@/data/projects'
 import { posts as mockPosts, type Post, type PostBlock } from '@/data/posts'
+import { siteSettings as defaultSiteSettings, type SiteSettings } from '@/data/site'
 import type { SanityProjectRaw, SanityPostRaw } from '@/types'
 
 const PROJECT_REVALIDATE = 3600
 const POST_REVALIDATE = 1800
+// I contatti si cambiano di rado ma quando si cambiano si vogliono vedere
+// subito: mezz'ora è il compromesso, e comunque ogni pagina li rilegge.
+const SETTINGS_REVALIDATE = 1800
 
 // Sanity è "attivo" solo se è stato configurato un projectId reale.
 // Finché è placeholder/assente, tutto cade sui dati locali e il sito resta vivo.
@@ -166,5 +170,69 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     return mapPost(raw, portableTextToBlocks(raw.body))
   } catch {
     return mockPosts.find((p) => p.slug === slug) ?? null
+  }
+}
+
+// ─── IMPOSTAZIONI SITO ───────────────────────────────────────────────────────
+
+/**
+ * Contatti, sede e social dell'agenzia.
+ *
+ * Fonde quello che c'è su Sanity con i valori di src/data/site.ts, campo per
+ * campo: un campo lasciato vuoto nello Studio non cancella il dato dal sito,
+ * ricade sul valore di riserva. Così una modifica sbagliata non può svuotare
+ * il footer di tutte le pagine.
+ */
+export async function getSiteSettings(): Promise<SiteSettings> {
+  if (!isSanityConfigured()) return defaultSiteSettings
+  try {
+    const raw = await client.fetch<Partial<SiteSettings> | null>(
+      `*[_type == "siteSettings"][0] {
+        ragioneSociale, nomeCommerciale, email, telefoni, whatsapp,
+        indirizzo, partitaIva, social, trustpilot
+      }`,
+      {},
+      { next: { revalidate: SETTINGS_REVALIDATE, tags: ['siteSettings'] } }
+    )
+    if (!raw) return defaultSiteSettings
+    return mergeSiteSettings(raw)
+  } catch {
+    return defaultSiteSettings
+  }
+}
+
+function testo(valore: unknown, riserva: string): string {
+  return typeof valore === 'string' && valore.trim() ? valore.trim() : riserva
+}
+
+function mergeSiteSettings(raw: Partial<SiteSettings>): SiteSettings {
+  const d = defaultSiteSettings
+  const telefoni = (raw.telefoni ?? []).filter(t => t?.etichetta?.trim() && t?.numero?.trim())
+  return {
+    ragioneSociale: testo(raw.ragioneSociale, d.ragioneSociale),
+    nomeCommerciale: testo(raw.nomeCommerciale, d.nomeCommerciale),
+    email: testo(raw.email, d.email),
+    telefoni: telefoni.length ? telefoni : d.telefoni,
+    whatsapp: testo(raw.whatsapp, d.whatsapp),
+    indirizzo: {
+      via: testo(raw.indirizzo?.via, d.indirizzo.via),
+      cap: testo(raw.indirizzo?.cap, d.indirizzo.cap),
+      citta: testo(raw.indirizzo?.citta, d.indirizzo.citta),
+      provincia: testo(raw.indirizzo?.provincia, d.indirizzo.provincia),
+      nazione: testo(raw.indirizzo?.nazione, d.indirizzo.nazione),
+    },
+    partitaIva: testo(raw.partitaIva, d.partitaIva),
+    // I social sono l'eccezione voluta: svuotare un campo nello Studio DEVE
+    // togliere l'icona dal footer, altrimenti non si potrebbe mai dismettere
+    // un profilo. Se manca l'oggetto intero, però, si ricade sui valori noti.
+    social: raw.social
+      ? {
+          instagram: raw.social.instagram?.trim() ?? '',
+          facebook: raw.social.facebook?.trim() ?? '',
+          linkedin: raw.social.linkedin?.trim() ?? '',
+          tiktok: raw.social.tiktok?.trim() ?? '',
+        }
+      : d.social,
+    trustpilot: testo(raw.trustpilot, d.trustpilot),
   }
 }

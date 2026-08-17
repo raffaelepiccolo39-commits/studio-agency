@@ -6,7 +6,9 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import { useSiteSettings } from '@/components/SiteSettingsProvider'
 import { useState } from 'react'
+import { jsonLdScript } from '@/lib/jsonLd'
 
 // Scelta editoriale: nessuna foto delle persone. In hover il pannello centrale
 // mostra l'iniziale del nome (vedi sezione Team più sotto).
@@ -26,29 +28,30 @@ const values = [
 
 export default function ChiSiamoPage() {
   const [hoveredMember, setHoveredMember] = useState<number | null>(null)
+  const impostazioni = useSiteSettings()
 
   const chiSiamoJsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'Organization',
-        name: 'Pira Web Creative Agency',
+        name: impostazioni.nomeCommerciale,
         url: 'https://www.piraweb.it',
         description: 'Pira Web nasce nel 2018 dalla visione di Raffaele, ingegnere con una convinzione precisa: il digitale doveva smettere di essere decorazione e diventare infrastruttura.',
         foundingDate: '2018',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'Via A.Petrillo N°171',
-          postalCode: '81030',
-          addressLocality: 'Casapesenna',
-          addressRegion: 'CE',
-          addressCountry: 'IT',
+          streetAddress: impostazioni.indirizzo.via,
+          postalCode: impostazioni.indirizzo.cap,
+          addressLocality: impostazioni.indirizzo.citta,
+          addressRegion: impostazioni.indirizzo.provincia,
+          addressCountry: impostazioni.indirizzo.nazione,
         },
-        email: 'info@piraweb.it',
+        email: impostazioni.email,
       },
       {
         '@type': 'AboutPage',
-        name: 'Chi Siamo — Pira Web Creative Agency',
+        name: `Chi Siamo — ${impostazioni.nomeCommerciale}`,
         url: 'https://www.piraweb.it/chi-siamo',
         description: 'Scopri il team, la mission e i valori di Pira Web Creative Agency.',
       },
@@ -59,7 +62,7 @@ export default function ChiSiamoPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(chiSiamoJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(chiSiamoJsonLd) }}
       />
       <Cursor />
       <Navbar />
