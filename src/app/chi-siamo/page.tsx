@@ -1,13 +1,11 @@
-import { pageMetadata } from '@/lib/seo'
+import { metadataDaCms } from '@/lib/seo'
+import { getPagina } from '@/lib/sanity/queries'
 import ChiSiamoClient from './ChiSiamoClient'
 
-export const metadata = pageMetadata({
-  title: 'Chi Siamo',
-  description:
-    'Pira Web Creative Agency unisce brand direction, tecnologia e marketing. Scopri chi siamo, il nostro approccio e il team dietro i progetti.',
-  path: '/chi-siamo',
-})
+// Titolo, descrizione e intestazione si cambiano da piraweb.it/studio → Pagine.
+export const generateMetadata = () => metadataDaCms('/chi-siamo')
 
-export default function Page() {
-  return <ChiSiamoClient />
+export default async function Page() {
+  const pagina = await getPagina('/chi-siamo')
+  return <ChiSiamoClient intestazione={pagina?.intestazione} />
 }

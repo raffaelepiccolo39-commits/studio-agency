@@ -6,7 +6,10 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import ScrollReveal from '@/components/ui/ScrollReveal'
+import { useSiteSettings } from '@/components/SiteSettingsProvider'
+import { paginaDiRiserva, type Intestazione } from '@/data/pagine'
 import { useState } from 'react'
+import { jsonLdScript } from '@/lib/jsonLd'
 
 // Scelta editoriale: nessuna foto delle persone. In hover il pannello centrale
 // mostra l'iniziale del nome (vedi sezione Team più sotto).
@@ -24,31 +27,37 @@ const values = [
   { id: 'd', title: 'Visione', desc: 'Non pensiamo da agenzia. Pensiamo da imprenditori. Valutiamo sostenibilità, marginalità, scalabilità. Perché il digitale non è comunicazione fine a sé stessa: è struttura economica, e come tale va costruito.' },
 ]
 
-export default function ChiSiamoPage() {
+export default function ChiSiamoPage({
+  intestazione = paginaDiRiserva('/chi-siamo')?.intestazione,
+}: {
+  /** L'intestazione dallo Studio. Senza prop restano i testi storici. */
+  intestazione?: Intestazione
+} = {}) {
   const [hoveredMember, setHoveredMember] = useState<number | null>(null)
+  const impostazioni = useSiteSettings()
 
   const chiSiamoJsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'Organization',
-        name: 'Pira Web Creative Agency',
+        name: impostazioni.nomeCommerciale,
         url: 'https://www.piraweb.it',
         description: 'Pira Web nasce nel 2018 dalla visione di Raffaele, ingegnere con una convinzione precisa: il digitale doveva smettere di essere decorazione e diventare infrastruttura.',
         foundingDate: '2018',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'Via A.Petrillo N°171',
-          postalCode: '81030',
-          addressLocality: 'Casapesenna',
-          addressRegion: 'CE',
-          addressCountry: 'IT',
+          streetAddress: impostazioni.indirizzo.via,
+          postalCode: impostazioni.indirizzo.cap,
+          addressLocality: impostazioni.indirizzo.citta,
+          addressRegion: impostazioni.indirizzo.provincia,
+          addressCountry: impostazioni.indirizzo.nazione,
         },
-        email: 'info@piraweb.it',
+        email: impostazioni.email,
       },
       {
         '@type': 'AboutPage',
-        name: 'Chi Siamo — Pira Web Creative Agency',
+        name: `Chi Siamo — ${impostazioni.nomeCommerciale}`,
         url: 'https://www.piraweb.it/chi-siamo',
         description: 'Scopri il team, la mission e i valori di Pira Web Creative Agency.',
       },
@@ -59,7 +68,7 @@ export default function ChiSiamoPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(chiSiamoJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(chiSiamoJsonLd) }}
       />
       <Cursor />
       <Navbar />
@@ -69,16 +78,11 @@ export default function ChiSiamoPage() {
         </div>
 
         <PageHeader
-          tag="CHI SIAMO"
-          title="il partner "
-          titleAccent="per la crescita"
-          titleAfter="della tua azienda."
-          subtitle="Pira Web nasce nel 2018 dalla visione di Raffaele, ingegnere con una convinzione precisa: il digitale doveva smettere di essere decorazione e diventare infrastruttura.
-
-Da allora affianchiamo imprenditori e brand con metodo, rigore e orientamento ai risultati.
-
-Non lavoriamo per consegnare.
-Lavoriamo per generare valore nel tempo."
+          tag={intestazione?.occhiello}
+          title={intestazione?.titolo ?? ''}
+          titleAccent={intestazione?.titoloEvidenziato}
+          titleAfter={intestazione?.titoloDopo || undefined}
+          subtitle={intestazione?.sottotitolo}
         />
 {/* Mission & Vision */}
 <section style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid var(--border)' }}>

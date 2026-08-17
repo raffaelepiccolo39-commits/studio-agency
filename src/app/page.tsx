@@ -10,34 +10,41 @@ import ServicesSection from '@/components/sections/ServicesSection'
 import SponsorsSection from '@/components/sections/SponsorsSection'
 import MetodoSection from '@/components/sections/MetodoSection'
 import TikTokSection from '@/components/sections/TikTokSection'
-import { getProjects } from '@/lib/sanity/queries'
+import { getProjects, getServizi, getPagina } from '@/lib/sanity/queries'
 
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = {
-  title: 'Pira Web Creative Agency — Agenzia Digitale Caserta Napoli',
-  description: 'Agenzia digitale che unisce brand direction, sviluppo web e performance marketing. Costruiamo ecosistemi digitali per brand visionari.',
-  keywords: ['agenzia digitale', 'web agency', 'Caserta', 'Napoli', 'Shopify', 'e-commerce', 'branding', 'marketing digitale'],
-  openGraph: {
-    title: 'Pira Web Creative Agency',
-    description: 'Brand direction, tecnologia e performance marketing per brand visionari.',
-    url: 'https://www.piraweb.it',
-    siteName: 'Pira Web Creative Agency',
-    images: [{ url: 'https://www.piraweb.it/og-image.jpg', width: 1200, height: 630, alt: 'Pira Web Creative Agency — Agenzia Digitale' }],
-    type: 'website',
-    locale: 'it_IT',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Pira Web Creative Agency',
-    description: 'Brand direction, tecnologia e performance marketing per brand visionari.',
-    images: ['https://www.piraweb.it/og-image.jpg'],
-  },
-  alternates: { canonical: 'https://www.piraweb.it' },
+// La home tiene le sue keyword e la sua scheda social, ma titolo e descrizione
+// arrivano dallo Studio come per le altre pagine (piraweb.it/studio → Pagine).
+export async function generateMetadata(): Promise<Metadata> {
+  const pagina = await getPagina('/')
+  const titolo = pagina?.titoloSeo ?? ''
+  const descrizione = pagina?.descrizioneSeo ?? ''
+  return {
+    title: titolo,
+    description: descrizione,
+    keywords: ['agenzia digitale', 'web agency', 'Caserta', 'Napoli', 'Shopify', 'e-commerce', 'branding', 'marketing digitale'],
+    openGraph: {
+      title: titolo,
+      description: descrizione,
+      url: 'https://www.piraweb.it',
+      siteName: 'Pira Web Creative Agency',
+      images: [{ url: 'https://www.piraweb.it/og-image.jpg', width: 1200, height: 630, alt: 'Pira Web Creative Agency — Agenzia Digitale' }],
+      type: 'website',
+      locale: 'it_IT',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: titolo,
+      description: descrizione,
+      images: ['https://www.piraweb.it/og-image.jpg'],
+    },
+    alternates: { canonical: 'https://www.piraweb.it' },
+  }
 }
 
 export default async function Home() {
-  const projects = await getProjects()
+  const [projects, servizi] = await Promise.all([getProjects(), getServizi()])
   return (
     <>
       <Cursor />
@@ -48,7 +55,7 @@ export default async function Home() {
         <MarqueeSection />
         <StatsSection />
         <ProjectsSection projects={projects} />
-        <ServicesSection />
+        <ServicesSection servizi={servizi} />
         <SponsorsSection />
         <MetodoSection />
         <TikTokSection />

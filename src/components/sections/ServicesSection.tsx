@@ -9,103 +9,14 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-type Service = {
-  id: string
-  tag: string
-  title: [string, string]
-  features: string[]
-  description: string[]
-  image: string
-}
+import { servizi as serviziDiRiserva, etichettaServizio, type Servizio } from '@/data/servizi'
 
-const services: Service[] = [
-  {
-    id: 'a',
-    tag: '(a.)',
-    title: ['Branding &', 'Graphic Design'],
-    features: [
-      'Brand Identity',
-      'Logo & Visual System',
-      'Brand Strategy',
-      'Tone of Voice',
-      'Naming',
-      'Packaging Design',
-      'Editorial Design',
-      'Style Guide',
-    ],
-    description: [
-      'Un brand non deve limitarsi a essere presente, deve essere riconoscibile e impossibile da confondere.',
-      'Costruiamo identità visive capaci di dare coerenza e personalità alla tua azienda.',
-      'Partiamo dal posizionamento, analizziamo il mercato e traduciamo i valori del brand in un sistema visivo coordinato: logo, colori, tipografia, stile grafico, tono di voce e percezione.',
-    ],
-    image: '/servizi/servizi-01.jpg',
-  },
-  {
-    id: 'b',
-    tag: '(b.)',
-    title: ['Website &', 'E-commerce'],
-    features: [
-      'Custom Website Design',
-      'Shopify Development',
-      'WooCommerce',
-      'E-commerce Strategy',
-      'UX/UI Design',
-      'Performance Optimization',
-      'CMS Integration',
-      'Analytics & Tracking',
-    ],
-    description: [
-      'Progettiamo ecosistemi digitali pensati per valorizzare il brand e generare risultati concreti.',
-      'Dai siti corporate agli e-commerce più strutturati: velocità di caricamento, navigazione intuitiva e percorsi pensati per guidare l’utente all’azione.',
-      'Costruiamo asset digitali che lavorano ogni giorno per la crescita della tua azienda.',
-    ],
-    image: '/servizi/servizi-02.jpg',
-  },
-  {
-    id: 'c',
-    tag: '(c.)',
-    title: ['Social Media', 'Management'],
-    features: [
-      'Social Strategy',
-      'Content Calendar',
-      'Community Management',
-      'Meta Ads',
-      'TikTok Marketing',
-      'Influencer Strategy',
-      'Paid Media',
-      'Reporting & Insights',
-    ],
-    description: [
-      'Gestiamo la presenza social del tuo brand con una strategia pensata per attirare l’attenzione giusta e trasformare i contenuti in leve di crescita.',
-      'Non pubblichiamo “tanto per farlo”: studiamo il target, definiamo format riconoscibili e sviluppiamo contenuti pensati per generare continuità e relazione.',
-      'L’obiettivo è costruire una community che percepisce il tuo valore e sceglie di avvicinarsi alla tua azienda.',
-    ],
-    image: '/servizi/servizi-03.jpg',
-  },
-  {
-    id: 'd',
-    tag: '(d.)',
-    title: ['Content', 'Creation'],
-    features: [
-      'Copywriting',
-      'Video Production',
-      'Reel & Short Form',
-      'Photography Direction',
-      'Storytelling',
-      'Editorial Content',
-      'Motion Graphics',
-      'Storyboarding',
-    ],
-    description: [
-      'Creiamo contenuti pensati per lasciare il segno.',
-      'In un mercato pieno di messaggi tutti uguali, la differenza la fa chi comunica con identità, strategia e qualità.',
-      'Per questo sviluppiamo contenuti originali, dal copywriting alla produzione visual, capaci di parlare al pubblico giusto e rafforzare la percezione del brand.',
-    ],
-    image: '/servizi/servizi-04.jpg',
-  },
-]
-
-export default function ServicesSection() {
+export default function ServicesSection({
+  servizi = serviziDiRiserva,
+}: {
+  /** I servizi da mostrare. Senza prop restano quelli storici del repo. */
+  servizi?: Servizio[]
+} = {}) {
   const sectionRef = useRef<HTMLElement>(null)
   const manifestoRef = useRef<HTMLHeadingElement>(null)
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -202,13 +113,13 @@ export default function ServicesSection() {
           transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1)',
         }}
       >
-        {services.map((s) => (
+        {servizi.map((s) => (
           <div
             key={s.id}
             style={{
               position: 'absolute',
               inset: 0,
-              backgroundImage: canHover ? `url("${s.image}")` : 'none',
+              backgroundImage: canHover ? `url("${s.immagine}")` : 'none',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: activeId === s.id ? 1 : 0,
@@ -276,7 +187,7 @@ export default function ServicesSection() {
               alignItems: 'stretch',
             }}
           >
-            {services.map((s) => {
+            {servizi.map((s, indice) => {
               const isActive = activeId === s.id
               const isDimmed = activeId !== null && !isActive
               return (
@@ -326,7 +237,7 @@ export default function ServicesSection() {
                       color: '#ffffff',
                       margin: 0,
                     }}>
-                      {s.title[0]}<br />{s.title[1]}
+                      {s.titolo[0]}<br />{s.titolo[1]}
                     </h3>
                     <span
                       className="service-card-tag"
@@ -342,7 +253,7 @@ export default function ServicesSection() {
                         transition: 'opacity 0.4s, transform 0.5s cubic-bezier(0.16,1,0.3,1)',
                       }}
                     >
-                      {s.tag}
+                      {etichettaServizio(indice)}
                     </span>
                   </div>
 
@@ -358,7 +269,7 @@ export default function ServicesSection() {
                       transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)',
                     }}
                   >
-                    {s.description.map((para, i) => (
+                    {s.paragrafi.map((para: string, i: number) => (
                       <p
                         key={i}
                         style={{

@@ -4,6 +4,8 @@ import Link from 'next/link'
 import Script from 'next/script'
 import { useEffect, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
+import { useSiteSettings } from '@/components/SiteSettingsProvider'
+import { socialAttivi } from '@/data/site'
 
 const SR_ONLY: React.CSSProperties = {
   position: 'absolute',
@@ -44,6 +46,29 @@ function LinkedInIcon() {
   )
 }
 
+function TikTokIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden focusable="false">
+      <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104Z" fill="currentColor"/>
+    </svg>
+  )
+}
+
+/** Le icone disponibili, nello stesso ordine in cui socialAttivi() le restituisce. */
+const ICONE_SOCIAL = {
+  instagram: InstagramIcon,
+  facebook: FacebookIcon,
+  linkedin: LinkedInIcon,
+  tiktok: TikTokIcon,
+} as const
+
+const NOMI_SOCIAL = {
+  instagram: 'Instagram',
+  facebook: 'Facebook',
+  linkedin: 'LinkedIn',
+  tiktok: 'TikTok',
+} as const
+
 type FooterProps = {
   ctaTitle?: React.ReactNode
   ctaHref?: string
@@ -62,6 +87,12 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
       w.Trustpilot.loadFromElement(trustboxRef.current, true)
     }
   }, [])
+
+  // Contatti e social arrivano dalle Impostazioni sito su Sanity (con i valori
+  // storici come riserva, vedi src/data/site.ts).
+  const impostazioni = useSiteSettings()
+  const [telefonoPrincipale, ...altriTelefoni] = impostazioni.telefoni
+  const social = socialAttivi(impostazioni)
 
   const resolvedTitle = ctaTitle ?? (
     <>
@@ -114,35 +145,33 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
           </p>
 
           <a
-            href="mailto:info@piraweb.it"
+            href={`mailto:${impostazioni.email}`}
             className="footer-email-primary"
-            aria-label="Scrivici a info@piraweb.it"
+            aria-label={`Scrivici a ${impostazioni.email}`}
           >
-            info@piraweb.it
+            {impostazioni.email}
           </a>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <a
-              href="tel:+3908117560017"
-              className="footer-phone-primary"
-              aria-label={phoneAria('+39 081 175 60017')}
-            >
-              +39 081 175 60017
-            </a>
-            <a
-              href="tel:+393318535698"
-              className="footer-phone-secondary"
-              aria-label={phoneAria('+39 331 853 5698')}
-            >
-              +39 331 853 5698
-            </a>
-            <a
-              href="tel:+393517214074"
-              className="footer-phone-secondary"
-              aria-label={phoneAria('+39 351 721 4074')}
-            >
-              +39 351 721 4074
-            </a>
+            {telefonoPrincipale && (
+              <a
+                href={`tel:${telefonoPrincipale.numero}`}
+                className="footer-phone-primary"
+                aria-label={phoneAria(telefonoPrincipale.etichetta)}
+              >
+                {telefonoPrincipale.etichetta}
+              </a>
+            )}
+            {altriTelefoni.map(tel => (
+              <a
+                key={tel.numero}
+                href={`tel:${tel.numero}`}
+                className="footer-phone-secondary"
+                aria-label={phoneAria(tel.etichetta)}
+              >
+                {tel.etichetta}
+              </a>
+            ))}
           </div>
 
           <address style={{
@@ -155,8 +184,9 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
             fontStyle: 'normal',
             paddingTop: '8px',
           }}>
-            Via A.Petrillo N°171<br />
-            81030 CASAPESENNA CE, IT
+            {impostazioni.indirizzo.via}<br />
+            {impostazioni.indirizzo.cap} {impostazioni.indirizzo.citta.toUpperCase()}{' '}
+            {impostazioni.indirizzo.provincia}, {impostazioni.indirizzo.nazione}
           </address>
 
           {/* TrustBox widget - Review Collector */}
@@ -171,7 +201,7 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
             data-token="91295a7c-a594-4b7c-9593-77b4ccbf35d4"
             style={{ maxWidth: '320px' }}
           >
-            <a href="https://it.trustpilot.com/review/piraweb.it" target="_blank" rel="noopener noreferrer">Trustpilot</a>
+            <a href={impostazioni.trustpilot} target="_blank" rel="noopener noreferrer">Trustpilot</a>
           </div>
         </section>
 
@@ -246,45 +276,28 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
             </button>
           </p>
           <ul style={{ display: 'flex', alignItems: 'center', gap: '4px', listStyle: 'none', margin: 0, padding: 0 }}>
-            <li>
-              <a
-                href="https://www.instagram.com/piraweb_agency/"
-                target="_blank"
-                rel="noreferrer"
-                className="footer-social-icon"
-                aria-label="Instagram (apre in nuova scheda)"
-              >
-                <InstagramIcon />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.facebook.com/pirawebonline"
-                target="_blank"
-                rel="noreferrer"
-                className="footer-social-icon"
-                aria-label="Facebook (apre in nuova scheda)"
-              >
-                <FacebookIcon />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.linkedin.com/company/pira-web/"
-                target="_blank"
-                rel="noreferrer"
-                className="footer-social-icon"
-                aria-label="LinkedIn (apre in nuova scheda)"
-              >
-                <LinkedInIcon />
-              </a>
-            </li>
+            {social.map(({ rete, url }) => {
+              const Icona = ICONE_SOCIAL[rete]
+              return (
+                <li key={rete}>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="footer-social-icon"
+                    aria-label={`${NOMI_SOCIAL[rete]} (apre in nuova scheda)`}
+                  >
+                    <Icona />
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         </div>
 
         {/* Riga 2: Copyright + P.IVA centrato come unica frase */}
         <p style={{ margin: 0, textAlign: 'center' }}>
-          ©{year} Pira Web S.r.l. — Tutti i diritti riservati — P.IVA IT04891370613
+          ©{year} {impostazioni.ragioneSociale} — Tutti i diritti riservati — P.IVA {impostazioni.partitaIva}
         </p>
       </div>
 

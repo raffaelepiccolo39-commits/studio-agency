@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getPosts, getPostBySlug } from '@/lib/sanity/queries'
 import type { PostBlock } from '@/data/posts'
+import { jsonLdScript } from '@/lib/jsonLd'
 
 // I `li` consecutivi vanno resi come un unico <ul>, gli altri blocchi restano singoli.
 type BlockGroup =
@@ -85,7 +86,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(articleSchema) }}
       />
       <Cursor />
       <Navbar />

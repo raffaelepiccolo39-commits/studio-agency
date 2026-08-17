@@ -4,20 +4,19 @@ import PageHeader from '@/components/ui/PageHeader'
 import Cursor from '@/components/ui/Cursor'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getPosts } from '@/lib/sanity/queries'
+import { getPosts, getPagina } from '@/lib/sanity/queries'
+import { metadataDaCms } from '@/lib/seo'
 
 const categoryColors: Record<string, string> = {
   'E-commerce': '#c8f55a', 'Tech': '#5a8cf5', 'Design': '#ff4d1c', 'Marketing': '#f5c85a',
 }
 
-export const metadata = {
-  title: 'Blog — Pira Web Creative Agency',
-  description: 'Guide pratiche su e-commerce, siti web, branding e social per le PMI, dal team di Pira Web.',
-  alternates: { canonical: 'https://www.piraweb.it/blog' },
-}
+// Titolo, descrizione e intestazione si cambiano da piraweb.it/studio → Pagine.
+export const generateMetadata = () => metadataDaCms('/blog')
 
 export default async function BlogPage() {
-  const posts = await getPosts()
+  const [posts, pagina] = await Promise.all([getPosts(), getPagina('/blog')])
+  const testata = pagina?.intestazione
   const featured = posts.find(p => p.featured) ?? posts[0]
   const rest = posts.filter(p => p.slug !== featured?.slug)
   return (
@@ -26,10 +25,11 @@ export default async function BlogPage() {
       <Navbar />
       <main>
         <PageHeader
-          tag="Insights & Approfondimenti"
-          title="IL NOSTRO"
-          titleAccent="blog"
-          subtitle="Guide pratiche su e-commerce, siti web, branding e social, scritte dal team di Pira Web."
+          tag={testata?.occhiello}
+          title={testata?.titolo ?? ''}
+          titleAccent={testata?.titoloEvidenziato}
+          titleAfter={testata?.titoloDopo || undefined}
+          subtitle={testata?.sottotitolo}
         />
 
         {/* Featured */}

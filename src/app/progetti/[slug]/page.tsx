@@ -9,6 +9,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getDims } from '@/lib/imageDims'
 import { coverFor } from '@/data/homeCovers'
+import { jsonLdScript } from '@/lib/jsonLd'
 
 const BASE_URL = 'https://www.piraweb.it'
 
@@ -107,7 +108,7 @@ export default async function ProgettoPage({ params }: { params: { slug: string 
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(jsonLd) }}
       />
       <Cursor />
       <Navbar />

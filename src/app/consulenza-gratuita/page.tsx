@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { getProjects } from '@/lib/sanity/queries'
+import { getProjects, getServizi } from '@/lib/sanity/queries'
 import { projects as mockProjects } from '@/data/projects'
 import LandingClient from './LandingClient'
 
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const projects = await getProjects()
+  const [projects, servizi] = await Promise.all([getProjects(), getServizi()])
   // Fallback ai dati statici se Sanity non restituisce nulla
   const data = projects.length ? projects : mockProjects
-  return <LandingClient projects={data} />
+  return <LandingClient projects={data} servizi={servizi} />
 }

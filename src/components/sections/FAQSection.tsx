@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import Script from 'next/script'
+import { jsonLdScript } from '@/lib/jsonLd'
 
 const faqs = [
   {
@@ -151,7 +152,7 @@ export default function FAQSection() {
       <Script
         id="faq-jsonld"
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdScript(faqJsonLd) }}
       />
       <section
         style={{
