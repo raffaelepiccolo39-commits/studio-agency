@@ -184,5 +184,58 @@ export const siteSettingsSchema = {
   },
 }
 
+// sanity/schemas/service.ts
+// I quattro blocchi della sezione "Servizi" (home e landing ADV).
+// L'etichetta (a.) (b.) (c.) NON è un campo: si ricava dall'ordine, così
+// riordinare i servizi li rinumera da solo.
+export const serviceSchema = {
+  name: 'service',
+  title: 'Servizio',
+  type: 'document',
+  fields: [
+    {
+      name: 'ordine', title: 'Ordine', type: 'number',
+      description: 'Da 1 in poi. Decide la posizione nella sezione e la lettera (a.) (b.) (c.)…',
+      validation: (R: any) => R.required().min(1).integer(),
+    },
+    {
+      name: 'titoloRiga1', title: 'Titolo — prima riga', type: 'string',
+      description: 'Es. "Branding &". Il titolo va a capo qui: è una scelta grafica.',
+      validation: (R: any) => R.required(),
+    },
+    {
+      name: 'titoloRiga2', title: 'Titolo — seconda riga', type: 'string',
+      description: 'Es. "Graphic Design"',
+      validation: (R: any) => R.required(),
+    },
+    {
+      name: 'voci', title: 'Cosa comprende', type: 'array', of: [{ type: 'string' }],
+      description: 'L\'elenco puntato accanto al servizio. Trascina per riordinare.',
+      options: { layout: 'tags' },
+      validation: (R: any) => R.min(1),
+    },
+    {
+      name: 'paragrafi', title: 'Descrizione', type: 'array',
+      of: [{ type: 'text', rows: 3 }],
+      description: 'Un blocco per paragrafo, nell\'ordine in cui vanno letti.',
+      validation: (R: any) => R.min(1),
+    },
+    {
+      name: 'immagine', title: 'Immagine', type: 'image',
+      options: { hotspot: true },
+      description: 'Se la lasci vuota resta quella attuale.',
+    },
+  ],
+  orderings: [{ title: 'Ordine', name: 'ordineAsc', by: [{ field: 'ordine', direction: 'asc' }] }],
+  preview: {
+    select: { r1: 'titoloRiga1', r2: 'titoloRiga2', ordine: 'ordine', media: 'immagine' },
+    prepare: ({ r1, r2, ordine, media }: any) => ({
+      title: [r1, r2].filter(Boolean).join(' '),
+      subtitle: ordine ? `Posizione ${ordine}` : 'Senza ordine',
+      media,
+    }),
+  },
+}
+
 // sanity/schema.ts — esporta tutti gli schemi
-export const schemaTypes = [projectSchema, postSchema, siteSettingsSchema]
+export const schemaTypes = [projectSchema, postSchema, siteSettingsSchema, serviceSchema]

@@ -10,7 +10,7 @@ import ServicesSection from '@/components/sections/ServicesSection'
 import SponsorsSection from '@/components/sections/SponsorsSection'
 import MetodoSection from '@/components/sections/MetodoSection'
 import TikTokSection from '@/components/sections/TikTokSection'
-import { getProjects } from '@/lib/sanity/queries'
+import { getProjects, getServizi } from '@/lib/sanity/queries'
 
 import type { Metadata } from 'next'
 
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
-  const projects = await getProjects()
+  const [projects, servizi] = await Promise.all([getProjects(), getServizi()])
   return (
     <>
       <Cursor />
@@ -48,7 +48,7 @@ export default async function Home() {
         <MarqueeSection />
         <StatsSection />
         <ProjectsSection projects={projects} />
-        <ServicesSection />
+        <ServicesSection servizi={servizi} />
         <SponsorsSection />
         <MetodoSection />
         <TikTokSection />

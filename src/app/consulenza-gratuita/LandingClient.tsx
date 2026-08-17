@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import Cursor from '@/components/ui/Cursor'
 import Footer from '@/components/layout/Footer'
 import type { Project } from '@/data/projects'
+import type { Servizio } from '@/data/servizi'
 import LandingForm from './LandingForm'
 import { useSiteSettings } from '@/components/SiteSettingsProvider'
 
@@ -116,7 +117,13 @@ const LANDING_CSS = `
   }
 `
 
-export default function LandingClient({ projects }: { projects: Project[] }) {
+export default function LandingClient({
+  projects,
+  servizi,
+}: {
+  projects: Project[]
+  servizi: Servizio[]
+}) {
   const { whatsapp } = useSiteSettings()
 
   return (
@@ -222,7 +229,7 @@ export default function LandingClient({ projects }: { projects: Project[] }) {
           </section>
 
           {/* ── Servizi (sezione reale del sito) ── */}
-          <ServicesSection />
+          <ServicesSection servizi={servizi} />
 
           {/* ── Metodo PIRA (sezione reale del sito) ── */}
           <MetodoSection />

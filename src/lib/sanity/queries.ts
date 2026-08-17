@@ -2,10 +2,12 @@ import { client } from './client'
 import { projects as mockProjects, type Project } from '@/data/projects'
 import { posts as mockPosts, type Post, type PostBlock } from '@/data/posts'
 import { siteSettings as defaultSiteSettings, type SiteSettings } from '@/data/site'
+import { servizi as defaultServizi, type Servizio } from '@/data/servizi'
 import type { SanityProjectRaw, SanityPostRaw } from '@/types'
 
 const PROJECT_REVALIDATE = 3600
 const POST_REVALIDATE = 1800
+const SERVICE_REVALIDATE = 1800
 // I contatti si cambiano di rado ma quando si cambiano si vogliono vedere
 // subito: mezz'ora è il compromesso, e comunque ogni pagina li rilegge.
 const SETTINGS_REVALIDATE = 1800
@@ -170,6 +172,58 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     return mapPost(raw, portableTextToBlocks(raw.body))
   } catch {
     return mockPosts.find((p) => p.slug === slug) ?? null
+  }
+}
+
+// ─── SERVIZI ─────────────────────────────────────────────────────────────────
+
+interface SanityServizioRaw {
+  _id: string
+  ordine?: number
+  titoloRiga1?: string
+  titoloRiga2?: string
+  voci?: string[]
+  paragrafi?: string[]
+  immagine?: string
+}
+
+/**
+ * I quattro blocchi della sezione Servizi.
+ *
+ * Come per i progetti: se Sanity non è configurato, non risponde o non ha
+ * ancora nessun servizio, si ricade sui contenuti storici di src/data/servizi.ts
+ * e la sezione resta identica a com'è sempre stata.
+ */
+export async function getServizi(): Promise<Servizio[]> {
+  if (!isSanityConfigured()) return defaultServizi
+  try {
+    const raw = await client.fetch<SanityServizioRaw[]>(
+      `*[_type == "service"] | order(ordine asc, _createdAt asc) {
+        _id, ordine, titoloRiga1, titoloRiga2, voci, paragrafi,
+        "immagine": immagine.asset->url
+      }`,
+      {},
+      { next: { revalidate: SERVICE_REVALIDATE, tags: ['services'] } }
+    )
+    if (!raw?.length) return defaultServizi
+    return raw.map(mapServizio)
+  } catch {
+    return defaultServizi
+  }
+}
+
+function mapServizio(r: SanityServizioRaw, i: number): Servizio {
+  const riserva = defaultServizi[i]
+  const voci = (r.voci ?? []).filter(v => v?.trim())
+  const paragrafi = (r.paragrafi ?? []).filter(p => p?.trim())
+  return {
+    id: r._id,
+    titolo: [r.titoloRiga1?.trim() ?? '', r.titoloRiga2?.trim() ?? ''],
+    voci: voci.length ? voci : riserva?.voci ?? [],
+    paragrafi: paragrafi.length ? paragrafi : riserva?.paragrafi ?? [],
+    // Senza immagine caricata resta quella storica al suo posto: meglio una
+    // foto vecchia che un buco nella griglia.
+    immagine: r.immagine ?? riserva?.immagine ?? '',
   }
 }
 
