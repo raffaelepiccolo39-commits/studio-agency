@@ -8,12 +8,15 @@ const FORMSPREE_IDS = {
   // Il questionario riusa la casella Formspree della consulenza: è solo la copia
   // di riserva, l'oggetto lo distingue comunque.
   questionario: 'mbdaqvyj',
+  // Anteprima gratuita del sito: stessa casella di riserva della consulenza.
+  anteprima: 'mbdaqvyj',
 } as const;
 
 const ETICHETTE = {
   contact: 'Contatti',
   consulenza: 'Consulenza',
   questionario: 'Questionario',
+  anteprima: 'Anteprima gratuita',
 } as const;
 
 type FormType = keyof typeof FORMSPREE_IDS;

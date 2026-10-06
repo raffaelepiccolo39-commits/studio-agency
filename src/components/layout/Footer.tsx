@@ -72,9 +72,11 @@ const NOMI_SOCIAL = {
 type FooterProps = {
   ctaTitle?: React.ReactNode
   ctaHref?: string
+  /** Testo del pulsante grande; di default 'Richiedi una consulenza'. */
+  ctaLabel?: string
 }
 
-export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps = {}) {
+export default function Footer({ ctaTitle, ctaHref = '/contatti', ctaLabel = 'Richiedi una consulenza' }: FooterProps = {}) {
   const year = new Date().getFullYear()
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true })
   const trustboxRef = useRef<HTMLDivElement>(null)
@@ -261,9 +263,9 @@ export default function Footer({ ctaTitle, ctaHref = '/contatti' }: FooterProps 
           <Link
             href={ctaHref}
             className="footer-cta-button footer-cta-button-lg"
-            aria-label="Richiedi una consulenza"
+            aria-label={ctaLabel}
           >
-            <span>RICHIEDI UNA CONSULENZA</span>
+            <span>{ctaLabel.toUpperCase()}</span>
             <svg
               className="footer-cta-arrow"
               width="24" height="24" viewBox="0 0 16 16" fill="none" aria-hidden focusable="false"

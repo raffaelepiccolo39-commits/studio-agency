@@ -13,7 +13,8 @@ const links = [
   { label: 'LAVORA CON NOI', href: '/lavora-con-noi' },
 ]
 
-export default function Navbar() {
+/** Destinazione ed etichetta del pulsante giallo. Di default portano a Contatti; una landing può puntarli al proprio modulo. */
+export default function Navbar({ ctaHref = '/contatti', ctaLabel = 'Richiedi una consulenza', ctaLabelBreve }: { ctaHref?: string; ctaLabel?: string; ctaLabelBreve?: string } = {}) {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -108,7 +109,7 @@ export default function Navbar() {
         {/* CTA desktop (destra) */}
         <Link
           className="nav-desktop nav-cta-desktop"
-          href="/contatti"
+          href={ctaHref}
           style={{
               background: 'var(--accent)', color: '#0a0a0a',
               border: 'none', padding: '10px 40px',
@@ -121,13 +122,13 @@ export default function Navbar() {
               transition: 'background 0.3s',
             }}
           >
-            RICHIEDI UNA CONSULENZA
+            {ctaLabel.toUpperCase()}
           </Link>
 
         {/* Hamburger mobile */}
         <div className="nav-mobile">
             <Link
-              href="/contatti"
+              href={ctaHref}
               style={{
                 background: 'var(--accent)', color: '#0a0a0a',
                 border: 'none', padding: '8px 14px',
@@ -137,7 +138,7 @@ export default function Navbar() {
                 textDecoration: 'none',
               }}
             >
-              Consulenza
+              {ctaLabelBreve ?? 'Consulenza'}
             </Link>
             <button
               onClick={() => setMenuOpen(!menuOpen)}

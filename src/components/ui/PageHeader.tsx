@@ -10,10 +10,21 @@ interface PageHeaderProps {
   titleAccent?: string
   titleAfter?: string
   subtitle?: string
+  /** 'boldonse' = il font display della home (GROWTH FOCUSED AGENCY), tutte le righe uguali; default Bebas + DM Serif corsivo. */
+  font?: 'bebas' | 'boldonse'
 }
 
-export default function PageHeader({ tag, title, titleAccent, titleAfter, subtitle }: PageHeaderProps) {
+export default function PageHeader({ tag, title, titleAccent, titleAfter, subtitle, font = 'bebas' }: PageHeaderProps) {
   const headerRef = useRef<HTMLElement>(null)
+  const boldonse = font === 'boldonse'
+  // Boldonse è un carattere alto: ha bisogno di più interlinea e di un corpo più piccolo di Bebas.
+  const lineStyle: React.CSSProperties = boldonse
+    ? { fontFamily: 'var(--font-boldonse)', fontSize: 'clamp(26px, 5.4vw, 88px)', lineHeight: 1.15, letterSpacing: '-0.01em', display: 'block', textTransform: 'uppercase' }
+    : { fontFamily: 'var(--font-bebas)', fontSize: 'clamp(34px, 8vw, 140px)', letterSpacing: '-0.01em', display: 'block' }
+  const accentStyle: React.CSSProperties = boldonse
+    ? { ...lineStyle, color: 'var(--accent)' }
+    : { fontFamily: 'var(--font-dm-serif)', fontStyle: 'italic', fontSize: 'clamp(34px, 8vw, 140px)', color: 'var(--accent)', display: 'block' }
+  const linePad = boldonse ? '0.3em 0.12em 0.26em' : undefined
 
   useGSAP(() => {
     const lines = headerRef.current?.querySelectorAll<HTMLElement>('.ph-line')
@@ -91,50 +102,22 @@ export default function PageHeader({ tag, title, titleAccent, titleAfter, subtit
           </p>
         )}
 
-        <h1 style={{ lineHeight: 0.9 }}>
-          <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em' }}>
-            <span
-              className="ph-line"
-              data-text={title}
-              style={{
-                fontFamily: 'var(--font-bebas)',
-                fontSize: 'clamp(34px, 8vw, 140px)',
-                letterSpacing: '-0.01em',
-                display: 'block',
-              }}
-            >
+        <h1 style={{ lineHeight: boldonse ? 1 : 0.9, marginTop: boldonse ? '-0.3em' : undefined }}>
+          <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em', padding: linePad }}>
+            <span className="ph-line" data-text={title} style={lineStyle}>
               {title}
             </span>
           </span>
           {titleAccent && (
-            <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em' }}>
-              <span
-                className="ph-line"
-                data-text={titleAccent}
-                style={{
-                  fontFamily: 'var(--font-dm-serif)',
-                  fontStyle: 'italic',
-                  fontSize: 'clamp(34px, 8vw, 140px)',
-                  color: 'var(--accent)',
-                  display: 'block',
-                }}
-              >
+            <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em', padding: linePad }}>
+              <span className="ph-line" data-text={titleAccent} style={accentStyle}>
                 {titleAccent}
               </span>
             </span>
           )}
           {titleAfter && (
-            <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em' }}>
-              <span
-                className="ph-line"
-                data-text={titleAfter}
-                style={{
-                  fontFamily: 'var(--font-bebas)',
-                  fontSize: 'clamp(34px, 8vw, 140px)',
-                  letterSpacing: '-0.01em',
-                  display: 'block',
-                }}
-              >
+            <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.05em', padding: linePad }}>
+              <span className="ph-line" data-text={titleAfter} style={lineStyle}>
                 {titleAfter}
               </span>
             </span>
