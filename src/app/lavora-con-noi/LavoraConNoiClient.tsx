@@ -19,27 +19,34 @@ type Position = { id: string; title: string; type: string; desc: string; subject
 const positions: Position[] = [
   {
     id: 'a',
+    title: 'GRAPHIC DESIGNER',
+    type: 'FULL-TIME',
+    desc: 'Cerchiamo un graphic designer con esperienza in brand identity e contenuti per i social, padronanza della suite Adobe e un forte senso estetico.',
+    subject: 'Candidatura — Graphic Designer',
+  },
+  {
+    id: 'b',
     title: 'SENIOR UX&UI DESIGNER',
     type: 'FULL-TIME',
     desc: 'Cerchiamo un designer con almeno 3 anni di esperienza in progetti digital e una forte sensibilità per il dettaglio.',
     subject: 'Candidatura — Senior UX&UI Designer',
   },
   {
-    id: 'b',
+    id: 'c',
     title: 'SHOPIFY DEVELOPER',
     type: 'FULL-TIME',
     desc: 'Sviluppatore con esperienza su Shopify Plus, Liquid, e possibilmente React. Lavorerai su progetti complessi con integrazioni ERP.',
     subject: 'Candidatura — Shopify Developer',
   },
   {
-    id: 'c',
+    id: 'd',
     title: 'PERFORMANCE MARKETING SPECIALIST',
     type: 'FULL-TIME',
     desc: 'Gestione e ottimizzazione di campagne Meta e Google Ads per brand fashion e lifestyle.',
     subject: 'Candidatura — Performance Marketing Specialist',
   },
   {
-    id: 'd',
+    id: 'e',
     title: 'PROFILO APERTO',
     type: 'QUALSIASI',
     desc: 'Non trovi il tuo ruolo? Se sei bravo in quello che fai e hai passione per il digitale, mandaci il tuo portfolio.',
