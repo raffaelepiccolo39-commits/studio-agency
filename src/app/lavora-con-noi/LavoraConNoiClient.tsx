@@ -47,6 +47,20 @@ const positions: Position[] = [
   },
   {
     id: 'e',
+    title: 'SVILUPPATORE WEB',
+    type: 'FULL-TIME',
+    desc: 'Sviluppatore con esperienza in React e Next.js per realizzare siti e applicazioni web veloci, curati e su misura per i nostri clienti.',
+    subject: 'Candidatura — Sviluppatore Web',
+  },
+  {
+    id: 'f',
+    title: 'SVILUPPATORE SOLUZIONI AI',
+    type: 'FULL-TIME',
+    desc: 'Progetterai e svilupperai automazioni, assistenti e integrazioni basate sui modelli di intelligenza artificiale, per i nostri clienti e per i nostri processi interni.',
+    subject: 'Candidatura — Sviluppatore Soluzioni AI',
+  },
+  {
+    id: 'g',
     title: 'PROFILO APERTO',
     type: 'QUALSIASI',
     desc: 'Non trovi il tuo ruolo? Se sei bravo in quello che fai e hai passione per il digitale, mandaci il tuo portfolio.',
