@@ -1244,6 +1244,21 @@ select:focus-visible,
   margin: 0 0 clamp(28px, 4vw, 50px);
 }
 .lavora-list { display: flex; flex-direction: column; }
+.lavora-group + .lavora-group { margin-top: clamp(48px, 6vw, 96px); }
+.lavora-group-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  font-family: var(--font-syne);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 clamp(14px, 2vw, 24px);
+}
+.lavora-group-count { color: #b2b2b2; letter-spacing: 0.05em; }
 .lavora-row {
   display: grid;
   grid-template-columns: 40px minmax(0, 1fr) minmax(0, 430px) 170px;
