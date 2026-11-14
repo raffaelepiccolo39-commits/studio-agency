@@ -14,11 +14,16 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-type Position = { id: string; title: string; type: string; desc: string; subject: string }
+type Group = 'Design' | 'Social & Content' | 'Marketing' | 'Sviluppo' | 'Candidatura spontanea'
+type Position = { id: string; group: Group; title: string; type: string; desc: string; subject: string }
+
+// Ordine in cui i gruppi compaiono nella pagina
+const groups: Group[] = ['Design', 'Social & Content', 'Marketing', 'Sviluppo', 'Candidatura spontanea']
 
 const positions: Position[] = [
   {
     id: 'a',
+    group: 'Design',
     title: 'GRAPHIC DESIGNER',
     type: 'FULL-TIME',
     desc: 'Cerchiamo un graphic designer con esperienza in brand identity e contenuti per i social, padronanza della suite Adobe e un forte senso estetico.',
@@ -26,6 +31,7 @@ const positions: Position[] = [
   },
   {
     id: 'b',
+    group: 'Social & Content',
     title: 'SOCIAL MEDIA MANAGER',
     type: 'FULL-TIME',
     desc: 'Cerchiamo un social media manager con almeno 2 anni di esperienza: piani editoriali, reel e copy, campagne Meta Ads e report per i clienti. Allega profili gestiti o case study.',
@@ -33,6 +39,7 @@ const positions: Position[] = [
   },
   {
     id: 'c',
+    group: 'Sviluppo',
     title: 'SHOPIFY DEVELOPER',
     type: 'FULL-TIME',
     desc: 'Sviluppatore con esperienza su Shopify Plus, Liquid, e possibilmente React. Lavorerai su progetti complessi con integrazioni ERP.',
@@ -40,6 +47,7 @@ const positions: Position[] = [
   },
   {
     id: 'd',
+    group: 'Social & Content',
     title: 'VIDEO EDITOR & CONTENT CREATOR',
     type: 'FULL-TIME',
     desc: 'Montaggio di reel, spot e contenuti social per i nostri brand, con Premiere, CapCut e After Effects. Cerchiamo almeno 2 anni di esperienza: allega il tuo showreel.',
@@ -47,6 +55,7 @@ const positions: Position[] = [
   },
   {
     id: 'e',
+    group: 'Design',
     title: 'SENIOR UX&UI DESIGNER',
     type: 'FULL-TIME',
     desc: 'Cerchiamo un designer con almeno 3 anni di esperienza in progetti digital e una forte sensibilità per il dettaglio.',
@@ -54,6 +63,7 @@ const positions: Position[] = [
   },
   {
     id: 'f',
+    group: 'Marketing',
     title: 'PERFORMANCE MARKETING SPECIALIST',
     type: 'FULL-TIME',
     desc: 'Gestione e ottimizzazione di campagne Meta e Google Ads per brand fashion e lifestyle.',
@@ -61,6 +71,7 @@ const positions: Position[] = [
   },
   {
     id: 'g',
+    group: 'Sviluppo',
     title: 'SVILUPPATORE WEB',
     type: 'FULL-TIME',
     desc: 'Sviluppatore con esperienza in React e Next.js per realizzare siti e applicazioni web veloci, curati e su misura per i nostri clienti.',
@@ -68,6 +79,7 @@ const positions: Position[] = [
   },
   {
     id: 'h',
+    group: 'Sviluppo',
     title: 'SVILUPPATORE SOLUZIONI AI',
     type: 'FULL-TIME',
     desc: 'Progetterai e svilupperai automazioni, assistenti e integrazioni basate sui modelli di intelligenza artificiale, per i nostri clienti e per i nostri processi interni.',
@@ -75,12 +87,16 @@ const positions: Position[] = [
   },
   {
     id: 'i',
+    group: 'Candidatura spontanea',
     title: 'PROFILO APERTO',
     type: 'QUALSIASI',
     desc: 'Non trovi il tuo ruolo? Se sei bravo in quello che fai e hai passione per il digitale, mandaci il tuo portfolio.',
     subject: 'Candidatura spontanea — Pira Web',
   },
 ]
+
+// Posizioni ordinate per gruppo: la lettera (a), (b)… segue quest'ordine
+const ordered = groups.flatMap((g) => positions.filter((p) => p.group === g))
 
 export default function LavoraConNoiPage() {
   const rootRef = useRef<HTMLElement>(null)
@@ -149,21 +165,35 @@ export default function LavoraConNoiPage() {
         {/* Posizioni aperte */}
         <section className="lavora-positions">
           <p className="lavora-poslabel">POSIZIONI APERTE</p>
-          <div className="lavora-list">
-            {positions.map((p) => (
-              <div className="lavora-row" key={p.id}>
-                <span className="lavora-row-num">({p.id})</span>
-                <h2 className="lavora-row-title">{p.title}</h2>
-                <div className="lavora-row-info">
-                  <span className="lavora-row-type">{p.type}</span>
-                  <p className="lavora-row-desc">{p.desc}</p>
+          {groups.map((g) => {
+            const items = ordered.filter((p) => p.group === g)
+            if (!items.length) return null
+            return (
+              <div className="lavora-group" key={g}>
+                <h3 className="lavora-group-title">
+                  <span>{g}</span>
+                  <span className="lavora-group-count">
+                    {items.length} {items.length === 1 ? 'posizione' : 'posizioni'}
+                  </span>
+                </h3>
+                <div className="lavora-list">
+                  {items.map((p) => (
+                    <div className="lavora-row" key={p.id}>
+                      <span className="lavora-row-num">({String.fromCharCode(97 + ordered.indexOf(p))})</span>
+                      <h2 className="lavora-row-title">{p.title}</h2>
+                      <div className="lavora-row-info">
+                        <span className="lavora-row-type">{p.type}</span>
+                        <p className="lavora-row-desc">{p.desc}</p>
+                      </div>
+                      <button type="button" className="lavora-apply" onClick={() => setActivePos(p.title)}>
+                        CANDIDATI
+                      </button>
+                    </div>
+                  ))}
                 </div>
-                <button type="button" className="lavora-apply" onClick={() => setActivePos(p.title)}>
-                  CANDIDATI
-                </button>
               </div>
-            ))}
-          </div>
+            )
+          })}
         </section>
       </main>
       <Footer />
