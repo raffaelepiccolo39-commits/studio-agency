@@ -249,9 +249,6 @@ export default function CosaFacciamoPage() {
           <div className="cosa-2col cosa-2col-scp">
             <ServiceBlock s={scp} />
             <div className="cosa-scp-media cosa-anim">
-              <video className="cosa-scp-video" controls preload="metadata" playsInline>
-                <source src="/servizi/scp-video.mp4" type="video/mp4" />
-              </video>
               <div className="cosa-scp-img">
                 <Image
                   src="/servizi/scp-mockup.jpg"
